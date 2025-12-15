@@ -1,0 +1,23 @@
+{
+  "name": "pohi-protocol",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Proof of Human Intent - AI executes. Humans authorize. Machines verify.",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "dev": "npm run dev -w @pohi-protocol/demo",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pohi-protocol/pohi.git"
+  },
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

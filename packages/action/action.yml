@@ -1,0 +1,48 @@
+name: 'PoHI Human Approval'
+description: 'Request and verify human approval via World ID for deployments and releases'
+author: 'PoHI Protocol'
+
+branding:
+  icon: 'user-check'
+  color: 'blue'
+
+inputs:
+  approval-url:
+    description: 'Base URL of the PoHI approval server'
+    required: true
+  world-id-app-id:
+    description: 'World ID App ID (e.g., app_xxxxx)'
+    required: true
+  world-id-action:
+    description: 'World ID Action name'
+    required: true
+  verification-level:
+    description: 'Required verification level (orb or device)'
+    required: false
+    default: 'orb'
+  timeout-minutes:
+    description: 'Maximum time to wait for approval in minutes'
+    required: false
+    default: '30'
+  poll-interval-seconds:
+    description: 'Interval between status checks in seconds'
+    required: false
+    default: '10'
+  github-token:
+    description: 'GitHub token for creating commit status and comments'
+    required: false
+    default: ${{ github.token }}
+
+outputs:
+  attestation:
+    description: 'The full attestation JSON'
+  attestation-hash:
+    description: 'The attestation hash (for on-chain verification)'
+  nullifier-hash:
+    description: 'The nullifier hash (unique per human per action)'
+  approved-at:
+    description: 'ISO timestamp when approval was received'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
