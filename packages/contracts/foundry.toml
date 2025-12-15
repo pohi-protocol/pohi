@@ -1,0 +1,21 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+solc_version = "0.8.24"
+optimizer = true
+optimizer_runs = 200
+
+[profile.default.fmt]
+line_length = 100
+tab_width = 4
+bracket_spacing = true
+
+# World Chain configuration
+[rpc_endpoints]
+world_chain_mainnet = "${WORLD_CHAIN_RPC_URL}"
+world_chain_sepolia = "https://worldchain-sepolia.g.alchemy.com/public"
+
+[etherscan]
+world_chain_mainnet = { key = "${WORLDSCAN_API_KEY}", url = "https://api.worldscan.org/api" }
+world_chain_sepolia = { key = "${WORLDSCAN_API_KEY}", url = "https://api-sepolia.worldscan.org/api" }
