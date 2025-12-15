@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { verifyCloudProof, IVerifyResponse } from '@worldcoin/idkit-core/backend'
 import type { ISuccessResult } from '@worldcoin/idkit'
 import type { HumanApprovalAttestation, ApprovalSubject } from '@/types'
+import { attestationStore } from '@/lib/store'
+import { keccak256, encodePacked } from 'viem'
 
 interface VerifyRequestBody {
   proof: ISuccessResult
@@ -9,23 +11,44 @@ interface VerifyRequestBody {
   signal: string
 }
 
+function computeAttestationHash(attestation: HumanApprovalAttestation): `0x${string}` {
+  const timestamp = BigInt(Math.floor(new Date(attestation.timestamp).getTime() / 1000))
+  return keccak256(
+    encodePacked(
+      ['string', 'string', 'string', 'string', 'uint256'],
+      [
+        attestation.subject.repository || '',
+        attestation.subject.commit_sha || '',
+        attestation.human_proof.nullifier_hash,
+        attestation.human_proof.signal,
+        timestamp,
+      ]
+    )
+  )
+}
+
 function createAttestation(
   proof: ISuccessResult,
   subject: ApprovalSubject,
   signal: string
 ): HumanApprovalAttestation {
-  return {
+  const attestation: HumanApprovalAttestation = {
     version: '1.0',
     type: 'HumanApprovalAttestation',
     subject,
     human_proof: {
       method: 'world_id',
-      verification_level: String(proof.verification_level), // Convert enum to string
+      verification_level: String(proof.verification_level),
       nullifier_hash: proof.nullifier_hash,
       signal,
     },
     timestamp: new Date().toISOString(),
   }
+
+  // Compute deterministic hash
+  attestation.attestation_hash = computeAttestationHash(attestation)
+
+  return attestation
 }
 
 export async function POST(request: NextRequest) {
@@ -60,6 +83,11 @@ export async function POST(request: NextRequest) {
     }
 
     const attestation = createAttestation(proof, subject, signal)
+
+    // Store attestation for status polling (used by GitHub Actions)
+    if (subject.repository && subject.commit_sha) {
+      attestationStore.set(subject.repository, subject.commit_sha, attestation)
+    }
 
     return NextResponse.json({ success: true, attestation })
   } catch (error) {
