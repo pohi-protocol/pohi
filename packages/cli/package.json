@@ -1,0 +1,39 @@
+{
+  "name": "@pohi-protocol/cli",
+  "version": "0.1.0",
+  "description": "CLI for Proof of Human Intent - Request and verify human approvals",
+  "type": "module",
+  "bin": {
+    "pohi": "./dist/index.js"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --target node20 --shims",
+    "dev": "tsup src/index.ts --format esm --target node20 --shims --watch",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@pohi-protocol/core": "^0.1.0",
+    "@pohi-protocol/sdk": "^0.1.0",
+    "chalk": "^5.3.0",
+    "commander": "^12.0.0",
+    "conf": "^12.0.0",
+    "ora": "^8.0.1",
+    "qrcode-terminal": "^0.12.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/qrcode-terminal": "^0.12.2",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pohi-protocol/pohi.git",
+    "directory": "packages/cli"
+  },
+  "license": "Apache-2.0"
+}
