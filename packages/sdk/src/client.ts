@@ -12,7 +12,8 @@ import {
 } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 import type { HumanApprovalAttestation } from '@pohi-protocol/core'
-import { commitShaToBytes32, verificationLevelToNumber } from '@pohi-protocol/core'
+import { verificationLevelToNumber } from '@pohi-protocol/core'
+import { commitShaToBytes32, computeEvmAttestationHash, nullifierToBytes32 } from '@pohi-protocol/evm'
 import { pohiRegistryAbi } from './abi'
 import { worldChain, worldChainSepolia } from './chains'
 
@@ -100,17 +101,17 @@ export class PoHIClient {
 
   /**
    * Record an attestation on-chain
+   * Note: Uses EVM-compatible keccak256 hash (different from protocol SHA-256)
    */
   async recordAttestation(attestation: HumanApprovalAttestation): Promise<Hash> {
     if (!this.walletClient) {
       throw new Error('Wallet not configured. Provide privateKey in config.')
     }
 
-    if (!attestation.attestation_hash) {
-      throw new Error('Attestation must have attestation_hash')
-    }
-
+    // Compute EVM-compatible hash for on-chain storage
+    const evmHash = computeEvmAttestationHash(attestation)
     const commitSha = commitShaToBytes32(attestation.subject.commit_sha || '')
+    const nullifier = nullifierToBytes32(attestation.human_proof.nullifier_hash)
     const verificationLevel = verificationLevelToNumber(attestation.human_proof.verification_level)
 
     const hash = await this.walletClient.writeContract({
@@ -118,10 +119,10 @@ export class PoHIClient {
       abi: pohiRegistryAbi,
       functionName: 'recordAttestation',
       args: [
-        attestation.attestation_hash as `0x${string}`,
+        evmHash,
         attestation.subject.repository || '',
         commitSha,
-        attestation.human_proof.nullifier_hash as `0x${string}`,
+        nullifier,
         verificationLevel,
       ],
     })

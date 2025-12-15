@@ -20,7 +20,17 @@ export {
   computeAttestationHash,
   validateAttestation,
   isValidAttestation,
-  commitShaToBytes32,
   verificationLevelToNumber,
   numberToVerificationLevel,
 } from '@pohi-protocol/core'
+
+// Re-export EVM utilities
+export {
+  computeEvmAttestationHash,
+  computeEvmSignal,
+  commitShaToBytes32,
+  nullifierToBytes32,
+  toEvmAttestation,
+  keccak256,
+  encodePacked,
+} from '@pohi-protocol/evm'

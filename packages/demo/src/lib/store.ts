@@ -1,4 +1,4 @@
-import type { HumanApprovalAttestation } from '@/types'
+import type { HumanApprovalAttestation } from '@pohi-protocol/core'
 
 interface AttestationRecord {
   attestation: HumanApprovalAttestation

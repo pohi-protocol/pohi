@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@pohi-protocol/core": "^0.1.0",
     "@worldcoin/idkit": "^2.4.2",
     "next": "^14.2.0",
     "react": "^18.3.0",

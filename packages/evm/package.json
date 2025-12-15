@@ -1,7 +1,7 @@
 {
-  "name": "@pohi-protocol/sdk",
+  "name": "@pohi-protocol/evm",
   "version": "0.1.0",
-  "description": "SDK for interacting with PoHI Registry on World Chain",
+  "description": "EVM/blockchain utilities for PoHI attestations",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -18,12 +18,10 @@
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",
     "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
-    "test": "vitest run",
-    "lint": "eslint src"
+    "test": "vitest run"
   },
   "dependencies": {
     "@pohi-protocol/core": "^0.1.0",
-    "@pohi-protocol/evm": "^0.1.0",
     "viem": "^2.0.0"
   },
   "devDependencies": {
@@ -34,7 +32,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/pohi-protocol/pohi.git",
-    "directory": "packages/sdk"
+    "directory": "packages/evm"
   },
   "license": "Apache-2.0"
 }

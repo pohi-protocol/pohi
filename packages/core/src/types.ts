@@ -1,10 +1,31 @@
 /**
- * World ID verification level type (compatible with IDKit v2)
+ * PoHI Protocol Types
+ * Chain-neutral type definitions for Proof of Human Intent
+ */
+
+// ============ Proof of Personhood (PoP) Provider Types ============
+
+/**
+ * Known PoP provider identifiers
+ * Extensible - any string is valid for forward compatibility
+ */
+export const POP_PROVIDERS = {
+  WORLD_ID: 'world_id',
+  GITCOIN_PASSPORT: 'gitcoin_passport',
+  PROOF_OF_HUMANITY: 'proof_of_humanity',
+  CIVIC: 'civic',
+  BRIGHTID: 'brightid',
+} as const
+
+export type KnownPoPProvider = typeof POP_PROVIDERS[keyof typeof POP_PROVIDERS]
+
+/**
+ * World ID verification levels (when using World ID provider)
  */
 export type WorldIDVerificationLevel = 'orb' | 'device' | 'secure_document' | 'document'
 
 /**
- * World ID proof from IDKit
+ * World ID specific proof data
  */
 export interface WorldIDProof {
   merkle_root: string
@@ -13,50 +34,86 @@ export interface WorldIDProof {
   verification_level: WorldIDVerificationLevel
 }
 
+// ============ Approval Subject Types ============
+
+/**
+ * Known approval action types
+ * Extensible - any string is valid for forward compatibility
+ */
+export const APPROVAL_ACTIONS = {
+  PR_MERGE: 'PR_MERGE',
+  RELEASE: 'RELEASE',
+  DEPLOY: 'DEPLOY',
+  GENERIC: 'GENERIC',
+} as const
+
+export type KnownApprovalAction = typeof APPROVAL_ACTIONS[keyof typeof APPROVAL_ACTIONS]
+
 /**
  * Approval subject - what is being approved
+ * Designed to be VCS-agnostic (works with GitHub, GitLab, Bitbucket, etc.)
  */
 export interface ApprovalSubject {
-  /** Repository in format owner/repo */
+  /** Repository identifier (e.g., "owner/repo" for GitHub) */
   repository: string
-  /** Git commit SHA */
+  /** Commit reference (SHA, tag, or other identifier) */
   commit_sha: string
-  /** Pull request number (optional) */
-  pr_number?: number
+  /** Optional reference number (PR number, MR number, etc.) */
+  ref_number?: number
   /** Type of action being approved */
-  action: 'PR_MERGE' | 'RELEASE' | 'DEPLOY' | 'GENERIC'
+  action: KnownApprovalAction | string
   /** Human-readable description */
   description?: string
+  /** Additional metadata (extensible) */
+  metadata?: Record<string, unknown>
 }
 
+// ============ Human Proof Types ============
+
 /**
- * Human proof details from World ID verification
+ * Human proof - evidence of human verification
+ * Provider-agnostic design for extensibility
  */
 export interface HumanProof {
-  /** Verification method used */
-  method: 'world_id'
-  /** Verification level achieved */
-  verification_level: WorldIDVerificationLevel | string
-  /** Unique identifier for the human (per action) */
+  /**
+   * PoP provider identifier (e.g., 'world_id', 'gitcoin_passport')
+   * Use POP_PROVIDERS constants for known providers
+   */
+  method: KnownPoPProvider | string
+  /** Provider-specific verification level or tier */
+  verification_level?: string
+  /**
+   * Unique identifier for the human (per action scope)
+   * Called "nullifier" in World ID, may have different names in other systems
+   */
   nullifier_hash: string
-  /** Signal that was bound to the proof */
+  /** Signal that was bound to the proof (prevents replay) */
   signal: string
+  /** Provider-specific proof data (optional, for on-chain verification) */
+  provider_proof?: Record<string, unknown>
 }
 
+// ============ Chain Record Types ============
+
 /**
- * On-chain record reference
+ * On-chain record reference (optional)
  */
 export interface ChainRecord {
-  /** Chain ID (480 for World Chain, 4801 for World Chain Sepolia) */
+  /** Chain identifier (e.g., 480 for World Chain) */
   chain_id: number
-  /** Transaction hash of the recording */
+  /** Transaction hash */
   tx_hash: string
-  /** Block number where recorded */
+  /** Block number */
   block_number: number
+  /** Contract address (optional) */
+  contract_address?: string
 }
 
+// ============ Attestation Types ============
+
 /**
- * The main attestation document
+ * PoHI Attestation document
+ * The core data structure of the protocol
  */
 export interface HumanApprovalAttestation {
   /** Schema version */
@@ -69,19 +126,28 @@ export interface HumanApprovalAttestation {
   human_proof: HumanProof
   /** ISO 8601 timestamp of attestation creation */
   timestamp: string
-  /** Keccak256 hash of the attestation (deterministic) */
+  /**
+   * SHA-256 hash of canonical attestation (protocol standard)
+   * Format: hex string with 0x prefix
+   */
   attestation_hash?: string
   /** On-chain record reference (if recorded) */
   chain_record?: ChainRecord
   /** Optional cryptographic signature */
   signature?: {
-    type: string
-    jws: string
+    /** Signature algorithm (e.g., 'ES256', 'EdDSA') */
+    algorithm: string
+    /** Signature value (base64 or hex) */
+    value: string
+    /** Signer identifier (optional) */
+    signer?: string
   }
 }
 
+// ============ API Response Types ============
+
 /**
- * API response for verification
+ * Verification API response
  */
 export interface VerifyResponse {
   success: boolean
@@ -98,15 +164,19 @@ export interface ApprovalStatus {
   error?: string
 }
 
+// ============ EVM Types (for @pohi-protocol/evm compatibility) ============
+
 /**
- * On-chain attestation structure (matches smart contract)
+ * On-chain attestation structure (matches EVM smart contract)
+ * Note: This type is here for compatibility, but EVM-specific logic
+ * should use @pohi-protocol/evm package
  */
 export interface OnChainAttestation {
   attestationHash: `0x${string}`
   repository: string
   commitSha: `0x${string}`
   nullifierHash: `0x${string}`
-  verificationLevel: number // 0=device, 1=orb, 2=secure_document
+  verificationLevel: number
   timestamp: bigint
   revoked: boolean
   recorder: `0x${string}`

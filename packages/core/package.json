@@ -21,9 +21,7 @@
     "test": "vitest run",
     "lint": "eslint src"
   },
-  "dependencies": {
-    "viem": "^2.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "tsup": "^8.0.0",
     "typescript": "^5.0.0",

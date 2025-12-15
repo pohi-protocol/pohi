@@ -1,54 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyCloudProof, IVerifyResponse } from '@worldcoin/idkit-core/backend'
 import type { ISuccessResult } from '@worldcoin/idkit'
-import type { HumanApprovalAttestation, ApprovalSubject } from '@/types'
+import {
+  createAttestation,
+  POP_PROVIDERS,
+  type ApprovalSubject,
+  type HumanProof,
+} from '@pohi-protocol/core'
 import { attestationStore } from '@/lib/store'
-import { keccak256, encodePacked } from 'viem'
 
 interface VerifyRequestBody {
   proof: ISuccessResult
   subject: ApprovalSubject
   signal: string
-}
-
-function computeAttestationHash(attestation: HumanApprovalAttestation): `0x${string}` {
-  const timestamp = BigInt(Math.floor(new Date(attestation.timestamp).getTime() / 1000))
-  return keccak256(
-    encodePacked(
-      ['string', 'string', 'string', 'string', 'uint256'],
-      [
-        attestation.subject.repository || '',
-        attestation.subject.commit_sha || '',
-        attestation.human_proof.nullifier_hash,
-        attestation.human_proof.signal,
-        timestamp,
-      ]
-    )
-  )
-}
-
-function createAttestation(
-  proof: ISuccessResult,
-  subject: ApprovalSubject,
-  signal: string
-): HumanApprovalAttestation {
-  const attestation: HumanApprovalAttestation = {
-    version: '1.0',
-    type: 'HumanApprovalAttestation',
-    subject,
-    human_proof: {
-      method: 'world_id',
-      verification_level: String(proof.verification_level),
-      nullifier_hash: proof.nullifier_hash,
-      signal,
-    },
-    timestamp: new Date().toISOString(),
-  }
-
-  // Compute deterministic hash
-  attestation.attestation_hash = computeAttestationHash(attestation)
-
-  return attestation
 }
 
 export async function POST(request: NextRequest) {
@@ -72,7 +36,7 @@ export async function POST(request: NextRequest) {
       proof,
       appId,
       action,
-      signal || undefined // Pass undefined if signal is empty
+      signal || undefined
     )
 
     if (!verifyResponse.success) {
@@ -82,7 +46,16 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const attestation = createAttestation(proof, subject, signal)
+    // Create human proof from World ID verification
+    const humanProof: HumanProof = {
+      method: POP_PROVIDERS.WORLD_ID,
+      verification_level: String(proof.verification_level),
+      nullifier_hash: proof.nullifier_hash,
+      signal,
+    }
+
+    // Create attestation using core library (SHA-256 hash)
+    const attestation = createAttestation(subject, humanProof)
 
     // Store attestation for status polling (used by GitHub Actions)
     if (subject.repository && subject.commit_sha) {
