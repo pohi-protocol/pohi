@@ -1,0 +1,283 @@
+% Proof of Human Intent - arXiv Paper
+% Reference implementation: https://github.com/pohi-protocol/pohi
+
+\documentclass[conference]{IEEEtran}
+
+% Packages
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{booktabs}
+
+% Code listing style
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  language=Python
+}
+
+% Hyperref setup
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue
+}
+
+\begin{document}
+
+% =============================================================================
+% TITLE
+% =============================================================================
+\title{Proof of Human Intent: Cryptographically Verifiable Human Approval for AI-Driven Software Development}
+
+% =============================================================================
+% AUTHOR
+% =============================================================================
+\author{
+\IEEEauthorblockN{[Ikko Eltociear Ashimine]}
+\IEEEauthorblockA{
+Independent Researcher \\
+ORCID: 0000-0002-3576-6677
+}
+}
+
+\maketitle
+
+% =============================================================================
+% ABSTRACT
+% =============================================================================
+\begin{abstract}
+As AI agents become increasingly capable of autonomous code generation, review, and deployment, ensuring that critical software lifecycle actions receive genuine human approval becomes essential for accountability and security. Current systems lack mechanisms to cryptographically verify that a human—rather than an automated process—authorized specific actions such as merging pull requests or deploying to production. We present \textbf{Proof of Human Intent (PoHI)}, a protocol that combines zero-knowledge proofs of personhood (World ID), decentralized identifiers (DIDs), verifiable credentials (VCs), and transparency logs (SCITT) to create tamper-evident, machine-verifiable records of human approval in software development workflows. Our architecture addresses three fundamental questions: (1) \textit{who} approved an action (unique human verification), (2) \textit{what} was approved (cryptographic binding to specific commits), and (3) \textit{when} it was approved (immutable timestamping). We implement a proof-of-concept integration with GitHub Actions and evaluate its security properties against various attack vectors including Sybil attacks, replay attacks, and attestation tampering. The reference implementation is available at \url{https://github.com/pohi-protocol/pohi}.
+\end{abstract}
+
+% =============================================================================
+% KEYWORDS
+% =============================================================================
+\begin{IEEEkeywords}
+AI agents, human-in-the-loop, proof of personhood, software supply chain security, zero-knowledge proofs, decentralized identity, verifiable credentials, transparency logs
+\end{IEEEkeywords}
+
+% =============================================================================
+% 1. INTRODUCTION
+% =============================================================================
+\section{Introduction}
+
+The rapid advancement of AI-powered code generation tools has fundamentally transformed software development workflows. Tools such as GitHub Copilot, Claude Code, and autonomous coding agents can now generate, review, and even propose merging code changes with minimal human intervention. While this automation dramatically increases developer productivity, it raises critical questions about accountability: \textit{Who approved this code? Was it a human or an AI? Can we prove it?}
+
+% TODO: Expand introduction with:
+% - Specific examples of AI agent capabilities
+% - The accountability gap
+% - Regulatory and compliance requirements
+% - Research contributions
+
+\subsection{Contributions}
+
+Our contributions are as follows:
+\begin{itemize}
+    \item We identify the ``human approval verification gap'' in AI-driven software development and formalize the threat model.
+    \item We propose the PoHI architecture that integrates proof-of-personhood, decentralized identity, and transparency logging.
+    \item We implement a proof-of-concept GitHub Action that enforces human approval verification.
+    \item We analyze the security properties of PoHI against relevant attack vectors.
+\end{itemize}
+
+% =============================================================================
+% 2. BACKGROUND AND RELATED WORK
+% =============================================================================
+\section{Background and Related Work}
+
+\subsection{AI Agents in Software Development}
+
+% TODO: Discuss the rise of AI coding assistants
+
+\subsection{Proof of Personhood}
+
+% TODO: Discuss World ID, Humanity Protocol, BrightID
+
+\subsection{Software Supply Chain Security}
+
+% TODO: Discuss SCITT, Sigstore, SLSA
+
+\subsection{Decentralized Identity}
+
+% TODO: Discuss W3C DID/VC
+
+\subsection{AI Agent Authorization}
+
+% TODO: Discuss MIT "Authenticated Delegation" paper
+
+% =============================================================================
+% 3. THREAT MODEL
+% =============================================================================
+\section{Threat Model}
+
+\subsection{System Model}
+
+We consider a software development environment with the following components:
+\begin{itemize}
+    \item \textbf{Developers}: Human actors who write and review code.
+    \item \textbf{AI Agents}: Automated systems capable of generating code and creating pull requests.
+    \item \textbf{Repository}: A Git-based version control system.
+    \item \textbf{CI/CD Pipeline}: Automated build and deployment infrastructure.
+\end{itemize}
+
+\subsection{Adversary Capabilities}
+
+We assume an adversary who can:
+\begin{itemize}
+    \item Control AI agents with repository access.
+    \item Create commits and pull requests programmatically.
+    \item Attempt to forge or replay approval attestations.
+    \item Create multiple fake identities (Sybil attack).
+\end{itemize}
+
+\subsection{Security Goals}
+
+PoHI aims to ensure:
+\begin{enumerate}
+    \item \textbf{Human Verification}: Actions are verifiably approved by unique humans.
+    \item \textbf{Binding}: Approval is bound to specific code states.
+    \item \textbf{Non-repudiation}: Approvers cannot deny approvals.
+    \item \textbf{Tamper Evidence}: Modifications to records are detectable.
+\end{enumerate}
+
+% =============================================================================
+% 4. PROPOSED ARCHITECTURE
+% =============================================================================
+\section{Proposed Architecture}
+
+\subsection{Overview}
+
+PoHI consists of four layers:
+
+\begin{enumerate}
+    \item \textbf{Identity Layer}: Verifies the approver is a unique human using World ID.
+    \item \textbf{Authority Layer}: Manages permissions using DIDs and VCs.
+    \item \textbf{Attestation Layer}: Records events in a SCITT-compatible log.
+    \item \textbf{Integration Layer}: Connects with Git workflows.
+\end{enumerate}
+
+% TODO: Add architecture diagram and detailed descriptions
+
+\subsection{Identity Layer}
+
+% TODO: World ID integration details
+
+\subsection{Authority Layer}
+
+% TODO: DID/VC structure
+
+\subsection{Attestation Layer}
+
+% TODO: SCITT-compatible logging
+
+\subsection{Integration Layer}
+
+% TODO: GitHub integration
+
+% =============================================================================
+% 5. IMPLEMENTATION
+% =============================================================================
+\section{Implementation}
+
+% TODO: Describe proof-of-concept implementation
+
+\subsection{Attestation Data Model}
+
+\begin{lstlisting}[language=Python,caption={Attestation JSON structure}]
+{
+  "version": "1.0",
+  "type": "HumanApprovalAttestation",
+  "subject": {
+    "repository": "org/repo",
+    "commit_sha": "abc123...",
+    "action": "PR_MERGE"
+  },
+  "human_proof": {
+    "method": "world_id",
+    "verification_level": "orb",
+    "nullifier_hash": "0x..."
+  },
+  "timestamp": "2025-12-15T10:30:00Z",
+  "proof": { "type": "Ed25519", "jws": "..." }
+}
+\end{lstlisting}
+
+% =============================================================================
+% 6. EVALUATION
+% =============================================================================
+\section{Evaluation}
+
+\subsection{Security Analysis}
+
+% TODO: Analyze against threat model
+
+\subsection{Performance}
+
+% TODO: Latency and overhead measurements
+
+% =============================================================================
+% 7. DISCUSSION
+% =============================================================================
+\section{Discussion}
+
+\subsection{Limitations}
+
+\begin{itemize}
+    \item World ID Orb availability constraints.
+    \item Privacy considerations in transparency logs.
+    \item Adoption barriers in existing workflows.
+\end{itemize}
+
+\subsection{Future Work}
+
+\begin{itemize}
+    \item Policy-as-code integration.
+    \item Cross-organization trust federation.
+    \item Privacy-preserving audit mechanisms.
+\end{itemize}
+
+% =============================================================================
+% 8. CONCLUSION
+% =============================================================================
+\section{Conclusion}
+
+As AI agents become increasingly capable of autonomous software development, the ability to verify human approval becomes critical for accountability and security. We presented Proof of Human Intent (PoHI), a protocol combining zero-knowledge proofs, decentralized identity, and transparency logs to create verifiable records of human approval.
+
+% =============================================================================
+% REFERENCES
+% =============================================================================
+\bibliographystyle{IEEEtran}
+
+\begin{thebibliography}{99}
+
+\bibitem{worldid}
+World Foundation, ``World ID Documentation,'' 2025. [Online]. Available: https://docs.world.org/world-id
+
+\bibitem{did}
+W3C, ``Decentralized Identifiers (DIDs) v1.0,'' W3C Recommendation, 2022.
+
+\bibitem{vc}
+W3C, ``Verifiable Credentials Data Model v1.1,'' W3C Recommendation, 2022.
+
+\bibitem{scitt}
+IETF, ``An Architecture for Trustworthy and Transparent Digital Supply Chains,'' Internet-Draft, 2024.
+
+\bibitem{sigstore}
+Sigstore Project, ``Sigstore: Software Signing for Everyone,'' 2023.
+
+\bibitem{mitdelegation}
+R. Mahari et al., ``Authenticated Delegation and Authorized AI Agents,'' MIT Media Lab, 2024.
+
+\bibitem{mssigning}
+Microsoft, ``Enhancing Software Supply Chain Security with Microsoft's Signing Transparency,'' Azure Blog, November 2025.
+
+\end{thebibliography}
+
+\end{document}
