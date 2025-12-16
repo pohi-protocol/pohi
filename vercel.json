@@ -1,7 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "npm run build -w @pohi-protocol/core && npm run build -w @pohi-protocol/demo",
+  "buildCommand": "cd packages/core && npm run build && cd ../demo && npm run build",
   "outputDirectory": "packages/demo/.next",
-  "installCommand": "npm install",
-  "framework": "nextjs"
+  "installCommand": "npm install"
 }
