@@ -1,0 +1,18 @@
+{
+  "name": "@pohi-protocol/contracts",
+  "version": "0.1.0",
+  "description": "Smart contracts for Proof of Human Intent on World Chain",
+  "scripts": {
+    "build": "forge build",
+    "test": "forge test",
+    "fmt": "forge fmt",
+    "deploy:sepolia": "forge script script/Deploy.s.sol --rpc-url world_chain_sepolia --broadcast --verify",
+    "deploy:mainnet": "forge script script/Deploy.s.sol --rpc-url world_chain_mainnet --broadcast --verify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pohi-protocol/pohi.git",
+    "directory": "packages/contracts"
+  },
+  "license": "Apache-2.0"
+}

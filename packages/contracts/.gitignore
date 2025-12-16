@@ -1,0 +1,15 @@
+# Compiler output
+out/
+cache/
+
+# Dependencies
+lib/
+
+# Environment
+.env
+
+# Broadcast files
+broadcast/
+
+# Node
+node_modules/

@@ -1,0 +1,97 @@
+# Example: Deployment with Human Approval
+# This workflow demonstrates how to use PoHI for deployment gates
+#
+# Flow:
+# 1. Build and test the application
+# 2. Request human approval via World ID
+# 3. Deploy only after verified human approval
+
+name: Deploy with Human Approval
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  POHI_APPROVAL_URL: ${{ vars.POHI_APPROVAL_URL }}
+  WORLD_ID_APP_ID: ${{ vars.WORLD_ID_APP_ID }}
+  WORLD_ID_ACTION: approve_deployment
+
+jobs:
+  build:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+  approval:
+    name: Human Approval
+    needs: build
+    runs-on: ubuntu-latest
+    outputs:
+      attestation-hash: ${{ steps.pohi.outputs.attestation-hash }}
+
+    steps:
+      - name: Request Human Approval
+        id: pohi
+        uses: pohi-protocol/pohi/packages/action@main
+        with:
+          approval-url: ${{ env.POHI_APPROVAL_URL }}
+          world-id-app-id: ${{ env.WORLD_ID_APP_ID }}
+          world-id-action: ${{ env.WORLD_ID_ACTION }}
+          verification-level: orb
+          timeout-minutes: 30
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Save Attestation
+        run: |
+          echo '${{ steps.pohi.outputs.attestation }}' > attestation.json
+          echo "Attestation saved for audit trail"
+
+      - name: Upload Attestation Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pohi-attestation
+          path: attestation.json
+          retention-days: 90
+
+  deploy:
+    name: Deploy to Production
+    needs: approval
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify Attestation Hash
+        run: |
+          echo "Deploying with attestation: ${{ needs.approval.outputs.attestation-hash }}"
+          # Add additional verification logic here if needed
+
+      - name: Deploy Application
+        run: |
+          echo "Deploying to production..."
+          # Your deployment commands here
+          # e.g., kubectl apply, terraform apply, etc.
+
+      - name: Notify Success
+        run: |
+          echo "✅ Deployment complete with human approval"
+          echo "Attestation: ${{ needs.approval.outputs.attestation-hash }}"

@@ -1,0 +1,25 @@
+node_modules
+dist/
+
+# Only root package-lock.json should be committed (npm workspaces)
+packages/**/package-lock.json
+
+# Environment
+.env
+.env.local
+.env*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build outputs
+packages/contracts/out/
+packages/contracts/cache/
+packages/contracts/broadcast/

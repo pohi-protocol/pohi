@@ -1,0 +1,95 @@
+# PoHI Human Approval Workflow
+# Reusable workflow for requesting human approval via World ID
+#
+# Usage in your repository:
+#
+# jobs:
+#   approval:
+#     uses: pohi-protocol/pohi/.github/workflows/pohi-approval.yml@main
+#     with:
+#       approval-url: https://your-pohi-server.com
+#       world-id-app-id: app_xxxxx
+#       world-id-action: approve_deployment
+#     secrets:
+#       github-token: ${{ secrets.GITHUB_TOKEN }}
+
+name: PoHI Human Approval
+
+on:
+  workflow_call:
+    inputs:
+      approval-url:
+        description: 'Base URL of the PoHI approval server'
+        required: true
+        type: string
+      world-id-app-id:
+        description: 'World ID App ID'
+        required: true
+        type: string
+      world-id-action:
+        description: 'World ID Action name'
+        required: true
+        type: string
+      verification-level:
+        description: 'Required verification level (orb or device)'
+        required: false
+        type: string
+        default: 'orb'
+      timeout-minutes:
+        description: 'Maximum wait time in minutes'
+        required: false
+        type: number
+        default: 30
+      poll-interval-seconds:
+        description: 'Polling interval in seconds'
+        required: false
+        type: number
+        default: 10
+    secrets:
+      github-token:
+        description: 'GitHub token for status updates'
+        required: false
+    outputs:
+      attestation:
+        description: 'Full attestation JSON'
+        value: ${{ jobs.approve.outputs.attestation }}
+      attestation-hash:
+        description: 'Attestation hash for on-chain verification'
+        value: ${{ jobs.approve.outputs.attestation-hash }}
+      nullifier-hash:
+        description: 'Nullifier hash (unique per human)'
+        value: ${{ jobs.approve.outputs.nullifier-hash }}
+      approved-at:
+        description: 'Approval timestamp'
+        value: ${{ jobs.approve.outputs.approved-at }}
+
+jobs:
+  approve:
+    name: Request Human Approval
+    runs-on: ubuntu-latest
+    outputs:
+      attestation: ${{ steps.pohi.outputs.attestation }}
+      attestation-hash: ${{ steps.pohi.outputs.attestation-hash }}
+      nullifier-hash: ${{ steps.pohi.outputs.nullifier-hash }}
+      approved-at: ${{ steps.pohi.outputs.approved-at }}
+
+    steps:
+      - name: Request Human Approval via World ID
+        id: pohi
+        uses: pohi-protocol/pohi/packages/action@main
+        with:
+          approval-url: ${{ inputs.approval-url }}
+          world-id-app-id: ${{ inputs.world-id-app-id }}
+          world-id-action: ${{ inputs.world-id-action }}
+          verification-level: ${{ inputs.verification-level }}
+          timeout-minutes: ${{ inputs.timeout-minutes }}
+          poll-interval-seconds: ${{ inputs.poll-interval-seconds }}
+          github-token: ${{ secrets.github-token || github.token }}
+
+      - name: Display Approval Result
+        run: |
+          echo "✅ Human approval verified!"
+          echo ""
+          echo "Attestation Hash: ${{ steps.pohi.outputs.attestation-hash }}"
+          echo "Nullifier Hash: ${{ steps.pohi.outputs.nullifier-hash }}"
+          echo "Approved At: ${{ steps.pohi.outputs.approved-at }}"
