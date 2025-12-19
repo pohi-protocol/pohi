@@ -37,6 +37,40 @@ export {
   APPROVAL_ACTIONS,
 } from './types'
 
+// ============ Provider Types ============
+
+export type {
+  // World ID
+  WorldIDProofData,
+  WorldIDConfig,
+  // Gitcoin Passport
+  GitcoinPassportProofData,
+  GitcoinPassportStamp,
+  GitcoinPassportConfig,
+  // BrightID
+  BrightIDVerificationLevel,
+  BrightIDProofData,
+  BrightIDConfig,
+  // Civic
+  CivicVerificationType,
+  CivicProofData,
+  CivicConfig,
+  // Proof of Humanity
+  PoHStatus,
+  ProofOfHumanityProofData,
+  ProofOfHumanityConfig,
+  // Provider utilities
+  ProviderFeatures,
+} from './providers'
+
+export {
+  GITCOIN_PASSPORT_THRESHOLDS,
+  getProviderName,
+  getProviderDocsUrl,
+  isKnownProvider,
+  getProviderFeatures,
+} from './providers'
+
 // ============ Core Functions ============
 
 export {
