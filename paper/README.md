@@ -2,7 +2,7 @@
 
 ## Status
 
-🚧 **Work in Progress** - Target submission: February 2025
+🚧 **Draft Complete** - Target submission: Q1 2025
 
 ## Title
 
@@ -11,13 +11,11 @@
 ## Target
 
 - **Primary**: arXiv (cs.CR - Cryptography and Security)
-- **Secondary**: Academic conferences (CSS, SCIS)
+- **Secondary**: Academic conferences (IEEE S&P, USENIX Security)
 
 ## Files
 
-- `main.tex` - Main LaTeX source
-- `references.bib` - Bibliography (to be created)
-- `figures/` - Diagrams and charts (to be created)
+- `main.tex` - Main LaTeX source (IEEE conference format)
 
 ## Building
 
@@ -39,14 +37,21 @@ pdflatex main.tex
 ## Structure
 
 1. Abstract ✅
-2. Introduction 🚧
-3. Background & Related Work 🚧
-4. Threat Model 🚧
-5. Proposed Architecture 🚧
-6. Implementation 🚧
-7. Evaluation 🚧
-8. Discussion 🚧
-9. Conclusion 🚧
+2. Introduction ✅
+3. Background & Related Work ✅
+4. Threat Model ✅
+5. Proposed Architecture ✅
+6. Implementation ✅
+7. Evaluation ✅
+8. Discussion ✅
+9. Conclusion ✅
+
+## TODO Before Submission
+
+- [ ] Add architecture diagram (TikZ or figure)
+- [ ] Expand references with proper bibtex
+- [ ] Proofread and polish language
+- [ ] Add acknowledgments section
 
 ## Author
 

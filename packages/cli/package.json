@@ -2,6 +2,17 @@
   "name": "@pohi-protocol/cli",
   "version": "0.1.0",
   "description": "CLI for Proof of Human Intent - Request and verify human approvals",
+  "author": "Ikko Eltociear Ashimine",
+  "keywords": [
+    "pohi",
+    "cli",
+    "world-id",
+    "human-verification",
+    "attestation"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "bin": {
     "pohi": "./dist/index.js"

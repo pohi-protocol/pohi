@@ -1,7 +1,18 @@
 {
   "name": "@pohi-protocol/evm",
   "version": "0.1.0",
-  "description": "EVM/blockchain utilities for PoHI attestations",
+  "description": "EVM/blockchain utilities for PoHI attestations - Keccak-256 hashing and conversion",
+  "author": "Ikko Eltociear Ashimine",
+  "keywords": [
+    "pohi",
+    "evm",
+    "ethereum",
+    "world-chain",
+    "keccak256"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",

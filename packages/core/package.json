@@ -1,7 +1,18 @@
 {
   "name": "@pohi-protocol/core",
   "version": "0.1.0",
-  "description": "Core library for Proof of Human Intent",
+  "description": "Core library for Proof of Human Intent - Chain-neutral types and validation",
+  "author": "Ikko Eltociear Ashimine",
+  "keywords": [
+    "pohi",
+    "proof-of-human",
+    "world-id",
+    "attestation",
+    "human-verification"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",

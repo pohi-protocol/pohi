@@ -102,21 +102,67 @@ sequenceDiagram
 
 ## 🚀 Quick Start
 
-> ⚠️ **Work in Progress** - Implementation coming soon
-
 ### Prerequisites
 
 - Node.js 18+
 - World ID App ([Download](https://world.org/world-app))
 - GitHub repository
 
-### Installation (Coming Soon)
+### Installation
 
 ```bash
+# Core library (chain-neutral, zero dependencies)
 npm install @pohi-protocol/core
+
+# EVM utilities (for on-chain recording)
+npm install @pohi-protocol/evm
+
+# SDK (full client for World Chain)
+npm install @pohi-protocol/sdk
+
+# CLI tool
+npm install -g @pohi-protocol/cli
 ```
 
-### GitHub Action (Coming Soon)
+### Basic Usage
+
+```typescript
+import { createAttestation, computeSignal, validateAttestation } from '@pohi-protocol/core';
+
+// Create an attestation
+const attestation = createAttestation(
+  // Subject: what is being approved
+  {
+    repository: 'owner/repo',
+    commit_sha: 'abc123...',
+    action: 'DEPLOY',
+    description: 'Production deployment v2.0'
+  },
+  // Proof: evidence of human verification
+  {
+    method: 'world_id',
+    verification_level: 'orb',
+    nullifier_hash: '0x...',
+    signal: computeSignal('owner/repo', 'abc123...')
+  }
+);
+
+// Validate structure and hash integrity
+const result = validateAttestation(attestation);
+console.log(result.valid); // true
+```
+
+### CLI Usage
+
+```bash
+# Request human approval for a commit
+pohi request --repo owner/repo --commit abc123
+
+# Verify an existing attestation
+pohi verify --repo owner/repo --commit abc123
+```
+
+### GitHub Action
 
 ```yaml
 # .github/workflows/human-approval.yml
@@ -143,8 +189,13 @@ jobs:
 
 | Package | Description | Status |
 |---------|-------------|--------|
-| `@pohi-protocol/core` | Core verification logic | 🚧 Planning |
-| `@pohi-protocol/action` | GitHub Action | 🚧 Planning |
+| `@pohi-protocol/core` | Core types & validation (zero deps) | ✅ v0.1.0 |
+| `@pohi-protocol/evm` | EVM utilities (keccak256, encodePacked) | ✅ v0.1.0 |
+| `@pohi-protocol/sdk` | World Chain client | ✅ v0.1.0 |
+| `@pohi-protocol/cli` | Command-line tool | ✅ v0.1.0 |
+| `@pohi-protocol/action` | GitHub Action | ✅ v0.1.0 |
+| `@pohi-protocol/contracts` | Solidity contracts (Foundry) | ✅ v0.1.0 |
+| `@pohi-protocol/demo` | Next.js + World ID demo | ✅ v0.1.0 |
 
 ---
 
@@ -191,9 +242,14 @@ jobs:
 
 - [x] Architecture design
 - [x] Paper draft (Abstract)
-- [ ] Core library implementation
-- [ ] GitHub Action
-- [ ] Demo application
+- [x] Core library implementation
+- [x] EVM utilities package
+- [x] SDK for World Chain
+- [x] CLI tool
+- [x] GitHub Action
+- [x] Smart contracts (Foundry)
+- [x] Demo application (Next.js + World ID)
+- [ ] npm publish (`@pohi-protocol/*`)
 - [ ] arXiv submission
 - [ ] Security review
 - [ ] v1.0 release
