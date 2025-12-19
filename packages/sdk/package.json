@@ -2,6 +2,17 @@
   "name": "@pohi-protocol/sdk",
   "version": "0.1.0",
   "description": "SDK for interacting with PoHI Registry on World Chain",
+  "author": "Ikko Eltociear Ashimine",
+  "keywords": [
+    "pohi",
+    "sdk",
+    "world-chain",
+    "attestation",
+    "blockchain"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
