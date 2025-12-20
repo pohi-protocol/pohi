@@ -21,7 +21,7 @@ jobs:
     steps:
       - name: Request Human Approval
         id: pohi
-        uses: pohi-protocol/pohi/packages/action@main
+        uses: pohi-protocol/pohi/packages/action@dev
         with:
           approval-url: https://pohi-demo.vercel.app
           world-id-app-id: app_2b23fb720281a62219cdb0c2b115a107
