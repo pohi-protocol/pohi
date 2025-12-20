@@ -228,12 +228,16 @@ For World ID, pass this as the `signal` parameter to IDKit.
 | Provider | Status | Verification Levels | Sybil Resistance |
 |----------|--------|---------------------|------------------|
 | World ID | Supported | `device`, `orb`, `secure_document` | High (Orb) |
-| Gitcoin Passport | Types Ready | Score-based (15/25/35+) | Medium |
-| Proof of Humanity | Types Ready | Binary (registered/not) | High |
-| Civic | Types Ready | `uniqueness`, `liveness`, `id_verification` | Medium |
-| BrightID | Types Ready | `meets`, `bitu` | Medium |
+| Gitcoin Passport | Supported | Score-based (15/25/35+) | Medium |
+| Proof of Humanity | Supported | Binary (registered/not) | High |
+| Civic | Supported | `uniqueness`, `liveness`, `id_verification` | Medium |
+| BrightID | Supported | `meets`, `bitu` | Medium |
 
-**Note**: "Types Ready" means the type definitions and utilities are available in `@pohi-protocol/core`. Full integration with provider APIs requires additional implementation.
+All providers include:
+- Type definitions and validation in `@pohi-protocol/core`
+- Verification API integration
+- Frontend UI components in the demo app
+- CLI support via `--provider` flag
 
 ### Supported Chains
 
