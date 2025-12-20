@@ -29,30 +29,35 @@ function HomeContent() {
   const [attestation, setAttestation] =
     useState<HumanApprovalAttestation | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [initialized, setInitialized] = useState(false)
 
-  // Demo: subject to approve (initialized from URL params if present)
-  const [subject, setSubject] = useState<ApprovalSubject>(() => ({
+  // Demo: subject to approve
+  const [subject, setSubject] = useState<ApprovalSubject>({
     action: 'GENERIC',
-    description: repoParam && commitParam
-      ? `Approve commit ${commitParam.slice(0, 7)} in ${repoParam}`
-      : 'Demo approval request',
-    repository: repoParam || 'pohi-protocol/pohi',
-    commit_sha: commitParam || 'abc123def456',
-  }))
+    description: 'Demo approval request',
+    repository: 'pohi-protocol/pohi',
+    commit_sha: 'abc123def456',
+  })
 
-  // Update subject when URL params change
+  // Update subject when URL params are available (runs on client)
   useEffect(() => {
-    if (repoParam || commitParam) {
-      setSubject(prev => ({
-        ...prev,
-        repository: repoParam || prev.repository,
-        commit_sha: commitParam || prev.commit_sha,
-        description: repoParam && commitParam
-          ? `Approve commit ${commitParam.slice(0, 7)} in ${repoParam}`
-          : prev.description,
-      }))
+    if (!initialized) {
+      const repo = searchParams.get('repo')
+      const commit = searchParams.get('commit')
+
+      if (repo || commit) {
+        setSubject({
+          action: 'GENERIC',
+          description: repo && commit
+            ? `Approve commit ${commit.slice(0, 7)} in ${repo}`
+            : 'Demo approval request',
+          repository: repo || 'pohi-protocol/pohi',
+          commit_sha: commit || 'abc123def456',
+        })
+      }
+      setInitialized(true)
     }
-  }, [repoParam, commitParam])
+  }, [searchParams, initialized])
 
   // Signal for verification - binds the proof to the commit SHA
   const signal = subject.commit_sha || ''
