@@ -15,7 +15,7 @@ import {
 function HomeContent() {
   const searchParams = useSearchParams()
 
-  // Get URL params
+  // Get URL params - these will update when searchParams changes
   const repoParam = searchParams.get('repo')
   const commitParam = searchParams.get('commit')
 
@@ -29,9 +29,8 @@ function HomeContent() {
   const [attestation, setAttestation] =
     useState<HumanApprovalAttestation | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [initialized, setInitialized] = useState(false)
 
-  // Demo: subject to approve
+  // Demo: subject to approve - initialize with URL params or defaults
   const [subject, setSubject] = useState<ApprovalSubject>({
     action: 'GENERIC',
     description: 'Demo approval request',
@@ -39,25 +38,25 @@ function HomeContent() {
     commit_sha: 'abc123def456',
   })
 
-  // Update subject when URL params are available (runs on client)
-  useEffect(() => {
-    if (!initialized) {
-      const repo = searchParams.get('repo')
-      const commit = searchParams.get('commit')
+  // Track if we've synced with URL params
+  const [syncedWithUrl, setSyncedWithUrl] = useState(false)
 
-      if (repo || commit) {
-        setSubject({
-          action: 'GENERIC',
-          description: repo && commit
-            ? `Approve commit ${commit.slice(0, 7)} in ${repo}`
-            : 'Demo approval request',
-          repository: repo || 'pohi-protocol/pohi',
-          commit_sha: commit || 'abc123def456',
-        })
+  // Sync subject with URL params when they become available
+  useEffect(() => {
+    // Only sync once, and only if we have URL params
+    if (!syncedWithUrl && (repoParam || commitParam)) {
+      const newSubject: ApprovalSubject = {
+        action: 'GENERIC',
+        description: repoParam && commitParam
+          ? `Approve commit ${commitParam.slice(0, 7)} in ${repoParam}`
+          : 'Demo approval request',
+        repository: repoParam || 'pohi-protocol/pohi',
+        commit_sha: commitParam || 'abc123def456',
       }
-      setInitialized(true)
+      setSubject(newSubject)
+      setSyncedWithUrl(true)
     }
-  }, [searchParams, initialized])
+  }, [repoParam, commitParam, syncedWithUrl])
 
   // Signal for verification - binds the proof to the commit SHA
   const signal = subject.commit_sha || ''
