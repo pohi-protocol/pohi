@@ -1,7 +1,6 @@
 'use client'
 
-import { useState, useEffect, Suspense } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useState, useEffect } from 'react'
 import type { HumanApprovalAttestation, ApprovalSubject } from '@/types'
 import { ProviderSelector } from '@/components/ProviderSelector'
 import {
@@ -13,15 +12,6 @@ import {
 } from '@/components/verification'
 
 function HomeContent() {
-  const searchParams = useSearchParams()
-
-  // Get URL params - these will update when searchParams changes
-  const repoParam = searchParams.get('repo')
-  const commitParam = searchParams.get('commit')
-
-  // Check if this is a GitHub Action request (has repo and commit params)
-  const isGitHubActionRequest = !!(repoParam && commitParam)
-
   const [selectedProvider, setSelectedProvider] = useState<string | null>(null)
   const [verificationStatus, setVerificationStatus] = useState<
     'idle' | 'verifying' | 'success' | 'error'
@@ -30,7 +20,11 @@ function HomeContent() {
     useState<HumanApprovalAttestation | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-  // Demo: subject to approve - initialize with URL params or defaults
+  // URL params state
+  const [repoParam, setRepoParam] = useState<string | null>(null)
+  const [commitParam, setCommitParam] = useState<string | null>(null)
+
+  // Demo: subject to approve
   const [subject, setSubject] = useState<ApprovalSubject>({
     action: 'GENERIC',
     description: 'Demo approval request',
@@ -38,25 +32,31 @@ function HomeContent() {
     commit_sha: 'abc123def456',
   })
 
-  // Track if we've synced with URL params
-  const [syncedWithUrl, setSyncedWithUrl] = useState(false)
-
-  // Sync subject with URL params when they become available
+  // Read URL params directly from window.location on mount
   useEffect(() => {
-    // Only sync once, and only if we have URL params
-    if (!syncedWithUrl && (repoParam || commitParam)) {
-      const newSubject: ApprovalSubject = {
-        action: 'GENERIC',
-        description: repoParam && commitParam
-          ? `Approve commit ${commitParam.slice(0, 7)} in ${repoParam}`
-          : 'Demo approval request',
-        repository: repoParam || 'pohi-protocol/pohi',
-        commit_sha: commitParam || 'abc123def456',
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      const repo = params.get('repo')
+      const commit = params.get('commit')
+
+      setRepoParam(repo)
+      setCommitParam(commit)
+
+      if (repo || commit) {
+        setSubject({
+          action: 'GENERIC',
+          description: repo && commit
+            ? `Approve commit ${commit.slice(0, 7)} in ${repo}`
+            : 'Demo approval request',
+          repository: repo || 'pohi-protocol/pohi',
+          commit_sha: commit || 'abc123def456',
+        })
       }
-      setSubject(newSubject)
-      setSyncedWithUrl(true)
     }
-  }, [repoParam, commitParam, syncedWithUrl])
+  }, [])
+
+  // Check if this is a GitHub Action request (has repo and commit params)
+  const isGitHubActionRequest = !!(repoParam && commitParam)
 
   // Signal for verification - binds the proof to the commit SHA
   const signal = subject.commit_sha || ''
@@ -355,16 +355,5 @@ function HomeContent() {
 }
 
 export default function Home() {
-  return (
-    <Suspense fallback={
-      <main className="min-h-screen p-8 max-w-4xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4">Proof of Human Intent</h1>
-          <p className="text-xl text-gray-600 dark:text-gray-400">Loading...</p>
-        </div>
-      </main>
-    }>
-      <HomeContent />
-    </Suspense>
-  )
+  return <HomeContent />
 }
