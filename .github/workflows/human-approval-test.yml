@@ -1,0 +1,40 @@
+# Human Approval Gate - Integration Test
+# This workflow demonstrates PoHI human approval for PRs
+#
+# When a PR is labeled with "needs-human-approval":
+# 1. A pending status is created
+# 2. A comment with approval URL is posted
+# 3. The workflow waits for human approval via World ID
+# 4. Once approved, the status becomes success
+
+name: Human Approval Gate
+
+on:
+  pull_request:
+    types: [labeled]
+
+jobs:
+  human-approval:
+    if: github.event.label.name == 'needs-human-approval'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Request Human Approval
+        id: pohi
+        uses: pohi-protocol/pohi/packages/action@main
+        with:
+          approval-url: https://pohi-demo.vercel.app
+          world-id-app-id: app_2b23fb720281a62219cdb0c2b115a107
+          world-id-action: approve_software_change
+          verification-level: orb
+          timeout-minutes: 30
+          poll-interval-seconds: 10
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Approval Received
+        run: |
+          echo "✅ Human approval verified!"
+          echo ""
+          echo "Attestation Hash: ${{ steps.pohi.outputs.attestation-hash }}"
+          echo "Nullifier Hash: ${{ steps.pohi.outputs.nullifier-hash }}"
+          echo "Approved At: ${{ steps.pohi.outputs.approved-at }}"
