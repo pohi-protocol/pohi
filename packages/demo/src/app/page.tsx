@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import type { HumanApprovalAttestation, ApprovalSubject } from '@/types'
 import { ProviderSelector } from '@/components/ProviderSelector'
 import {
@@ -12,6 +13,7 @@ import {
 } from '@/components/verification'
 
 export default function Home() {
+  const searchParams = useSearchParams()
   const [selectedProvider, setSelectedProvider] = useState<string | null>(null)
   const [verificationStatus, setVerificationStatus] = useState<
     'idle' | 'verifying' | 'success' | 'error'
@@ -20,13 +22,31 @@ export default function Home() {
     useState<HumanApprovalAttestation | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-  // Demo: subject to approve
+  // Demo: subject to approve (initialized from URL params if present)
   const [subject, setSubject] = useState<ApprovalSubject>({
     action: 'GENERIC',
     description: 'Demo approval request',
     repository: 'pohi-protocol/pohi',
     commit_sha: 'abc123def456',
   })
+
+  // Check if this is a GitHub Action request (has repo and commit params)
+  const isGitHubActionRequest = searchParams.get('repo') && searchParams.get('commit')
+
+  // Update subject from URL params on mount
+  useEffect(() => {
+    const repo = searchParams.get('repo')
+    const commit = searchParams.get('commit')
+
+    if (repo || commit) {
+      setSubject(prev => ({
+        ...prev,
+        repository: repo || prev.repository,
+        commit_sha: commit || prev.commit_sha,
+        description: repo && commit ? `Approve commit ${commit.slice(0, 7)} in ${repo}` : prev.description,
+      }))
+    }
+  }, [searchParams])
 
   // Signal for verification - binds the proof to the commit SHA
   const signal = subject.commit_sha || ''
@@ -116,6 +136,11 @@ export default function Home() {
         <p className="text-xl text-gray-600 dark:text-gray-400">
           AI executes. Humans authorize. Machines verify.
         </p>
+        {isGitHubActionRequest && (
+          <div className="mt-4 inline-block bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200 px-4 py-2 rounded-lg">
+            GitHub Action Approval Request
+          </div>
+        )}
       </div>
 
       {/* Approval Subject */}
@@ -131,7 +156,8 @@ export default function Home() {
               onChange={(e) =>
                 setSubject({ ...subject, repository: e.target.value })
               }
-              className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+              readOnly={!!isGitHubActionRequest}
+              className={`w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 ${isGitHubActionRequest ? 'bg-gray-200 dark:bg-gray-600 cursor-not-allowed' : ''}`}
               placeholder="owner/repo"
             />
           </div>
@@ -144,7 +170,8 @@ export default function Home() {
               onChange={(e) =>
                 setSubject({ ...subject, commit_sha: e.target.value })
               }
-              className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
+              readOnly={!!isGitHubActionRequest}
+              className={`w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 ${isGitHubActionRequest ? 'bg-gray-200 dark:bg-gray-600 cursor-not-allowed' : ''}`}
               placeholder="abc123..."
             />
           </div>
