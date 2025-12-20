@@ -1,5 +1,5 @@
 {
-  "name": "@pohi-protocol/demo",
+  "name": "pohi-demo",
   "version": "0.1.0",
   "private": true,
   "description": "Proof of Human Intent - Demo Application",
@@ -10,7 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@pohi-protocol/core": "^0.1.0",
+    "pohi-core": "^0.1.0",
     "@worldcoin/idkit": "^2.4.2",
     "next": "^14.2.0",
     "react": "^18.3.0",

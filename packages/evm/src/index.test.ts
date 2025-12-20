@@ -8,7 +8,7 @@ import {
   isHexString,
   isBytes32,
 } from './index'
-import type { HumanApprovalAttestation, ApprovalSubject, HumanProof } from '@pohi-protocol/core'
+import type { HumanApprovalAttestation, ApprovalSubject, HumanProof } from 'pohi-core'
 
 // ============ Test Fixtures ============
 

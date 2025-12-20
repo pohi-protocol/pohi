@@ -1,5 +1,5 @@
 {
-  "name": "@pohi-protocol/evm",
+  "name": "pohi-evm",
   "version": "0.1.0",
   "description": "EVM/blockchain utilities for PoHI attestations - Keccak-256 hashing and conversion",
   "author": "Ikko Eltociear Ashimine",
@@ -32,7 +32,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@pohi-protocol/core": "^0.1.0",
+    "pohi-core": "^0.1.0",
     "viem": "^2.0.0"
   },
   "devDependencies": {

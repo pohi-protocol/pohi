@@ -1,5 +1,5 @@
 {
-  "name": "@pohi-protocol/action",
+  "name": "pohi-action",
   "version": "0.1.0",
   "description": "GitHub Action for PoHI human approval verification",
   "author": "Ikko Eltociear Ashimine",

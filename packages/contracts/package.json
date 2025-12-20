@@ -1,5 +1,5 @@
 {
-  "name": "@pohi-protocol/contracts",
+  "name": "pohi-contracts",
   "version": "0.1.0",
   "description": "Smart contracts for Proof of Human Intent on World Chain",
   "scripts": {

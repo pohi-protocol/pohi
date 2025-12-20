@@ -1,4 +1,4 @@
-# @pohi-protocol/action
+# pohi-action
 
 GitHub Action for PoHI human approval verification.
 

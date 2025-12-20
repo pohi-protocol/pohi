@@ -64,7 +64,7 @@ jobs:
         run: npm run build
 
       - name: Build demo
-        run: npm run build -w @pohi-protocol/demo
+        run: npm run build -w pohi-demo
         env:
           NEXT_PUBLIC_WORLD_ID_APP_ID: app_staging_test
           NEXT_PUBLIC_WORLD_ID_ACTION: test_action

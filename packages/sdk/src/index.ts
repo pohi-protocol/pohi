@@ -13,7 +13,7 @@ export type {
   ApprovalSubject,
   HumanProof,
   ChainRecord,
-} from '@pohi-protocol/core'
+} from 'pohi-core'
 
 export {
   createAttestation,
@@ -22,7 +22,7 @@ export {
   isValidAttestation,
   verificationLevelToNumber,
   numberToVerificationLevel,
-} from '@pohi-protocol/core'
+} from 'pohi-core'
 
 // Re-export EVM utilities
 export {
@@ -33,4 +33,4 @@ export {
   toEvmAttestation,
   keccak256,
   encodePacked,
-} from '@pohi-protocol/evm'
+} from 'pohi-evm'

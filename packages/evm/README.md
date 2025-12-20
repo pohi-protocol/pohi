@@ -1,11 +1,11 @@
-# @pohi-protocol/evm
+# pohi-evm
 
 EVM/blockchain utilities for Proof of Human Intent (PoHI).
 
 ## Installation
 
 ```bash
-npm install @pohi-protocol/evm
+npm install pohi-evm
 ```
 
 ## Features
@@ -22,7 +22,7 @@ import {
   computeEvmAttestationHash,
   computeEvmSignal,
   toEvmAttestation,
-} from '@pohi-protocol/evm';
+} from 'pohi-evm';
 
 // Compute EVM-compatible hash
 const evmHash = computeEvmAttestationHash(attestation);

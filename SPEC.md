@@ -114,7 +114,7 @@ human_proof: [method, verification_level, nullifier_hash, signal, provider_proof
 
 ### EVM Compatibility (Keccak-256)
 
-For on-chain recording, use `@pohi-protocol/evm`:
+For on-chain recording, use `pohi-evm`:
 
 ```
 evm_hash = keccak256(encodePacked(repository, commit_sha, nullifier_hash, signal, timestamp))
@@ -164,11 +164,11 @@ For World ID, pass this as the `signal` parameter to IDKit.
 ## Package Structure
 
 ```
-@pohi-protocol/core   - Chain-neutral types and validation (no deps)
-@pohi-protocol/evm    - EVM utilities (keccak256, encodePacked)
-@pohi-protocol/sdk    - Chain interaction client
-@pohi-protocol/action - GitHub Action
-@pohi-protocol/cli    - Command-line tool
+pohi-core   - Chain-neutral types and validation (no deps)
+pohi-evm    - EVM utilities (keccak256, encodePacked)
+pohi-sdk    - Chain interaction client
+pohi-action - GitHub Action
+pohi-cli    - Command-line tool
 ```
 
 ## Examples
@@ -234,7 +234,7 @@ For World ID, pass this as the `signal` parameter to IDKit.
 | BrightID | Supported | `meets`, `bitu` | Medium |
 
 All providers include:
-- Type definitions and validation in `@pohi-protocol/core`
+- Type definitions and validation in `pohi-core`
 - Verification API integration
 - Frontend UI components in the demo app
 - CLI support via `--provider` flag

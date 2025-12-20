@@ -1,11 +1,11 @@
-# @pohi-protocol/sdk
+# pohi-sdk
 
 SDK for interacting with the PoHI Registry on World Chain.
 
 ## Installation
 
 ```bash
-npm install @pohi-protocol/sdk
+npm install pohi-sdk
 ```
 
 ## Features
@@ -18,7 +18,7 @@ npm install @pohi-protocol/sdk
 ## Usage
 
 ```typescript
-import { PoHIClient } from '@pohi-protocol/sdk';
+import { PoHIClient } from 'pohi-sdk';
 
 // Create client (read-only)
 const client = new PoHIClient({

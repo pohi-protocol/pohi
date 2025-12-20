@@ -4,13 +4,13 @@
  * Loads provider-specific configuration from environment variables.
  */
 
-import { POP_PROVIDERS } from '@pohi-protocol/core'
+import { POP_PROVIDERS } from 'pohi-core'
 import type {
   GitcoinPassportConfig,
   BrightIDConfig,
   CivicConfig,
   ProofOfHumanityConfig,
-} from '@pohi-protocol/core'
+} from 'pohi-core'
 
 /**
  * Get configuration for Gitcoin Passport

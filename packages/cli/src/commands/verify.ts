@@ -1,6 +1,6 @@
 import { Command } from 'commander'
 import { readFileSync } from 'fs'
-import { validateAttestation, isValidAttestation as checkAttestation, computeAttestationHash } from '@pohi-protocol/core'
+import { validateAttestation, isValidAttestation as checkAttestation, computeAttestationHash } from 'pohi-core'
 import { getConfigWithEnv } from '../utils/config.js'
 import { success, error, info, header, outputAttestation, isJsonOutput, log } from '../utils/output.js'
 
@@ -86,7 +86,7 @@ async function verifyFromFile(filePath: string, onchain?: boolean, network?: str
 
       info(`Checking on-chain status on ${networkToUse}...`)
 
-      const { PoHIClient } = await import('@pohi-protocol/sdk')
+      const { PoHIClient } = await import('pohi-sdk')
       const client = new PoHIClient({ network: networkToUse })
 
       const isValid = await client.isValidAttestation(attestation.attestation_hash)
@@ -123,7 +123,7 @@ async function verifyFromHash(hash: string, network?: string) {
   }
 
   try {
-    const { PoHIClient } = await import('@pohi-protocol/sdk')
+    const { PoHIClient } = await import('pohi-sdk')
     const client = new PoHIClient({ network: networkToUse })
 
     const attestationHash = hash.startsWith('0x') ? hash : `0x${hash}`
@@ -162,7 +162,7 @@ async function verifyFromCommit(repo: string, commit: string, network?: string) 
   }
 
   try {
-    const { PoHIClient } = await import('@pohi-protocol/sdk')
+    const { PoHIClient } = await import('pohi-sdk')
     const client = new PoHIClient({ network: networkToUse })
 
     const hasValid = await client.hasValidAttestation(repo, commit)

@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "build": "npm run build --workspaces --if-present",
-    "dev": "npm run dev -w @pohi-protocol/demo",
+    "dev": "npm run dev -w pohi-demo",
     "test": "npm run test --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present"
   },

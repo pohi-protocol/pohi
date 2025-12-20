@@ -9,7 +9,7 @@ import {
   isMockMode,
   type ApprovalSubject,
   type HumanProof,
-} from '@pohi-protocol/core'
+} from 'pohi-core'
 import { attestationStore } from '@/lib/store'
 import { getProviderConfig, isMockModeEnabled } from '@/lib/provider-config'
 

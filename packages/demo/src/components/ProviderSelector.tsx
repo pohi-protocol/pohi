@@ -1,6 +1,6 @@
 'use client'
 
-import { POP_PROVIDERS } from '@pohi-protocol/core'
+import { POP_PROVIDERS } from 'pohi-core'
 
 interface Provider {
   id: string

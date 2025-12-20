@@ -122,22 +122,22 @@ sequenceDiagram
 
 ```bash
 # Core library (chain-neutral, zero dependencies)
-npm install @pohi-protocol/core
+npm install pohi-core
 
 # EVM utilities (for on-chain recording)
-npm install @pohi-protocol/evm
+npm install pohi-evm
 
 # SDK (full client for World Chain)
-npm install @pohi-protocol/sdk
+npm install pohi-sdk
 
 # CLI tool
-npm install -g @pohi-protocol/cli
+npm install -g pohi-cli
 ```
 
 ### Basic Usage
 
 ```typescript
-import { createAttestation, computeSignal, validateAttestation } from '@pohi-protocol/core';
+import { createAttestation, computeSignal, validateAttestation } from 'pohi-core';
 
 // Create an attestation
 const attestation = createAttestation(
@@ -199,11 +199,11 @@ jobs:
 
 | Package | Description | Status |
 |---------|-------------|--------|
-| `@pohi-protocol/core` | Core types & validation (zero deps) | ✅ v0.1.0 |
-| `@pohi-protocol/evm` | EVM utilities (keccak256, encodePacked) | ✅ v0.1.0 |
-| `@pohi-protocol/sdk` | World Chain client | ✅ v0.1.0 |
-| `@pohi-protocol/cli` | Command-line tool | ✅ v0.1.0 |
-| `@pohi-protocol/action` | GitHub Action | ✅ v0.1.0 |
+| `pohi-core` | Core types & validation (zero deps) | ✅ v0.1.0 |
+| `pohi-evm` | EVM utilities (keccak256, encodePacked) | ✅ v0.1.0 |
+| `pohi-sdk` | World Chain client | ✅ v0.1.0 |
+| `pohi-cli` | Command-line tool | ✅ v0.1.0 |
+| `pohi-action` | GitHub Action | ✅ v0.1.0 |
 | `@pohi-protocol/contracts` | Solidity contracts (Foundry) | ✅ v0.1.0 |
 | `@pohi-protocol/demo` | Next.js + World ID demo | ✅ v0.1.0 |
 

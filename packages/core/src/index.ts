@@ -1,5 +1,5 @@
 /**
- * @pohi-protocol/core
+ * pohi-core
  *
  * Chain-neutral core library for Proof of Human Intent (PoHI)
  * This package provides types, validation, and utilities for PoHI attestations

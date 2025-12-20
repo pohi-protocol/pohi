@@ -11,9 +11,9 @@ import {
   type Address,
 } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
-import type { HumanApprovalAttestation } from '@pohi-protocol/core'
-import { verificationLevelToNumber } from '@pohi-protocol/core'
-import { commitShaToBytes32, computeEvmAttestationHash, nullifierToBytes32 } from '@pohi-protocol/evm'
+import type { HumanApprovalAttestation } from 'pohi-core'
+import { verificationLevelToNumber } from 'pohi-core'
+import { commitShaToBytes32, computeEvmAttestationHash, nullifierToBytes32 } from 'pohi-evm'
 import { pohiRegistryAbi } from './abi'
 import { worldChain, worldChainSepolia } from './chains'
 

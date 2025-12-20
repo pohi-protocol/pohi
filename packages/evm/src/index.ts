@@ -6,8 +6,8 @@
  */
 
 import { keccak256, encodePacked, toHex, toBytes } from 'viem'
-import type { HumanApprovalAttestation } from '@pohi-protocol/core'
-import { verificationLevelToNumber } from '@pohi-protocol/core'
+import type { HumanApprovalAttestation } from 'pohi-core'
+import { verificationLevelToNumber } from 'pohi-core'
 
 // ============ Re-export viem utilities ============
 

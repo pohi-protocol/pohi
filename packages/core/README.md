@@ -1,11 +1,11 @@
-# @pohi-protocol/core
+# pohi-core
 
 Chain-neutral core library for Proof of Human Intent (PoHI).
 
 ## Installation
 
 ```bash
-npm install @pohi-protocol/core
+npm install pohi-core
 ```
 
 ## Features
@@ -22,7 +22,7 @@ import {
   createAttestation,
   computeSignal,
   validateAttestation,
-} from '@pohi-protocol/core';
+} from 'pohi-core';
 
 // Create an attestation
 const attestation = createAttestation(

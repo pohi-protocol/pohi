@@ -1,7 +1,7 @@
 import { Command } from 'commander'
 import ora from 'ora'
 import qrcode from 'qrcode-terminal'
-import { POP_PROVIDERS, isKnownProvider, getProviderName } from '@pohi-protocol/core'
+import { POP_PROVIDERS, isKnownProvider, getProviderName } from 'pohi-core'
 import { getConfigWithEnv } from '../utils/config.js'
 import { success, error, info, log, header, outputAttestation, isJsonOutput } from '../utils/output.js'
 
@@ -159,7 +159,7 @@ export const attestCommand = new Command('attest')
       const recordSpinner = ora('Recording attestation on-chain...').start()
 
       try {
-        const { PoHIClient } = await import('@pohi-protocol/sdk')
+        const { PoHIClient } = await import('pohi-sdk')
 
         const client = new PoHIClient({
           network: network as 'mainnet' | 'sepolia',

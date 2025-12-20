@@ -32,7 +32,7 @@ export const statusCommand = new Command('status')
     }
 
     try {
-      const { PoHIClient } = await import('@pohi-protocol/sdk')
+      const { PoHIClient } = await import('pohi-sdk')
       const client = new PoHIClient({ network })
 
       if (hasHash) {
@@ -46,7 +46,7 @@ export const statusCommand = new Command('status')
     }
   })
 
-async function checkHashStatus(client: InstanceType<typeof import('@pohi-protocol/sdk').PoHIClient>, hash: string) {
+async function checkHashStatus(client: InstanceType<typeof import('pohi-sdk').PoHIClient>, hash: string) {
   const attestationHash = hash.startsWith('0x') ? hash : `0x${hash}`
 
   if (!isJsonOutput()) {
@@ -88,7 +88,7 @@ async function checkHashStatus(client: InstanceType<typeof import('@pohi-protoco
 }
 
 async function checkCommitStatus(
-  client: InstanceType<typeof import('@pohi-protocol/sdk').PoHIClient>,
+  client: InstanceType<typeof import('pohi-sdk').PoHIClient>,
   repo: string,
   commit: string
 ) {

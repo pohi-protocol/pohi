@@ -1,5 +1,5 @@
 {
-  "name": "@pohi-protocol/sdk",
+  "name": "pohi-sdk",
   "version": "0.1.0",
   "description": "SDK for interacting with PoHI Registry on World Chain",
   "author": "Ikko Eltociear Ashimine",
@@ -33,8 +33,8 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@pohi-protocol/core": "^0.1.0",
-    "@pohi-protocol/evm": "^0.1.0",
+    "pohi-core": "^0.1.0",
+    "pohi-evm": "^0.1.0",
     "viem": "^2.0.0"
   },
   "devDependencies": {

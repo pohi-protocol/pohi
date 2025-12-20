@@ -1,11 +1,11 @@
-# @pohi-protocol/cli
+# pohi-cli
 
 Command-line tool for Proof of Human Intent (PoHI).
 
 ## Installation
 
 ```bash
-npm install -g @pohi-protocol/cli
+npm install -g pohi-cli
 ```
 
 ## Usage

@@ -1,5 +1,5 @@
 {
-  "name": "@pohi-protocol/core",
+  "name": "pohi-core",
   "version": "0.1.0",
   "description": "Core library for Proof of Human Intent - Chain-neutral types and validation",
   "author": "Ikko Eltociear Ashimine",
