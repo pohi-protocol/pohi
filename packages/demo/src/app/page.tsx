@@ -14,6 +14,14 @@ import {
 
 function HomeContent() {
   const searchParams = useSearchParams()
+
+  // Get URL params
+  const repoParam = searchParams.get('repo')
+  const commitParam = searchParams.get('commit')
+
+  // Check if this is a GitHub Action request (has repo and commit params)
+  const isGitHubActionRequest = !!(repoParam && commitParam)
+
   const [selectedProvider, setSelectedProvider] = useState<string | null>(null)
   const [verificationStatus, setVerificationStatus] = useState<
     'idle' | 'verifying' | 'success' | 'error'
@@ -23,30 +31,28 @@ function HomeContent() {
   const [error, setError] = useState<string | null>(null)
 
   // Demo: subject to approve (initialized from URL params if present)
-  const [subject, setSubject] = useState<ApprovalSubject>({
+  const [subject, setSubject] = useState<ApprovalSubject>(() => ({
     action: 'GENERIC',
-    description: 'Demo approval request',
-    repository: 'pohi-protocol/pohi',
-    commit_sha: 'abc123def456',
-  })
+    description: repoParam && commitParam
+      ? `Approve commit ${commitParam.slice(0, 7)} in ${repoParam}`
+      : 'Demo approval request',
+    repository: repoParam || 'pohi-protocol/pohi',
+    commit_sha: commitParam || 'abc123def456',
+  }))
 
-  // Check if this is a GitHub Action request (has repo and commit params)
-  const isGitHubActionRequest = searchParams.get('repo') && searchParams.get('commit')
-
-  // Update subject from URL params on mount
+  // Update subject when URL params change
   useEffect(() => {
-    const repo = searchParams.get('repo')
-    const commit = searchParams.get('commit')
-
-    if (repo || commit) {
+    if (repoParam || commitParam) {
       setSubject(prev => ({
         ...prev,
-        repository: repo || prev.repository,
-        commit_sha: commit || prev.commit_sha,
-        description: repo && commit ? `Approve commit ${commit.slice(0, 7)} in ${repo}` : prev.description,
+        repository: repoParam || prev.repository,
+        commit_sha: commitParam || prev.commit_sha,
+        description: repoParam && commitParam
+          ? `Approve commit ${commitParam.slice(0, 7)} in ${repoParam}`
+          : prev.description,
       }))
     }
-  }, [searchParams])
+  }, [repoParam, commitParam])
 
   // Signal for verification - binds the proof to the commit SHA
   const signal = subject.commit_sha || ''
