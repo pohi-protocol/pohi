@@ -2,9 +2,13 @@
 
 **AI executes. Humans authorize. Machines verify.**
 
+[![Demo](https://img.shields.io/badge/Demo-Live-brightgreen)](https://pohi-demo.vercel.app/)
+[![npm](https://img.shields.io/npm/v/pohi-core)](https://www.npmjs.com/package/pohi-core)
 [![arXiv](https://img.shields.io/badge/arXiv-coming_soon-b31b1b.svg)](https://arxiv.org)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![GitHub](https://img.shields.io/github/stars/pohi-protocol/pohi?style=social)](https://github.com/pohi-protocol/pohi)
+
+> **[Try the Live Demo](https://pohi-demo.vercel.app/)** - Verify your humanity with World ID
 
 ---
 
@@ -199,13 +203,13 @@ jobs:
 
 | Package | Description | Status |
 |---------|-------------|--------|
-| `pohi-core` | Core types & validation (zero deps) | ✅ v0.1.0 |
-| `pohi-evm` | EVM utilities (keccak256, encodePacked) | ✅ v0.1.0 |
-| `pohi-sdk` | World Chain client | ✅ v0.1.0 |
-| `pohi-cli` | Command-line tool | ✅ v0.1.0 |
-| `pohi-action` | GitHub Action | ✅ v0.1.0 |
-| `@pohi-protocol/contracts` | Solidity contracts (Foundry) | ✅ v0.1.0 |
-| `@pohi-protocol/demo` | Next.js + World ID demo | ✅ v0.1.0 |
+| [`pohi-core`](https://www.npmjs.com/package/pohi-core) | Core types & validation (zero deps) | ✅ v0.1.0 |
+| [`pohi-evm`](https://www.npmjs.com/package/pohi-evm) | EVM utilities (keccak256, encodePacked) | ✅ v0.1.0 |
+| [`pohi-sdk`](https://www.npmjs.com/package/pohi-sdk) | World Chain client | ✅ v0.1.0 |
+| [`pohi-cli`](https://www.npmjs.com/package/pohi-cli) | Command-line tool | ✅ v0.1.0 |
+| [`pohi-action`](https://www.npmjs.com/package/pohi-action) | GitHub Action | ✅ v0.1.0 |
+| `pohi-contracts` | Solidity contracts (Foundry) | ✅ v0.1.0 |
+| [`pohi-demo`](https://pohi-demo.vercel.app/) | Next.js + World ID demo | ✅ Live |
 
 ---
 
@@ -259,7 +263,8 @@ jobs:
 - [x] GitHub Action
 - [x] Smart contracts (Foundry)
 - [x] Demo application (Next.js + World ID)
-- [ ] npm publish (`@pohi-protocol/*`)
+- [x] npm publish (v0.1.0)
+- [x] Live demo deployment
 - [ ] arXiv submission
 - [ ] Security review
 - [ ] v1.0 release
