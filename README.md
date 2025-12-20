@@ -53,9 +53,19 @@ PoHI answers three questions:
 
 | Question | Technology | Proof |
 |----------|-----------|-------|
-| **Who?** | World ID | Unique human (ZK proof) |
+| **Who?** | PoP Providers | Unique human verification |
 | **What?** | Git + DID | Specific commit approved |
 | **When?** | SCITT Log | Immutable timestamp |
+
+### Supported PoP Providers
+
+| Provider | Verification Type | Sybil Resistance |
+|----------|------------------|------------------|
+| **World ID** | ZK proof (Orb/Device) | High |
+| **Gitcoin Passport** | Web3 identity score | Medium |
+| **BrightID** | Social graph verification | Medium |
+| **Civic** | Gateway Pass | Medium |
+| **Proof of Humanity** | Kleros registry | High |
 
 ### Architecture
 
@@ -71,8 +81,8 @@ PoHI answers three questions:
 │        │               │               │                     │
 │        ▼               ▼               ▼                     │
 │   ┌──────────┐    ┌──────────┐    ┌──────────┐              │
-│   │ World ID │    │ Git+DID  │    │  SCITT   │              │
-│   │ ZK Proof │    │ Signing  │    │   Log    │              │
+│   │   PoP    │    │ Git+DID  │    │  SCITT   │              │
+│   │ Provider │    │ Signing  │    │   Log    │              │
 │   └──────────┘    └──────────┘    └──────────┘              │
 │                                                              │
 └─────────────────────────────────────────────────────────────┘

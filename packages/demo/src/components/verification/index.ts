@@ -1,0 +1,5 @@
+export { WorldIDVerification } from './WorldIDVerification'
+export { GitcoinPassportVerification } from './GitcoinPassportVerification'
+export { BrightIDVerification } from './BrightIDVerification'
+export { CivicVerification } from './CivicVerification'
+export { ProofOfHumanityVerification } from './ProofOfHumanityVerification'

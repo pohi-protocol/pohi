@@ -4,6 +4,7 @@ interface PoHIConfig {
   approvalUrl?: string
   worldIdAppId?: string
   worldIdAction?: string
+  defaultProvider?: string
   network?: 'mainnet' | 'sepolia'
   contractAddress?: string
   privateKey?: string
@@ -19,6 +20,9 @@ const config = new Conf<PoHIConfig>({
       type: 'string',
     },
     worldIdAction: {
+      type: 'string',
+    },
+    defaultProvider: {
       type: 'string',
     },
     network: {

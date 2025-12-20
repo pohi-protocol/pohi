@@ -94,3 +94,29 @@ export {
   serializeAttestationPretty,
   parseAttestation,
 } from './attestation'
+
+// ============ Verification Module ============
+
+export type {
+  VerificationResult,
+  VerifierConfig,
+  ProviderVerifier,
+  VerificationRequest,
+  VerificationResponse,
+} from './verification'
+
+export {
+  // Mock utilities
+  isMockMode,
+  MockVerifier,
+  getVerifier,
+  hasVerifier,
+  registerVerifier,
+  getRegisteredProviders,
+  getAvailableProviders,
+  // Provider verifiers
+  GitcoinPassportVerifier,
+  BrightIDVerifier,
+  CivicVerifier,
+  ProofOfHumanityVerifier,
+} from './verification'
