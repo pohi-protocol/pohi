@@ -351,7 +351,7 @@ Coercion & Out of scope & N/A \\
 \end{tabular}
 \end{table}
 
-\textbf{Sybil Attack}: World ID's nullifier hash ensures one approval per unique human per action scope. The Orb verification level provides strong Sybil resistance through biometric uniqueness. Device-level verification offers weaker guarantees.
+\textbf{Sybil Attack}: World ID's nullifier hash ensures one approval per unique human per action scope. The Orb verification level provides strong practical Sybil resistance through biometric-based uniqueness checks, though it does not claim formal biometric infallibility. Device-level verification offers weaker guarantees.
 
 \textbf{Replay Attack}: The signal is computed as a hash of the repository and commit SHA. This binds each proof to a specific action, preventing reuse of proofs across different commits.
 
@@ -456,16 +456,13 @@ W3C, ``Decentralized Identifiers (DIDs) v1.0,'' W3C Recommendation, 2022.
 W3C, ``Verifiable Credentials Data Model v1.1,'' W3C Recommendation, 2022.
 
 \bibitem{scitt}
-IETF, ``An Architecture for Trustworthy and Transparent Digital Supply Chains,'' Internet-Draft, 2024.
+IETF, ``An Architecture for Trustworthy and Transparent Digital Supply Chains,'' Emerging Internet-Draft, 2024.
 
 \bibitem{sigstore}
 Sigstore Project, ``Sigstore: Software Signing for Everyone,'' 2023.
 
 \bibitem{mitdelegation}
 R. Mahari et al., ``Authenticated Delegation and Authorized AI Agents,'' MIT Media Lab, 2024.
-
-\bibitem{mssigning}
-Microsoft, ``Enhancing Software Supply Chain Security with Microsoft's Signing Transparency,'' Azure Blog, November 2025.
 
 \end{thebibliography}
 
