@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import type { HumanApprovalAttestation, ApprovalSubject } from '@/types'
 import { ProviderSelector } from '@/components/ProviderSelector'
@@ -12,7 +12,7 @@ import {
   ProofOfHumanityVerification,
 } from '@/components/verification'
 
-export default function Home() {
+function HomeContent() {
   const searchParams = useSearchParams()
   const [selectedProvider, setSelectedProvider] = useState<string | null>(null)
   const [verificationStatus, setVerificationStatus] = useState<
@@ -341,5 +341,20 @@ export default function Home() {
         </p>
       </footer>
     </main>
+  )
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={
+      <main className="min-h-screen p-8 max-w-4xl mx-auto">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold mb-4">Proof of Human Intent</h1>
+          <p className="text-xl text-gray-600 dark:text-gray-400">Loading...</p>
+        </div>
+      </main>
+    }>
+      <HomeContent />
+    </Suspense>
   )
 }
