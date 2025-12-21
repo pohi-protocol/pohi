@@ -43,31 +43,196 @@ Include:
 - Demo application (`packages/demo/`)
 - Documentation websites
 
+---
+
 ## Security Model
 
 ### Trust Assumptions
 
-1. **World ID Orb**: Correctly identifies unique humans
-2. **Cryptographic Primitives**: SHA-256, Keccak-256, ZK proofs are secure
+1. **World ID Orb**: Provides strong practical Sybil resistance through biometric-based uniqueness checks (does not claim formal biometric infallibility)
+2. **Cryptographic Primitives**: SHA-256, Keccak-256, ZK proofs are computationally secure
 3. **Blockchain**: World Chain provides finality and censorship resistance
-4. **Time**: Block timestamps are reasonably accurate
+4. **Time**: Block timestamps are reasonably accurate (within minutes)
+5. **GitHub Context**: `github.context.sha` in Actions is trustworthy
 
-### Threat Model
+### What PoHI Guarantees
 
-| Threat | Mitigation | Status |
-|--------|------------|--------|
-| **Sybil Attack** | World ID nullifier hash ensures one approval per human per scope | Implemented |
-| **Replay Attack** | Signal binds proof to specific commit SHA | Implemented |
-| **Tampering** | Attestation hash covers all critical fields | Implemented |
-| **Front-running** | On-chain recording with nullifier check | Implemented |
-| **Impersonation** | ZK proof of personhood required | Implemented |
+- A **unique human** (as verified by World ID) approved a **specific signal** (commit SHA)
+- The approval is **timestamped** and **tamper-evident**
+- The same human cannot approve the same commit twice (nullifier uniqueness)
 
-### Known Limitations
+### What PoHI Does NOT Guarantee
 
-1. **World ID Dependency**: Security relies on World ID's Orb verification accuracy
-2. **Nullifier Scope**: Same human can approve different commits (by design)
-3. **Revocation**: Revoked attestations remain on-chain (marked as revoked)
-4. **Timestamp**: Uses block timestamp, not external time oracle
+- That the human **understood** what they approved (semantic gap)
+- That the human **intended** to approve that specific action (UI/social engineering)
+- That the human is **authorized** by the organization (requires Authority Layer)
+- That the code being approved is **safe** or **correct**
+
+---
+
+## Detailed Threat Analysis
+
+### 1. Sybil Attack
+
+| Aspect | Details |
+|--------|---------|
+| **Threat** | Attacker creates multiple identities to approve malicious commits |
+| **Mitigation** | World ID nullifier hash ensures one identity per human per scope |
+| **Assurance Level** | High (Orb), Medium (Device) |
+| **Residual Risk** | World ID verification accuracy; colluding individuals |
+
+### 2. Replay Attack
+
+| Aspect | Details |
+|--------|---------|
+| **Threat** | Reusing a valid proof from one commit for another |
+| **Mitigation** | Signal = SHA256(repository:commit_sha) binds proof to specific commit |
+| **Assurance Level** | High |
+| **Residual Risk** | None identified |
+
+### 3. Front-Running Attack
+
+| Aspect | Details |
+|--------|---------|
+| **Threat** | Attacker observes pending approval and submits before legitimate user |
+| **Mitigation** | On-chain nullifier check; ZK proof required (attacker lacks proof) |
+| **Assurance Level** | High |
+| **Residual Risk** | Theoretical MEV concerns (mitigated by World Chain design) |
+
+### 4. Impersonation Attack
+
+| Aspect | Details |
+|--------|---------|
+| **Threat** | Attacker claims to be an authorized approver |
+| **Mitigation** | World ID ZK proof cryptographically proves humanity |
+| **Assurance Level** | High |
+| **Residual Risk** | Compromised World ID credentials (user responsibility) |
+
+### 5. Attestation Tampering
+
+| Aspect | Details |
+|--------|---------|
+| **Threat** | Modifying attestation data after creation |
+| **Mitigation** | SHA-256 hash covers all fields; on-chain immutability |
+| **Assurance Level** | High |
+| **Residual Risk** | None identified |
+
+### 6. GitHub Action Workflow Spoofing
+
+| Aspect | Details |
+|--------|---------|
+| **Threat** | Malicious workflow fakes approval status |
+| **Mitigation** | `github.context.sha` from trusted runner environment |
+| **Attack Vector** | Compromised CI runner, malicious Action dependency |
+| **Assurance Level** | Medium |
+| **Residual Risk** | Supply chain attack on GitHub Actions itself |
+
+### 7. Malicious Approval Server
+
+| Aspect | Details |
+|--------|---------|
+| **Threat** | `approval-url` points to attacker-controlled server returning fake "approved" |
+| **Mitigation** | Server must return valid World ID proof (verified by World ID API) |
+| **Recommendation** | Users should only use trusted approval URLs |
+| **Assurance Level** | Medium (depends on server trust) |
+
+### 8. Semantic Gap Attack (Out of Scope)
+
+| Aspect | Details |
+|--------|---------|
+| **Threat** | Human approves without understanding the commit content |
+| **Status** | Explicitly out of scope for cryptographic protocol |
+| **Mitigation** | UI best practices (show commit details clearly) |
+| **Recommendation** | Display commit diff, author, and description before approval |
+
+### 9. Social Engineering / Coercion (Out of Scope)
+
+| Aspect | Details |
+|--------|---------|
+| **Threat** | Human is tricked or coerced into approving |
+| **Status** | Out of scope for cryptographic protocol |
+| **Mitigation** | Organizational security policies, education |
+
+### 10. Malicious Insider
+
+| Aspect | Details |
+|--------|---------|
+| **Threat** | Authorized human intentionally approves malicious code |
+| **Status** | Out of scope (human verified correctly, intent is malicious) |
+| **Mitigation** | Multi-signature requirements, code review policies |
+
+---
+
+## Component-Specific Security Analysis
+
+### Core Library (`packages/core/`)
+
+#### Reviewed: 2024-12
+
+| Finding | Severity | Status |
+|---------|----------|--------|
+| Canonical JSON serialization ensures deterministic hashing | ✅ Good | N/A |
+| SHA-256 used for attestation hash | ✅ Good | N/A |
+| Hash integrity verification in `validateAttestation()` | ✅ Good | N/A |
+| `parseAttestation()` uses type assertion without runtime validation | ⚠️ Low | Documented |
+
+**Recommendation**: Callers of `parseAttestation()` should call `validateAttestation()` on the result.
+
+### GitHub Action (`packages/action/`)
+
+#### Reviewed: 2024-12
+
+| Finding | Severity | Status |
+|---------|----------|--------|
+| Uses `github.context.sha` (trusted source) | ✅ Good | N/A |
+| Status API response not cryptographically verified | ⚠️ Medium | Documented |
+| Depends on `approval-url` being trustworthy | ⚠️ Medium | Documented |
+
+**Recommendation**:
+- Only configure trusted `approval-url` values
+- Future: Add on-chain verification of attestation in Action
+
+### Smart Contract (`packages/contracts/`)
+
+#### Reviewed: 2024-12
+
+| Finding | Severity | Status |
+|---------|----------|--------|
+| Solidity 0.8.24 with built-in overflow protection | ✅ Good | N/A |
+| No external calls (no reentrancy risk) | ✅ Good | N/A |
+| Input validation on all parameters | ✅ Good | N/A |
+| Duplicate approval check prevents same human approving same commit | ✅ Good | N/A |
+| Unbounded loop in duplicate check could cause DoS | ⚠️ Low | Documented |
+| Permissionless recording (anyone can call `recordAttestation`) | ℹ️ Info | By Design |
+| Admin can revoke any attestation | ℹ️ Info | By Design |
+| World ID proof not verified on-chain | ℹ️ Info | By Design (off-chain) |
+
+**Note on Permissionless Design**: The contract intentionally allows anyone to record attestations. The security comes from:
+1. World ID proof verification (off-chain)
+2. Attestation hash uniqueness
+3. Nullifier-based duplicate prevention
+
+---
+
+## ZK Proof Boundary Conditions
+
+### World ID Proof Verification
+
+| Parameter | Validation |
+|-----------|------------|
+| `proof` | Valid ZK-SNARK proof |
+| `merkle_root` | Must be in valid root set |
+| `nullifier_hash` | Derived from identity; unique per action scope |
+| `signal` | Must match expected SHA256(repository:commit) |
+| `external_nullifier` | App-specific action identifier |
+
+### Edge Cases
+
+1. **Expired Merkle Root**: World ID has a root expiration window. Old proofs may fail.
+2. **Action Scope Change**: If `worldIdAction` changes, existing nullifiers don't apply.
+3. **Signal Mismatch**: Commit SHA must exactly match; short SHA not accepted.
+
+---
 
 ## Smart Contract Security
 
@@ -79,16 +244,19 @@ Include:
 
 ### Security Features
 
-- **Access Control**: Owner-based administration
+- **Access Control**: Owner-based administration for admin management
 - **Reentrancy Protection**: No external calls in state-changing functions
 - **Integer Overflow**: Solidity 0.8.x built-in checks
-- **Nullifier Uniqueness**: Mapping prevents duplicate approvals
+- **Nullifier Uniqueness**: Mapping prevents duplicate approvals per commit
+- **Custom Errors**: Gas-efficient error handling
 
-### Upgrade Policy
+### Known Design Decisions
 
-- Contracts are **non-upgradeable** by design
-- New versions deployed to new addresses
-- Migration tools provided for users
+1. **Non-upgradeable**: Contracts cannot be upgraded (new versions = new addresses)
+2. **Permissionless Recording**: Security relies on off-chain proof verification
+3. **Admin Revocation**: Admins can revoke any attestation (for emergency response)
+
+---
 
 ## Cryptographic Details
 
@@ -98,37 +266,58 @@ Include:
 |---------|-----------|----------------|
 | Attestation Hash (off-chain) | SHA-256 | Node.js `crypto` |
 | Attestation Hash (on-chain) | Keccak-256 | Solidity native |
-| Signal Hash | SHA-256 / Keccak-256 | Context-dependent |
+| Signal Hash | SHA-256 | Protocol standard |
+| Commit Key | Keccak-256 | On-chain indexing |
 
 ### Why Two Hash Algorithms?
 
-- **SHA-256**: Protocol standard, widely supported, used off-chain
-- **Keccak-256**: EVM native, gas efficient, used on-chain
+- **SHA-256**: Protocol standard, widely supported, interoperable
+- **Keccak-256**: EVM native, gas efficient for on-chain operations
 
-Both hashes are computed for each attestation:
-- `attestation_hash`: SHA-256 for protocol identification
-- EVM hash: Keccak-256 for on-chain storage
+Both hashes are computed for each attestation to support both off-chain verification and on-chain storage.
+
+---
 
 ## Dependency Security
 
-### Audit Trail
+### Key Dependencies
 
-Key dependencies and their security posture:
-
-| Package | Purpose | Security |
-|---------|---------|----------|
-| `viem` | EVM interaction | Widely audited |
-| `@worldcoin/idkit` | World ID integration | Worldcoin maintained |
+| Package | Purpose | Security Posture |
+|---------|---------|------------------|
+| `viem` | EVM interaction | Widely audited, maintained by Paradigm |
+| `@worldcoin/idkit` | World ID integration | Maintained by Worldcoin Foundation |
+| `@actions/core` | GitHub Actions SDK | Maintained by GitHub |
+| `@actions/github` | GitHub API | Maintained by GitHub |
 
 ### Update Policy
 
-- Security patches: Immediate update
-- Minor versions: Weekly review
-- Major versions: Compatibility testing required
+- **Security patches**: Immediate update
+- **Minor versions**: Weekly review
+- **Major versions**: Compatibility testing required
+
+---
+
+## Security Recommendations for Users
+
+### For Organizations Using PoHI
+
+1. **Trust Your Approval Server**: Only use `approval-url` values you control or trust
+2. **Require Orb Verification**: Use `verification-level: orb` for high-security workflows
+3. **Complement with Code Review**: PoHI proves human approval, not code correctness
+4. **Monitor Attestations**: Watch for unexpected approvals on your repositories
+5. **Multi-Approver Policies**: Consider requiring multiple human approvals for critical changes
+
+### For Individual Users
+
+1. **Verify Commit Details**: Always check the commit SHA and repository before approving
+2. **Secure Your World ID**: Protect your World ID credentials
+3. **Report Suspicious Requests**: If asked to approve something unexpected, investigate first
+
+---
 
 ## Bug Bounty
 
-Coming soon. We plan to launch a bug bounty program after the initial security audit.
+Coming soon. We plan to launch a bug bounty program after initial security audit.
 
 ### Preliminary Rewards (Subject to Change)
 
@@ -139,16 +328,30 @@ Coming soon. We plan to launch a bug bounty program after the initial security a
 | Medium | Up to $1,000 |
 | Low | Up to $200 |
 
+---
+
 ## Security Checklist for Contributors
 
 Before submitting a PR:
 
 - [ ] No secrets or private keys in code
 - [ ] Input validation for all user inputs
-- [ ] No unsafe type assertions
+- [ ] No unsafe type assertions without validation
 - [ ] Error messages don't leak sensitive info
 - [ ] Dependencies are up to date
 - [ ] Tests cover security-critical paths
+- [ ] Consider replay, Sybil, and tampering attacks
+
+---
+
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 1.1 | 2024-12 | Added detailed threat analysis, component review |
+| 1.0 | 2024-12 | Initial security policy |
+
+---
 
 ## Contact
 
