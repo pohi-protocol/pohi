@@ -23,14 +23,14 @@ export function isMockMode(): boolean {
 /**
  * Mock verifier that returns success for any provider
  */
-export class MockVerifier implements ProviderVerifier {
+export class MockVerifier implements ProviderVerifier<unknown, unknown> {
   readonly provider: string
 
   constructor(provider: string) {
     this.provider = provider
   }
 
-  async verify(): Promise<VerificationResult> {
+  async verify(_proof: unknown, _config: unknown): Promise<VerificationResult> {
     // Generate a deterministic but unique ID for testing
     const uniqueId = `mock_${this.provider}_${Date.now()}_${Math.random().toString(36).slice(2)}`
 
@@ -60,14 +60,14 @@ export class MockVerifier implements ProviderVerifier {
 /**
  * Provider verifier implementations registry
  */
-const verifierRegistry: Map<string, new () => ProviderVerifier> = new Map()
+const verifierRegistry: Map<string, new () => ProviderVerifier<unknown, unknown>> = new Map()
 
 /**
  * Register a provider verifier implementation
  */
 export function registerVerifier(
   provider: string,
-  verifierClass: new () => ProviderVerifier
+  verifierClass: new () => ProviderVerifier<unknown, unknown>
 ): void {
   verifierRegistry.set(provider, verifierClass)
 }
@@ -76,7 +76,7 @@ export function registerVerifier(
  * Get the appropriate verifier for a provider
  * Returns MockVerifier if mock mode is enabled
  */
-export function getVerifier(provider: string): ProviderVerifier {
+export function getVerifier(provider: string): ProviderVerifier<unknown, unknown> {
   // Always use mock verifier in mock mode
   if (isMockMode()) {
     return new MockVerifier(provider)

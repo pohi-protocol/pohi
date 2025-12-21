@@ -88,9 +88,11 @@ export interface GitcoinPassportStamp {
  * Gitcoin Passport provider configuration
  */
 export interface GitcoinPassportConfig {
-  /** API key for Gitcoin Passport API */
+  /** API key for Gitcoin Passport API (from developer.passport.xyz) */
   api_key: string
-  /** Minimum score required */
+  /** Scorer ID from developer.passport.xyz */
+  scorer_id: string
+  /** Minimum score required (default: 20) */
   min_score?: number
   /** Required stamps (optional) */
   required_stamps?: string[]

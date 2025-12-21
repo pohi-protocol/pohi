@@ -161,7 +161,7 @@ describe('GitcoinPassportVerifier', () => {
     const verifier = new GitcoinPassportVerifier()
     const result = await verifier.verify(
       { address: '0x1234567890123456789012345678901234567890', score: 0, score_timestamp: '' },
-      { api_key: 'test_key', min_score: 20 }
+      { api_key: 'test_key', scorer_id: '12345', min_score: 20 }
     )
 
     expect(result.success).toBe(true)
@@ -182,7 +182,7 @@ describe('GitcoinPassportVerifier', () => {
     const verifier = new GitcoinPassportVerifier()
     const result = await verifier.verify(
       { address: '0x1234567890123456789012345678901234567890', score: 0, score_timestamp: '' },
-      { api_key: 'test_key', min_score: 20 }
+      { api_key: 'test_key', scorer_id: '12345', min_score: 20 }
     )
 
     expect(result.success).toBe(true)
@@ -203,7 +203,7 @@ describe('GitcoinPassportVerifier', () => {
     const verifier = new GitcoinPassportVerifier()
     const result = await verifier.verify(
       { address: '0x1234567890123456789012345678901234567890', score: 0, score_timestamp: '' },
-      { api_key: 'test_key', min_score: 15 }
+      { api_key: 'test_key', scorer_id: '12345', min_score: 15 }
     )
 
     expect(result.success).toBe(true)
@@ -220,7 +220,7 @@ describe('GitcoinPassportVerifier', () => {
     const verifier = new GitcoinPassportVerifier()
     const result = await verifier.verify(
       { address: '0x1234567890123456789012345678901234567890', score: 0, score_timestamp: '' },
-      { api_key: 'test_key', min_score: 20 }
+      { api_key: 'test_key', scorer_id: '12345', min_score: 20 }
     )
 
     expect(result.success).toBe(false)
@@ -242,7 +242,7 @@ describe('GitcoinPassportVerifier', () => {
     const verifier = new GitcoinPassportVerifier()
     const result = await verifier.verify(
       { address: '0x1234567890123456789012345678901234567890', score: 0, score_timestamp: '' },
-      { api_key: 'test_key', min_score: 20 }
+      { api_key: 'test_key', scorer_id: '12345', min_score: 20 }
     )
 
     expect(result.success).toBe(false)
@@ -255,7 +255,7 @@ describe('GitcoinPassportVerifier', () => {
     const verifier = new GitcoinPassportVerifier()
     const result = await verifier.verify(
       { address: '0x1234567890123456789012345678901234567890', score: 0, score_timestamp: '' },
-      { api_key: 'test_key', min_score: 20 }
+      { api_key: 'test_key', scorer_id: '12345', min_score: 20 }
     )
 
     expect(result.success).toBe(false)
@@ -269,7 +269,7 @@ describe('GitcoinPassportVerifier', () => {
     const verifier = new GitcoinPassportVerifier()
     const result = await verifier.verify(
       { address: '0x1234567890123456789012345678901234567890', score: 0, score_timestamp: '' },
-      { api_key: 'test_key', min_score: 20 }
+      { api_key: 'test_key', scorer_id: '12345', min_score: 20 }
     )
 
     expect(result.success).toBe(false)
@@ -290,7 +290,7 @@ describe('GitcoinPassportVerifier', () => {
     const verifier = new GitcoinPassportVerifier()
     const result = await verifier.verify(
       { address: '0x1234567890123456789012345678901234567890', score: 0, score_timestamp: '' },
-      { api_key: 'test_key', min_score: 20 }
+      { api_key: 'test_key', scorer_id: '12345', min_score: 20 }
     )
 
     const humanProof = verifier.toHumanProof(result, 'test_signal')
@@ -315,7 +315,7 @@ describe('GitcoinPassportVerifier', () => {
     const verifier = new GitcoinPassportVerifier()
     const result = await verifier.verify(
       { address: '0x1234567890123456789012345678901234567890', score: 0, score_timestamp: '' },
-      { api_key: 'test_key', min_score: 20 }
+      { api_key: 'test_key', scorer_id: '12345', min_score: 20 }
     )
 
     expect(result.success).toBe(false)
@@ -326,7 +326,7 @@ describe('GitcoinPassportVerifier', () => {
     const verifier = new GitcoinPassportVerifier()
     const result = await verifier.verify(
       { address: '', score: 0, score_timestamp: '' },
-      { api_key: 'test_key' }
+      { api_key: 'test_key', scorer_id: '12345' }
     )
 
     expect(result.success).toBe(false)
@@ -337,11 +337,22 @@ describe('GitcoinPassportVerifier', () => {
     const verifier = new GitcoinPassportVerifier()
     const result = await verifier.verify(
       { address: '0x123', score: 0, score_timestamp: '' },
-      { api_key: '' }
+      { api_key: '', scorer_id: '12345' }
     )
 
     expect(result.success).toBe(false)
     expect(result.error).toBe('Gitcoin Passport API key is required')
+  })
+
+  it('should require scorer_id', async () => {
+    const verifier = new GitcoinPassportVerifier()
+    const result = await verifier.verify(
+      { address: '0x123', score: 0, score_timestamp: '' },
+      { api_key: 'test_key', scorer_id: '' }
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('scorer_id is required')
   })
 })
 

@@ -542,7 +542,7 @@ Both hashes are computed for each attestation to support both off-chain verifica
 |----------|--------|-------|
 | World ID (Orb) | ✅ Tested | Primary provider, production-ready |
 | World ID (Device) | ✅ Tested | Lower assurance level |
-| Gitcoin Passport | 🔧 Implemented | API integration complete |
+| Gitcoin Passport | ✅ Tested | API v2 verified (2025-01), Score: 54.33 |
 | BrightID | 🔧 Implemented | API integration complete |
 | Civic | 🔧 Implemented | Gateway integration complete |
 | Proof of Humanity | 🔧 Implemented | Subgraph integration complete |
