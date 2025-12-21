@@ -235,7 +235,29 @@ jobs:
 
 ---
 
+## ⛓️ On-Chain Verification
+
+On-chain attestation recording is **optional** and currently in development.
+
+| Network | Status | Contract Address |
+|---------|--------|------------------|
+| World Chain Mainnet | 🔧 Coming Soon | TBD |
+| World Chain Sepolia | 🔧 Coming Soon | TBD |
+
+> **Note**: PoHI works without on-chain recording. The core protocol uses off-chain attestations that can be independently verified. On-chain recording adds an additional immutable transparency layer.
+
+---
+
 ## 🔐 Security Model
+
+### Security Considerations
+
+PoHI has undergone an initial self-review focusing on:
+- **Replay attacks**: Mitigated by binding attestations to specific commit SHAs
+- **Impersonation risks**: Prevented by World ID's ZK proof of personhood
+- **CI/CD workflow integrity**: Isolated verification in ephemeral containers
+
+For full security documentation, see [SECURITY.md](./SECURITY.md).
 
 ### Threat Model
 
