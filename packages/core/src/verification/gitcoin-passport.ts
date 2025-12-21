@@ -89,12 +89,23 @@ export class GitcoinPassportVerifier
     }
 
     try {
-      // Fetch score from Gitcoin Passport API
+      // Fetch score from Gitcoin Passport API v2
+      // Requires scorer_id from https://developer.passport.xyz/
+      const scorerId = config.scorer_id
+      if (!scorerId) {
+        return {
+          success: false,
+          provider: this.provider,
+          unique_id: '',
+          error: 'Gitcoin Passport scorer_id is required (get from developer.passport.xyz)',
+        }
+      }
+
       const response = await fetch(
-        `https://api.passport.gitcoin.co/v2/stamps/${address}/score`,
+        `https://api.passport.xyz/v2/stamps/${scorerId}/score/${address}`,
         {
           headers: {
-            'X-API-Key': api_key,
+            'X-API-KEY': api_key,
             'Content-Type': 'application/json',
           },
         }

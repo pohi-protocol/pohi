@@ -1,0 +1,50 @@
+name: PoHI Human Approval
+image: pohi-protocol/pohi-approval:latest
+description: Request human approval via World ID verification before proceeding with the pipeline.
+repository: https://github.com/pohi-protocol/pohi
+maintainer: Ikko Ashimine <eltociear@gmail.com>
+tags:
+  - security
+  - approval
+  - world-id
+  - human-verification
+
+variables:
+  - name: POHI_APPROVAL_URL
+    type: string
+    required: true
+    description: Base URL of the PoHI approval server
+
+  - name: POHI_WORLD_ID_APP_ID
+    type: string
+    required: true
+    description: World ID Application ID (app_xxx)
+
+  - name: POHI_WORLD_ID_ACTION
+    type: string
+    required: true
+    description: World ID Action identifier
+
+  - name: BITBUCKET_TOKEN
+    type: string
+    required: true
+    secured: true
+    description: Bitbucket API token (App Password with repository:write scope)
+
+  - name: POHI_VERIFICATION_LEVEL
+    type: string
+    required: false
+    default: orb
+    description: Verification level - orb (biometric) or device
+
+  - name: POHI_TIMEOUT_MINUTES
+    type: string
+    required: false
+    default: "30"
+    description: Timeout in minutes waiting for approval
+
+  - name: POHI_POLL_INTERVAL_SECONDS
+    type: string
+    required: false
+    default: "10"
+    description: Polling interval in seconds

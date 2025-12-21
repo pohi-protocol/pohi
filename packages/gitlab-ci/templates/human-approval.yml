@@ -1,0 +1,84 @@
+# PoHI Human Approval - GitLab CI Component
+#
+# This component requests human approval via World ID verification
+# before allowing CI/CD pipelines to proceed.
+#
+# Usage in .gitlab-ci.yml:
+#   include:
+#     - component: $CI_SERVER_FQDN/pohi-protocol/pohi/human-approval@main
+#       inputs:
+#         approval_url: https://your-approval-server.com
+#         world_id_app_id: app_xxx
+#         world_id_action: approve-deploy
+#
+# Or use the job directly:
+#   stages:
+#     - approval
+#
+#   human-approval:
+#     extends: .pohi-human-approval
+#     variables:
+#       POHI_APPROVAL_URL: https://your-approval-server.com
+#       POHI_WORLD_ID_APP_ID: app_xxx
+#       POHI_WORLD_ID_ACTION: approve-deploy
+
+spec:
+  inputs:
+    approval_url:
+      description: 'Base URL of the PoHI approval server'
+      type: string
+    world_id_app_id:
+      description: 'World ID Application ID (app_xxx)'
+      type: string
+    world_id_action:
+      description: 'World ID Action identifier'
+      type: string
+    verification_level:
+      description: 'Verification level: orb or device'
+      type: string
+      default: 'orb'
+    timeout_minutes:
+      description: 'Timeout in minutes waiting for approval'
+      type: string
+      default: '30'
+    poll_interval_seconds:
+      description: 'Polling interval in seconds'
+      type: string
+      default: '10'
+    stage:
+      description: 'Pipeline stage for the approval job'
+      type: string
+      default: 'approval'
+
+---
+
+# Hidden job template for manual extension
+.pohi-human-approval:
+  image: node:20-alpine
+  stage: $[[ inputs.stage ]]
+  variables:
+    POHI_APPROVAL_URL: $[[ inputs.approval_url ]]
+    POHI_WORLD_ID_APP_ID: $[[ inputs.world_id_app_id ]]
+    POHI_WORLD_ID_ACTION: $[[ inputs.world_id_action ]]
+    POHI_VERIFICATION_LEVEL: $[[ inputs.verification_level ]]
+    POHI_TIMEOUT_MINUTES: $[[ inputs.timeout_minutes ]]
+    POHI_POLL_INTERVAL_SECONDS: $[[ inputs.poll_interval_seconds ]]
+  before_script:
+    - npm install -g pohi-gitlab-ci@latest
+  script:
+    - pohi-gitlab-ci
+  artifacts:
+    reports:
+      dotenv: pohi-approval.env
+    paths:
+      - pohi-approval.env
+    expire_in: 1 week
+
+# Main job that uses the component
+human-approval:
+  extends: .pohi-human-approval
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - when: manual
+      allow_failure: false

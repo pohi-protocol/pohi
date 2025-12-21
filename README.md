@@ -63,13 +63,13 @@ PoHI answers three questions:
 
 ### Supported PoP Providers
 
-| Provider | Verification Type | Sybil Resistance |
-|----------|------------------|------------------|
-| **World ID** | ZK proof (Orb/Device) | High |
-| **Gitcoin Passport** | Web3 identity score | Medium |
-| **BrightID** | Social graph verification | Medium |
-| **Civic** | Gateway Pass | Medium |
-| **Proof of Humanity** | Kleros registry | High |
+| Provider | Verification Type | Sybil Resistance | Status |
+|----------|------------------|------------------|--------|
+| **World ID** | ZK proof (Orb/Device) | High | ✅ Tested (2025-01) |
+| **Gitcoin Passport** | Web3 identity score | Medium | ✅ Tested (2025-01) |
+| **BrightID** | Social graph verification | Medium | 🔧 Implemented |
+| **Civic** | Gateway Pass | Medium | 🔧 Implemented |
+| **Proof of Humanity** | Kleros registry | High | 🔧 Implemented |
 
 ### Architecture
 
@@ -208,6 +208,8 @@ jobs:
 | [`pohi-sdk`](https://www.npmjs.com/package/pohi-sdk) | World Chain client | ✅ v0.1.0 |
 | [`pohi-cli`](https://www.npmjs.com/package/pohi-cli) | Command-line tool | ✅ v0.1.0 |
 | [`pohi-action`](https://www.npmjs.com/package/pohi-action) | GitHub Action | ✅ v0.1.0 |
+| `pohi-gitlab-ci` | GitLab CI Component | ✅ v0.1.0 |
+| `pohi-bitbucket-pipe` | Bitbucket Pipe | ✅ v0.1.0 |
 | `pohi-contracts` | Solidity contracts (Foundry) | ✅ v0.1.0 |
 | [`pohi-demo`](https://pohi-demo.vercel.app/) | Next.js + World ID demo | ✅ Live |
 
@@ -261,12 +263,15 @@ jobs:
 - [x] SDK for World Chain
 - [x] CLI tool
 - [x] GitHub Action
+- [x] GitLab CI Component
+- [x] Bitbucket Pipe
 - [x] Smart contracts (Foundry)
 - [x] Demo application (Next.js + World ID)
 - [x] npm publish (v0.1.0)
 - [x] Live demo deployment
+- [x] Security self-review (see [SECURITY.md](./SECURITY.md))
 - [ ] arXiv submission
-- [ ] Security review
+- [ ] External audit
 - [ ] v1.0 release
 
 ---

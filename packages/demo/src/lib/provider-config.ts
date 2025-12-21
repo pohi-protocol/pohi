@@ -18,6 +18,7 @@ import type {
 export function getGitcoinPassportConfig(): GitcoinPassportConfig {
   return {
     api_key: process.env.GITCOIN_PASSPORT_API_KEY || '',
+    scorer_id: process.env.GITCOIN_PASSPORT_SCORER_ID || '',
     min_score: parseInt(process.env.GITCOIN_PASSPORT_MIN_SCORE || '20', 10),
   }
 }
