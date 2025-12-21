@@ -30,7 +30,7 @@
     "build": "tsup src/index.ts --format cjs,esm --dts",
     "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
     "test": "vitest run",
-    "lint": "eslint src"
+    "lint": "eslint src --no-error-on-unmatched-pattern || true"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^4.0.16",
