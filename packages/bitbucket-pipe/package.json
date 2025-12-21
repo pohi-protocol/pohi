@@ -1,0 +1,33 @@
+{
+  "name": "pohi-bitbucket-pipe",
+  "version": "0.1.0",
+  "description": "PoHI Human Approval for Bitbucket Pipelines",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "esbuild src/index.ts --bundle --platform=node --target=node20 --outfile=dist/index.js --format=esm",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "docker:build": "docker build -t pohi-protocol/pohi-approval -f pipe/Dockerfile .",
+    "docker:push": "docker push pohi-protocol/pohi-approval"
+  },
+  "keywords": [
+    "pohi",
+    "bitbucket",
+    "pipelines",
+    "human-verification",
+    "world-id"
+  ],
+  "author": "Ikko Ashimine <eltociear@gmail.com>",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pohi-protocol/pohi.git",
+    "directory": "packages/bitbucket-pipe"
+  },
+  "devDependencies": {
+    "esbuild": "^0.20.0",
+    "typescript": "^5.3.0",
+    "vitest": "^2.0.0"
+  }
+}
