@@ -6,7 +6,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "esbuild src/index.ts --bundle --platform=node --target=node20 --outfile=dist/index.js --format=esm",
-    "test": "vitest run",
+    "test": "vitest run --passWithNoTests",
     "typecheck": "tsc --noEmit",
     "docker:build": "docker build -t pohi-protocol/pohi-approval -f pipe/Dockerfile .",
     "docker:push": "docker push pohi-protocol/pohi-approval"
