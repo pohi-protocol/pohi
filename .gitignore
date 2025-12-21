@@ -23,3 +23,6 @@ Thumbs.db
 packages/contracts/out/
 packages/contracts/cache/
 packages/contracts/broadcast/
+
+# Test coverage
+coverage/
