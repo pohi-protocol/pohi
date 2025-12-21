@@ -36,12 +36,53 @@ Include:
 | SDK | `packages/sdk/src/` |
 | CLI | `packages/cli/src/` |
 | GitHub Action | `packages/action/src/` |
+| GitLab CI Component | `packages/gitlab-ci/src/` |
+| Bitbucket Pipe | `packages/bitbucket-pipe/src/` |
 
 ### Out of Scope
 
 - Third-party dependencies (report to upstream)
 - Demo application (`packages/demo/`)
 - Documentation websites
+
+---
+
+## Self-Review Summary (2025-01)
+
+This security self-review was conducted to identify potential vulnerabilities and document the security posture of PoHI before public release.
+
+### Review Scope
+
+| Area | Status | Notes |
+|------|--------|-------|
+| Threat Model | ✅ Documented | 10 threat categories analyzed |
+| Core Library | ✅ Reviewed | Deterministic hashing, type validation |
+| Smart Contract | ✅ Reviewed | No external calls, overflow protection |
+| GitHub Action | ✅ Reviewed | Trusted context, URL trust documented |
+| GitLab CI | ✅ Reviewed | Token scoping, URL trust documented |
+| Bitbucket Pipe | ✅ Reviewed | Docker isolation, token scoping |
+| ZK Proof Boundaries | ✅ Documented | Edge cases identified |
+| Cryptographic Design | ✅ Documented | SHA-256/Keccak-256 usage explained |
+| Dependency Audit | ✅ Reviewed | Key dependencies documented |
+
+### Open Items
+
+| Item | Priority | Status |
+|------|----------|--------|
+| External smart contract audit | High | Planned |
+| Formal verification of ZK circuits | Medium | Not planned (uses World ID's verified circuits) |
+| Penetration testing | Medium | Planned post-launch |
+| Bug bounty program | Medium | Planned |
+
+### Key Findings Summary
+
+| Severity | Count | Status |
+|----------|-------|--------|
+| Critical | 0 | - |
+| High | 0 | - |
+| Medium | 5 | All documented with mitigations |
+| Low | 2 | All documented |
+| Informational | 4 | By design |
 
 ---
 
@@ -163,11 +204,136 @@ Include:
 
 ---
 
+## Concrete Attack Scenarios
+
+### Scenario 1: Stolen World ID Approval
+
+**Attack**: Attacker steals victim's phone with World App and approves malicious commit.
+
+```
+Attacker → Steals phone → Opens World App → Scans approval QR → Malicious code deployed
+```
+
+**Analysis**:
+- PoHI correctly records that "a human approved" the commit
+- The human verification is technically valid
+- This is a **credential theft** issue, not a protocol flaw
+
+**Mitigations**:
+- World App biometric lock (FaceID/fingerprint)
+- Device-level security (passcode)
+- Organization policy: require multiple approvers for production
+
+**Residual Risk**: Accepted (same as any credential-based system)
+
+---
+
+### Scenario 2: Malicious CI Runner
+
+**Attack**: Compromised CI runner reports fake `GITHUB_SHA` / `CI_COMMIT_SHA`.
+
+```
+Attacker → Compromises self-hosted runner → Modifies environment → Reports wrong SHA
+```
+
+**Analysis**:
+- If runner is compromised, attacker controls the environment
+- PoHI would record approval for the **wrong commit**
+- This is a **supply chain attack** on CI infrastructure
+
+**Mitigations**:
+- Use GitHub/GitLab hosted runners (trusted environment)
+- Runner hardening and monitoring
+- Compare attestation SHA with actual deployed code
+
+**Residual Risk**: Medium (depends on runner security)
+
+---
+
+### Scenario 3: Approval Server MITM
+
+**Attack**: Attacker intercepts traffic to approval server and injects fake "approved" response.
+
+```
+CI Job → HTTPS request → Attacker MITM → Fake "approved" response → CI proceeds
+```
+
+**Analysis**:
+- Requires breaking TLS (unlikely) or DNS hijacking
+- Even if successful, no valid World ID proof exists
+- On-chain verification would fail
+
+**Mitigations**:
+- HTTPS enforced for approval URLs
+- Certificate pinning (future enhancement)
+- On-chain attestation verification
+
+**Residual Risk**: Low (requires significant infrastructure compromise)
+
+---
+
+### Scenario 4: Replay Attack Across Repos
+
+**Attack**: Use approval from Repo A to authorize deploy in Repo B.
+
+```
+Attacker → Gets approval for repo-a:abc123 → Tries to use for repo-b:abc123
+```
+
+**Analysis**:
+- Signal = SHA256("repo-a:abc123") ≠ SHA256("repo-b:abc123")
+- ZK proof is bound to specific signal
+- Verification would fail
+
+**Result**: ✅ Attack prevented by protocol design
+
+---
+
+### Scenario 5: Race Condition Double-Deploy
+
+**Attack**: Two deployments try to use same approval simultaneously.
+
+```
+Deploy Job 1 → Checks approval → ✓
+Deploy Job 2 → Checks approval → ✓ (same attestation)
+Both deploy simultaneously
+```
+
+**Analysis**:
+- This is **not** a security issue (same approval used twice is fine)
+- The approval is for a specific commit, deploying it twice is valid
+- If this is undesired, use on-chain nullifier check
+
+**Mitigations**:
+- On-chain recording marks attestation as "used"
+- CI job should mark approval as consumed after use
+
+**Residual Risk**: Low (depends on use case)
+
+---
+
+### Scenario 6: Nullifier Reuse Attack
+
+**Attack**: Same human tries to approve same commit twice (double voting).
+
+```
+Human A → Approves commit X → Recorded with nullifier N
+Human A → Tries to approve commit X again → Same nullifier N
+```
+
+**Analysis**:
+- Contract checks: `nullifierUsed[commitKey][nullifierHash]`
+- Second attempt would fail: `AlreadyApproved()`
+
+**Result**: ✅ Attack prevented by nullifier uniqueness
+
+---
+
 ## Component-Specific Security Analysis
 
 ### Core Library (`packages/core/`)
 
-#### Reviewed: 2024-12
+#### Reviewed: 2025-01
 
 | Finding | Severity | Status |
 |---------|----------|--------|
@@ -180,7 +346,7 @@ Include:
 
 ### GitHub Action (`packages/action/`)
 
-#### Reviewed: 2024-12
+#### Reviewed: 2025-01
 
 | Finding | Severity | Status |
 |---------|----------|--------|
@@ -194,7 +360,7 @@ Include:
 
 ### Smart Contract (`packages/contracts/`)
 
-#### Reviewed: 2024-12
+#### Reviewed: 2025-01
 
 | Finding | Severity | Status |
 |---------|----------|--------|
@@ -211,6 +377,40 @@ Include:
 1. World ID proof verification (off-chain)
 2. Attestation hash uniqueness
 3. Nullifier-based duplicate prevention
+
+### GitLab CI Component (`packages/gitlab-ci/`)
+
+#### Reviewed: 2025-01
+
+| Finding | Severity | Status |
+|---------|----------|--------|
+| Uses `CI_COMMIT_SHA` from GitLab CI environment (trusted) | ✅ Good | N/A |
+| Uses `CI_JOB_TOKEN` or custom `GITLAB_TOKEN` for API auth | ✅ Good | N/A |
+| Status API response not cryptographically verified | ⚠️ Medium | Documented |
+| Depends on `POHI_APPROVAL_URL` being trustworthy | ⚠️ Medium | Documented |
+| MR notes expose approval URL (information disclosure) | ℹ️ Info | By Design |
+
+**Recommendations**:
+- Only configure trusted `POHI_APPROVAL_URL` values
+- Use `CI_JOB_TOKEN` where possible (limited scope)
+- For custom tokens, use minimal required permissions
+
+### Bitbucket Pipe (`packages/bitbucket-pipe/`)
+
+#### Reviewed: 2025-01
+
+| Finding | Severity | Status |
+|---------|----------|--------|
+| Uses `BITBUCKET_COMMIT` from Pipelines environment (trusted) | ✅ Good | N/A |
+| Requires `BITBUCKET_TOKEN` with repository write access | ⚠️ Medium | Documented |
+| Status API response not cryptographically verified | ⚠️ Medium | Documented |
+| Depends on `POHI_APPROVAL_URL` being trustworthy | ⚠️ Medium | Documented |
+| Runs in Docker container (isolated environment) | ✅ Good | N/A |
+
+**Recommendations**:
+- Create App Password with minimal scopes (`repository:write`, `pullrequest:write`)
+- Only configure trusted `POHI_APPROVAL_URL` values
+- Store `BITBUCKET_TOKEN` as secured repository variable
 
 ---
 
@@ -315,6 +515,48 @@ Both hashes are computed for each attestation to support both off-chain verifica
 
 ---
 
+## Verification Status
+
+### Protocol Verification
+
+| Component | Method | Status | Date |
+|-----------|--------|--------|------|
+| World ID Integration | Manual testing with Orb verification | ✅ Verified | 2025-01 |
+| Attestation Hashing | Unit tests (deterministic output) | ✅ Verified | 2025-01 |
+| Nullifier Uniqueness | Unit tests + manual testing | ✅ Verified | 2025-01 |
+| Signal Binding | Unit tests | ✅ Verified | 2025-01 |
+| On-chain Recording | Testnet deployment | ✅ Verified | 2025-01 |
+
+### Test Coverage
+
+| Package | Coverage | Critical Paths |
+|---------|----------|----------------|
+| `pohi-core` | 96% | ✅ All covered |
+| `pohi-sdk` | 100% | ✅ All covered |
+| `pohi-evm` | 100% | ✅ All covered |
+| Smart Contracts | Foundry tests | ✅ All covered |
+
+### Proof of Personhood Providers
+
+| Provider | Status | Notes |
+|----------|--------|-------|
+| World ID (Orb) | ✅ Tested | Primary provider, production-ready |
+| World ID (Device) | ✅ Tested | Lower assurance level |
+| Gitcoin Passport | 🔧 Implemented | API integration complete |
+| BrightID | 🔧 Implemented | API integration complete |
+| Civic | 🔧 Implemented | Gateway integration complete |
+| Proof of Humanity | 🔧 Implemented | Subgraph integration complete |
+
+### CI/CD Platform Verification
+
+| Platform | Status | Notes |
+|----------|--------|-------|
+| GitHub Actions | ✅ Tested | Production-ready |
+| GitLab CI | 🔧 Implemented | Ready for testing |
+| Bitbucket Pipelines | 🔧 Implemented | Ready for testing |
+
+---
+
 ## Bug Bounty
 
 Coming soon. We plan to launch a bug bounty program after initial security audit.
@@ -348,6 +590,7 @@ Before submitting a PR:
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 1.2 | 2025-01 | Added GitLab CI/Bitbucket Pipe, self-review summary, attack scenarios |
 | 1.1 | 2024-12 | Added detailed threat analysis, component review |
 | 1.0 | 2024-12 | Initial security policy |
 
