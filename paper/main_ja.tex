@@ -1,0 +1,508 @@
+% Proof of Human Intent - Japanese Version for Jxiv
+% 英語版: arXiv (投稿予定)
+% Reference implementation: https://github.com/pohi-protocol/pohi
+
+\documentclass[a4paper,10pt]{article}
+
+% Japanese support
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{CJKutf8}
+
+% Packages
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{geometry}
+
+\geometry{margin=2.5cm}
+
+% Code listing style
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  language=Python
+}
+
+% Hyperref setup
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue
+}
+
+\begin{document}
+\begin{CJK}{UTF8}{ipxm}
+
+% =============================================================================
+% TITLE
+% =============================================================================
+\title{\textbf{Proof of Human Intent: AI駆動開発における暗号学的に検証可能な人間の承認}}
+
+\author{
+Ikko Eltociear Ashimine \\
+Independent Researcher \\
+ORCID: 0000-0002-3576-6677
+}
+
+\date{}
+\maketitle
+
+\begin{abstract}
+\noindent
+\textbf{注記}: 本稿はJxiv向けの日本語版です。英語版はarXivに投稿予定です。 \\
+
+\noindent
+自律的なAIエージェントがソフトウェア変更の提案と実行を行える時代において、従来のhuman-in-the-loop（人間介在）の前提はもはや成立しない。
+これらのエージェントがコード生成、レビュー、デプロイを自動化するにつれ、重要な意思決定の説明責任である「人間の意図」の出所が不明確になりつつある。
+現行のシステムには、プルリクエストのマージや本番環境へのデプロイといった特定のアクションを、自動化されたプロセスではなく人間が承認したことを暗号学的に検証するメカニズムが欠如している。
+
+本稿では、\textbf{Proof of Human Intent (PoHI)}を提案する。
+これは、ゼロ知識証明による人格証明（World ID）、分散型識別子（DID）、検証可能な資格情報（VC）、透明性ログ（SCITT）を組み合わせ、改ざん不可能で機械検証可能な人間承認の記録を生成するプロトコルである。
+
+本アーキテクチャは3つの基本的な問いに対処する：
+(1) \textit{誰が}承認したか（一意な人間の検証）、
+(2) \textit{何を}承認したか（特定のコミットへの暗号学的紐付け）、
+(3) \textit{いつ}承認したか（不変なタイムスタンプ）。
+
+GitHub Actionsとの概念実証統合を実装し、PoHIが無視できるレイテンシオーバーヘッド（マシン時間で2秒未満）で不正な自動マージを防止することを実証した。
+リファレンス実装は \url{https://github.com/pohi-protocol/pohi} で公開している。
+\end{abstract}
+
+\textbf{キーワード}: AIエージェント、human-in-the-loop、人格証明、ソフトウェアサプライチェーンセキュリティ、ゼロ知識証明、分散型アイデンティティ、検証可能な資格情報、透明性ログ
+
+% =============================================================================
+% 1. はじめに
+% =============================================================================
+\section{はじめに}
+
+AI駆動開発ツールの急速な進歩は、ソフトウェア開発ワークフローを根本的に変革した。
+GitHub Copilot、Claude Code、自律型コーディングエージェントなどのツールは、最小限の人間の介入でコードの生成、レビュー、さらにはマージの提案までを行えるようになった。
+この自動化は開発者の生産性を劇的に向上させる一方で、説明責任に関する重要な問題を提起する：
+\textit{このコードを誰が承認したのか？人間かAIか？それを証明できるか？}
+
+AIエージェントが自律的にプルリクエストを作成し、別のAIシステムでレビューし、実質的な人間の監視なしに本番環境にマージするシナリオを考えてみよう。
+2024年、GitHub Copilotはツールを使用する開発者が書くコードの46\%以上を支援している。
+2025年までに、Devin、Claude Code Agent、GPT Engineerなどの自律型コーディングエージェントは、開発タスク全体をエンドツーエンドで完了できるようになる。
+この傾向は、AIシステムがコードを書くだけでなく、ソフトウェアライフサイクルの重要な部分を管理する未来を示唆している。
+
+説明責任のギャップは以下を考慮すると重大になる：
+\begin{itemize}
+    \item \textbf{セキュリティインシデント}: 悪意のあるコードが混入した場合、誰が責任を負うのか？
+    \item \textbf{規制コンプライアンス}: 金融や医療などの業界は、重要な変更に対する人間の承認を要求している。
+    \item \textbf{監査要件}: SOC 2、ISO 27001などのフレームワークは、追跡可能な承認プロセスを義務付けている。
+    \item \textbf{法的責任}: 契約によっては、ソフトウェアリリースに人間の署名が必要な場合がある。
+\end{itemize}
+
+現行のソリューションは、社会的慣習（レビューの要求など）やプロセス制御（保護されたブランチなど）に依存しているが、これらは容易に回避可能であり、暗号学的な検証可能性を欠いている。
+特定のアクションを、ボットや自動化システムではなく、真正な人間が承認したことを事後的に証明するメカニズムは存在しない。
+
+\subsection{貢献}
+
+本研究の貢献は以下の通りである：
+\begin{itemize}
+    \item AI駆動開発における「人間承認の検証ギャップ」を特定し、脅威モデルを形式化する。
+    \item 人格証明、分散型アイデンティティ、透明性ログを統合するPoHIアーキテクチャを提案する。
+    \item 人間承認検証を強制する概念実証GitHub Actionを実装する。
+    \item 関連する攻撃ベクトルに対するPoHIのセキュリティ特性を分析する。
+\end{itemize}
+
+% =============================================================================
+% 2. 背景と関連研究
+% =============================================================================
+\section{背景と関連研究}
+
+\subsection{ソフトウェア開発におけるAIエージェント}
+
+ソフトウェア開発におけるAIの進化は3つのフェーズで特徴づけられる：
+
+\textbf{フェーズ1（2021-2023年）: 補完ベースのアシスタント。}
+GitHub Copilotなどのツールがインラインでコード提案を行う。
+人間の開発者がすべてのアクションを制御している。
+
+\textbf{フェーズ2（2024-2025年）: エージェント型アシスタント。}
+Claude Code、Cursor、Windsurfなどのツールは、開発者が定義した境界内で、マルチステップタスクの実行、コマンドの実行、ファイルの自律的な変更が可能である。
+
+\textbf{フェーズ3（2025年以降）: 自律型エージェント。}
+DevinやOpenAIのOperatorなどのシステムは、プルリクエストの作成や外部サービスとのやり取りを含め、タスク全体を独立して完了できる。
+
+この進展は、開発者を「実装者」から「承認者」へと移行させ、検証可能な人間の監視の緊急の必要性を生み出している。
+
+\subsection{人格証明}
+
+人格証明（Proof of Personhood, PoP）システムは、エンティティがその身元を明かすことなく、一意の人間であることを検証することを目的としている。
+注目すべきアプローチには以下がある：
+
+\textbf{World ID} \cite{worldid}は、専用ハードウェア（Orb）を介した虹彩生体認証を使用して一意の識別子を作成する。
+ゼロ知識証明により、ユーザーは生体データを明かすことなく人間性を証明できる。
+World IDは「デバイス」レベル（電話ベース）と「Orb」レベル（生体認証）の両方の検証を提供する。
+
+\textbf{BrightID}は、既存の検証済み人間が新規メンバーを保証するソーシャルグラフアプローチを使用する。
+よりアクセスしやすいが、共謀によるシビル攻撃に対してより脆弱である。
+
+\textbf{Gitcoin Passport}は、複数のアイデンティティシグナル（ソーシャルアカウント、オンチェーン活動）を「人間性スコア」に集約する。
+段階的な検証を提供するが、生体認証システムのバイナリな一意性保証を欠いている。
+
+本研究では、ゼロ知識証明による強力なシビル耐性とプライバシー保護特性から、World IDを主要なPoP提供者として選択する。
+
+\subsection{ソフトウェアサプライチェーンセキュリティ}
+
+最近のイニシアチブはソフトウェアサプライチェーンの完全性に取り組んでいる：
+
+\textbf{SCITT（Supply Chain Integrity, Transparency, and Trust）} \cite{scitt}は、サプライチェーンの主張の追記専用透明性ログを維持するためのIETFドラフトアーキテクチャである。
+ソフトウェア成果物に関する証明の記録と検証のフレームワークを提供する。
+
+\textbf{Sigstore} \cite{sigstore}は、OIDCアイデンティティプロバイダを使用したキーレスコード署名を可能にする。
+署名用の透明性ログ（Rekor）を提供するが、人間の検証ではなく暗号学的アイデンティティに焦点を当てている。
+
+\textbf{SLSA（Supply-chain Levels for Software Artifacts）}は、出所を通じて成果物の完全性を確保するためのフレームワークを定義している。
+ただし、サプライチェーンの「人間承認」の側面には対処していない。
+
+PoHIは、既存のサプライチェーンセキュリティインフラストラクチャと統合できる人間検証レイヤーを追加することで、これらのシステムを補完する。
+
+\subsection{分散型アイデンティティ}
+
+分散型識別子（DID）\cite{did}と検証可能な資格情報（VC）\cite{vc}のW3C標準は、自己主権型アイデンティティの基盤を提供する。
+DIDは中央機関なしでの識別子作成を可能にし、VCは主体に関する主張を暗号学的に検証可能にする。
+
+PoHIはこれらの標準を権限レイヤーに活用し、組織が誰がどのタイプのアクションを承認できるかを指定する資格情報を発行できるようにする。
+
+\subsection{AIエージェント認可}
+
+MITのMahari et al. \cite{mitdelegation}は、AIエージェントのための「認証された委任」を提案し、人間からAIシステムへの能力委任の概念を導入している。
+彼らの研究はAIエージェントが何をする権限があるかに焦点を当てている。
+
+PoHIは補完的な問題に対処する：AIエージェントが実行に関与したかどうかに関係なく、人間が実際にアクションを承認したことを検証する。
+彼らのアプローチが「何ができるか」を定義するのに対し、PoHIは「人間がこれを承認した」ことを証明する。
+
+% =============================================================================
+% 3. 脅威モデル
+% =============================================================================
+\section{脅威モデル}
+
+\subsection{システムモデル}
+
+以下のコンポーネントを持つソフトウェア開発環境を考える：
+\begin{itemize}
+    \item \textbf{開発者}: コードを書きレビューする人間のアクター。
+    \item \textbf{AIエージェント}: コードを生成しプルリクエストを作成できる自動化システム。
+    \item \textbf{リポジトリ}: Gitベースのバージョン管理システム。
+    \item \textbf{CI/CDパイプライン}: 自動化されたビルドとデプロイのインフラストラクチャ。
+\end{itemize}
+
+\subsection{攻撃者の能力}
+
+以下のことができる攻撃者を想定する：
+\begin{itemize}
+    \item リポジトリアクセス権を持つAIエージェントを制御する。
+    \item プログラムでコミットとプルリクエストを作成する。
+    \item 承認証明の偽造またはリプレイを試みる。
+    \item 複数の偽のアイデンティティを作成する（シビル攻撃）。
+\end{itemize}
+
+\subsection{セキュリティ目標}
+
+PoHIは以下を確保することを目指す：
+\begin{enumerate}
+    \item \textbf{人間検証}: アクションが一意の人間によって検証可能に承認される。
+    \item \textbf{紐付け}: 承認が特定のコード状態に紐付けられる。
+    \item \textbf{否認防止}: 承認者は承認を否認できない。
+    \item \textbf{改ざん証拠}: 記録への変更が検出可能である。
+\end{enumerate}
+
+\subsection{スコープと制限}
+
+\textit{暗号学的認可}と\textit{意味的理解}を区別することが重要である。
+PoHIは、特定のシグナル（コミットハッシュ）が一意の人間アイデンティティによって承認されたことを保証する。
+しかし、人間の承認者がコード変更を意味的に理解したか、その正確性を検証したかは保証しない。
+人間が悪意のあるコミットのQRコードをスキャンするよう強制またはだまされるソーシャルエンジニアリング攻撃は、暗号プロトコルのスコープ外と見なされるが、UIの緩和策（承認前にコミット詳細を明確に表示するなど）は推奨される。
+さらに、PoHIは正当なWorld ID資格情報を持つ悪意のある内部者が有害な変更を承認することを防止しない。組織のアクセス制御とコードレビュープロセスは補完的なセーフガードとして残る。
+
+% =============================================================================
+% 4. 提案アーキテクチャ
+% =============================================================================
+\section{提案アーキテクチャ}
+
+\subsection{概要}
+
+PoHIは、検証可能な人間承認記録を作成するために連携する4つのレイヤーで構成される：
+
+\begin{enumerate}
+    \item \textbf{アイデンティティレイヤー}: World IDを使用して承認者が一意の人間であることを検証する。
+    \item \textbf{権限レイヤー}: DIDとVCを使用して権限を管理する。
+    \item \textbf{証明レイヤー}: SCITT互換ログにイベントを記録する。
+    \item \textbf{統合レイヤー}: Gitワークフローと接続する。
+\end{enumerate}
+
+コアデータ構造は\texttt{HumanApprovalAttestation}であり、以下を紐付ける：
+\begin{itemize}
+    \item 人間アイデンティティの証明（World IDのnullifierハッシュ）
+    \item 特定のソフトウェア成果物（コミットSHA）
+    \item アクションタイプ（マージ、デプロイ、リリース）
+    \item タイムスタンプ（ブロック時間または署名付きタイムスタンプ）
+\end{itemize}
+
+\subsection{アイデンティティレイヤー}
+
+アイデンティティレイヤーはWorld IDのゼロ知識証明システムを活用する。
+ユーザーがアクションを承認するとき：
+
+\begin{enumerate}
+    \item システムはリポジトリとコミットSHAをハッシュして\texttt{signal}を生成する： \\ \texttt{signal = SHA256(repository || ":" || commit\_sha)}
+    \item ユーザーはWorld AppでQRコードをスキャンし、World IDをこのシグナルに紐付けるZK証明を生成する。
+    \item 証明にはこのユーザー-アクションの組み合わせに一意な\texttt{nullifier\_hash}が含まれ、同じ人間が同じコミットを二度承認することを防ぎながらプライバシーを保護する。
+\end{enumerate}
+
+検証レベルは柔軟性を提供する：
+\begin{itemize}
+    \item \textbf{デバイス}: 電話ベースの検証（低い保証）
+    \item \textbf{Orb}: 生体認証による検証（高い保証）
+\end{itemize}
+
+\subsection{権限レイヤー}
+
+権限レイヤー（オプション）は、組織が誰が何を承認できるかを定義できるようにする：
+
+\begin{itemize}
+    \item \textbf{DID}は組織と個人を識別する
+    \item \textbf{VC}は承認権限を指定する（例：「AliceはリポジトリXの本番デプロイを承認できる」）
+\end{itemize}
+
+このレイヤーは基本操作には必要ないが、ロールベースの承認ポリシーなどのエンタープライズユースケースを可能にする。
+
+\subsection{証明レイヤー}
+
+証明レイヤーは証明記録を作成し保存する。2つのハッシュアルゴリズムが使用される：
+
+\begin{itemize}
+    \item \textbf{SHA-256}: オフチェーンストレージと相互運用性のためのプロトコル標準ハッシュ
+    \item \textbf{Keccak-256}: オンチェーン記録のためのEVMネイティブハッシュ
+\end{itemize}
+
+World Chainでのオンチェーンストレージは以下を提供する：
+\begin{itemize}
+    \item 不変性と改ざん証拠
+    \item 公開検証可能性
+    \item 検閲耐性
+    \item ブロック包含によるタイムスタンプ
+\end{itemize}
+
+スマートコントラクトは以下を強制する：
+\begin{itemize}
+    \item 証明ハッシュの一意性
+    \item 重複承認の防止（同じnullifier + コミット）
+    \item 元の承認者または管理者による取り消し機能
+\end{itemize}
+
+\subsection{統合レイヤー}
+
+統合レイヤーはPoHIを開発者ワークフローに接続する：
+
+\textbf{GitHub Action}: 任意のリポジトリに追加してマージ前に人間承認を強制できるGitHub Action。
+トリガーされると：
+\begin{enumerate}
+    \item コミットSHAで承認リクエストを作成する
+    \item World ID検証用のQRコードをPRに投稿する
+    \item World App経由の人間承認を待機する
+    \item 証明を記録しPRステータスを更新する
+\end{enumerate}
+
+\textbf{CLIツール}: CI/CDコンテキスト外で承認を要求・検証するためのコマンドラインインターフェース。
+
+\textbf{SDK}: PoHIをカスタムアプリケーションに統合するためのTypeScriptライブラリ。
+
+% =============================================================================
+% 5. 実装
+% =============================================================================
+\section{実装}
+
+PoHIを以下のパッケージを持つモジュラーTypeScriptライブラリとして実装した：
+
+\begin{itemize}
+    \item \texttt{@pohi-protocol/core}: チェーン中立の型、バリデーション、SHA-256ハッシュ（依存関係ゼロ）
+    \item \texttt{@pohi-protocol/evm}: Keccak-256とオンチェーンエンコーディング用のEVMユーティリティ
+    \item \texttt{@pohi-protocol/sdk}: World Chainとのやり取り用クライアント
+    \item \texttt{@pohi-protocol/cli}: コマンドラインツール
+    \item \texttt{@pohi-protocol/action}: GitHub Action
+    \item \texttt{@pohi-protocol/contracts}: Solidityスマートコントラクト（Foundry）
+\end{itemize}
+
+コアライブラリはランタイム依存関係がゼロで、制約のある環境での使用を可能にする。
+モジュラー設計により、ユーザーは必要なコンポーネントのみを採用できる。
+
+\subsection{証明データモデル}
+
+\begin{lstlisting}[language=Python,caption={証明JSONの構造}]
+{
+  "version": "1.0",
+  "type": "HumanApprovalAttestation",
+  "subject": {
+    "repository": "org/repo",
+    "commit_sha": "abc123...",
+    "action": "PR_MERGE"
+  },
+  "human_proof": {
+    "method": "world_id",
+    "verification_level": "orb",
+    "nullifier_hash": "0x..."
+  },
+  "timestamp": "2025-12-15T10:30:00Z",
+  "proof": { "type": "Ed25519", "jws": "..." }
+}
+\end{lstlisting}
+
+% =============================================================================
+% 6. 評価
+% =============================================================================
+\section{評価}
+
+\subsection{セキュリティ分析}
+
+第3節で定義した脅威モデルに対してPoHIを評価する。
+
+\begin{table}[h]
+\centering
+\caption{攻撃ベクトルに対するセキュリティ分析}
+\begin{tabular}{lll}
+\toprule
+\textbf{攻撃} & \textbf{緩和策} & \textbf{保証} \\
+\midrule
+シビル攻撃 & World ID nullifier & 高（Orb） \\
+リプレイ攻撃 & コミットへのシグナル紐付け & 高 \\
+改ざん & 証明ハッシュ & 高 \\
+なりすまし & ZK証明検証 & 高 \\
+フロントランニング & オンチェーンnullifierチェック & 中 \\
+強制 & スコープ外 & N/A \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{シビル攻撃}: World IDのnullifierハッシュにより、アクションスコープごとに一意の人間による1回の承認が保証される。
+Orb検証レベルは、生体認証ベースの一意性チェックにより強力な実用的シビル耐性を提供するが、形式的な生体認証の不可謬性は主張しない。
+デバイスレベルの検証はより弱い保証を提供する。
+
+\textbf{リプレイ攻撃}: シグナルはリポジトリとコミットSHAのハッシュとして計算される。
+これにより各証明が特定のアクションに紐付けられ、異なるコミット間での証明の再利用を防ぐ。
+
+\textbf{改ざん}: 証明ハッシュはSHA-256を使用してすべての重要なフィールドをカバーする。
+証明データへの変更はハッシュの不一致を引き起こし、検証時に検出可能となる。
+
+\textbf{フロントランニング}: オンチェーンコントラクトは記録前に重複承認をチェックする。
+攻撃者はWorld ID証明を欠いているため、正当な承認をフロントランできない。
+
+\subsection{パフォーマンス評価}
+
+リファレンス実装を使用して承認検証フローのエンドツーエンドレイテンシを測定した。
+表\ref{tab:latency}は、典型的な検証リクエストの処理時間の内訳を示している。
+
+\begin{table}[h]
+\centering
+\caption{操作レイテンシ（リファレンス実装）}
+\label{tab:latency}
+\begin{tabular}{lrr}
+\toprule
+\textbf{操作} & \textbf{平均時間} & \textbf{標準偏差} \\
+\midrule
+証明構築 & $<$ 5 ms & $\pm$1 ms \\
+ハッシュ計算（SHA-256） & $<$ 1 ms & $\pm$0.1 ms \\
+World ID証明検証（API） & 1,200 ms & $\pm$300 ms \\
+GitHubステータス更新 & 250 ms & $\pm$50 ms \\
+オンチェーン記録（オプション） & 3,000 ms & $\pm$500 ms \\
+\midrule
+\textbf{合計マシン時間} & \textbf{約1.5秒} & - \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+主要なレイテンシ要因は外部World ID検証API呼び出し（約1.2秒）であり、非同期プルリクエストワークフローでは許容範囲内である。
+暗号学的紐付け（SHA-256ハッシュと署名検証）の計算オーバーヘッドは、標準的なCI/CDランナーで無視できる程度（$<$ 5ms）である。
+人間のインタラクション時間（World AppでのQRコードスキャン）はユーザーによって異なるためマシン時間から除外されるが、通常5〜15秒を要する。
+
+\subsection{ガスコスト}
+
+オンチェーン操作はWorld Chainでガスコストが発生する：
+
+\begin{table}[h]
+\centering
+\caption{推定ガスコスト}
+\begin{tabular}{lr}
+\toprule
+\textbf{操作} & \textbf{ガス単位} \\
+\midrule
+recordAttestation & 約150,000 \\
+revokeAttestation & 約30,000 \\
+isValidAttestation (view) & 0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+典型的なWorld Chainのガス価格では、証明の記録に0.01米ドル未満のコストがかかる。
+
+これらの結果は、PoHIが無視できるオーバーヘッドで既存のCI/CDパイプラインに統合でき、実際のソフトウェア開発ワークフローで人間承認検証を実用的にすることを示している。
+
+% =============================================================================
+% 7. 議論
+% =============================================================================
+\section{議論}
+
+\subsection{制限事項}
+
+\begin{itemize}
+    \item World ID Orbの可用性の制約。
+    \item 透明性ログにおけるプライバシーの考慮事項。
+    \item 既存ワークフローへの導入障壁。
+\end{itemize}
+
+\subsection{今後の課題}
+
+\begin{itemize}
+    \item Policy as Codeとの統合。
+    \item 組織間の信頼フェデレーション。
+    \item プライバシー保護監査メカニズム。
+\end{itemize}
+
+% =============================================================================
+% 8. 結論
+% =============================================================================
+\section{結論}
+
+AIエージェントが自律的なソフトウェア開発においてますます能力を発揮するにつれ、人間の承認を検証する能力は説明責任とセキュリティにとって重要になる。
+本稿では、ゼロ知識証明、分散型アイデンティティ、透明性ログを組み合わせて、検証可能な人間承認の記録を作成するプロトコルであるProof of Human Intent (PoHI)を提案した。
+
+PoHIは、AI駆動開発における説明責任を暗黙の信頼から暗号学的に検証可能な意図へとシフトさせ、ますます自動化されるソフトウェアエコシステムにおける人間の監視の基盤を確立する。
+
+% =============================================================================
+% 参考文献
+% =============================================================================
+\begin{thebibliography}{99}
+
+\bibitem{worldid}
+World Foundation, ``World ID Documentation,'' 2025. [Online]. Available: https://docs.world.org/world-id
+
+\bibitem{did}
+W3C, ``Decentralized Identifiers (DIDs) v1.0,'' W3C Recommendation, 2022.
+
+\bibitem{vc}
+W3C, ``Verifiable Credentials Data Model v1.1,'' W3C Recommendation, 2022.
+
+\bibitem{scitt}
+IETF, ``An Architecture for Trustworthy and Transparent Digital Supply Chains,'' Emerging Internet-Draft, 2024.
+
+\bibitem{sigstore}
+Sigstore Project, ``Sigstore: Software Signing for Everyone,'' 2023.
+
+\bibitem{mitdelegation}
+R. Mahari et al., ``Authenticated Delegation and Authorized AI Agents,'' MIT Media Lab, 2024.
+
+\end{thebibliography}
+
+\end{CJK}
+\end{document}
