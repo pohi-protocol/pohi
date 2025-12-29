@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 type Theme = 'light' | 'dark' | 'system'
 
@@ -8,16 +8,7 @@ export function ThemeToggle() {
   const [theme, setTheme] = useState<Theme>('system')
   const [mounted, setMounted] = useState(false)
 
-  useEffect(() => {
-    setMounted(true)
-    const saved = localStorage.getItem('pohi-theme') as Theme | null
-    if (saved) {
-      setTheme(saved)
-      applyTheme(saved)
-    }
-  }, [])
-
-  const applyTheme = (newTheme: Theme) => {
+  const applyTheme = useCallback((newTheme: Theme) => {
     const root = document.documentElement
     root.classList.remove('light', 'dark')
 
@@ -27,7 +18,26 @@ export function ThemeToggle() {
     } else {
       root.classList.add(newTheme)
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    setMounted(true)
+    const saved = localStorage.getItem('pohi-theme') as Theme | null
+    const initialTheme = saved || 'system'
+    setTheme(initialTheme)
+    applyTheme(initialTheme)
+
+    // Listen for system theme changes
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+    const handleChange = () => {
+      const currentTheme = localStorage.getItem('pohi-theme') as Theme | null
+      if (!currentTheme || currentTheme === 'system') {
+        applyTheme('system')
+      }
+    }
+    mediaQuery.addEventListener('change', handleChange)
+    return () => mediaQuery.removeEventListener('change', handleChange)
+  }, [applyTheme])
 
   const cycleTheme = () => {
     const next: Theme = theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light'

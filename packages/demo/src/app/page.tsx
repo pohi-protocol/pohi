@@ -279,16 +279,20 @@ function HomeContent() {
                 text={JSON.stringify(attestation, null, 2)}
                 label="Copy JSON"
               />
-              <CopyButton
-                text={attestation.attestation_hash || ''}
-                label="Copy Hash"
-              />
+              {attestation.attestation_hash && (
+                <CopyButton
+                  text={attestation.attestation_hash}
+                  label="Copy Hash"
+                />
+              )}
             </div>
           </div>
-          <div className="mb-4 p-3 bg-white dark:bg-gray-900 rounded border border-green-200 dark:border-green-700">
-            <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Attestation Hash</div>
-            <code className="text-sm font-mono break-all">{attestation.attestation_hash}</code>
-          </div>
+          {attestation.attestation_hash && (
+            <div className="mb-4 p-3 bg-white dark:bg-gray-900 rounded border border-green-200 dark:border-green-700">
+              <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Attestation Hash</div>
+              <code className="text-sm font-mono break-all">{attestation.attestation_hash}</code>
+            </div>
+          )}
           <details className="group">
             <summary className="cursor-pointer text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">
               View full attestation JSON
