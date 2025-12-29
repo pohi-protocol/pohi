@@ -33,6 +33,8 @@ export interface HumanApprovalAttestation {
   subject: ApprovalSubject
   human_proof: HumanProof
   timestamp: string
+  /** SHA-256 hash of canonical attestation (protocol standard) */
+  attestation_hash?: string
   signature?: {
     type: string
     jws: string
