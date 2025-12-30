@@ -51,7 +51,7 @@ npm run deploy:mainnet
 
 ## Contract Addresses
 
-| Network | Address |
-|---------|---------|
-| World Chain Sepolia | TBD |
-| World Chain Mainnet | TBD |
+| Network | Address | Explorer |
+|---------|---------|----------|
+| World Chain Sepolia | `0xe3aF97c1Eb0c1Bfa872059270a947e8A10FFD9d1` | [View](https://worldchain-sepolia.explorer.alchemy.com/address/0xe3af97c1eb0c1bfa872059270a947e8a10ffd9d1) |
+| World Chain Mainnet | TBD | - |

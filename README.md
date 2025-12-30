@@ -242,7 +242,7 @@ On-chain attestation recording is **optional** and currently in development.
 | Network | Status | Contract Address |
 |---------|--------|------------------|
 | World Chain Mainnet | 🔧 Coming Soon | TBD |
-| World Chain Sepolia | 🔧 Coming Soon | TBD |
+| World Chain Sepolia | ✅ Deployed | [`0xe3aF97c1Eb0c1Bfa872059270a947e8A10FFD9d1`](https://worldchain-sepolia.explorer.alchemy.com/address/0xe3af97c1eb0c1bfa872059270a947e8a10ffd9d1) |
 
 > **Note**: PoHI works without on-chain recording. The core protocol uses off-chain attestations that can be independently verified. On-chain recording adds an additional immutable transparency layer.
 
@@ -307,6 +307,14 @@ For full security documentation, see [SECURITY.md](./SECURITY.md).
 | Sigstore | Keyless code signing | [sigstore.dev](https://sigstore.dev) |
 | W3C DID | Decentralized identifiers | [w3.org](https://www.w3.org/TR/did-core/) |
 | W3C VC | Verifiable credentials | [w3.org](https://www.w3.org/TR/vc-data-model/) |
+
+---
+
+## 📄 Research Paper
+
+We are preparing an academic paper on PoHI for arXiv submission.
+
+**Seeking arXiv Endorsement**: If you have endorsement capability in `cs.CR` (Cryptography and Security) or `cs.SE` (Software Engineering), we would greatly appreciate your support. Please [open an issue](https://github.com/pohi-protocol/pohi/issues/new) or contact us directly.
 
 ---
 
