@@ -167,4 +167,4 @@ No constructor parameters required.
 
 ## Contact
 
-For audit inquiries: security@pohi-protocol.org
+For audit inquiries: ikko.ashimine@i-tec.ltd

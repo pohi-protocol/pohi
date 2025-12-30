@@ -8,7 +8,7 @@ We take security vulnerabilities seriously. If you discover a security issue, pl
 
 **DO NOT** open a public GitHub issue for security vulnerabilities.
 
-Instead, please email: **security@pohi-protocol.org** (or open a private security advisory on GitHub)
+Instead, please email: **ikko.ashimine@i-tec.ltd** (or open a private security advisory on GitHub)
 
 Include:
 - Description of the vulnerability
@@ -598,5 +598,5 @@ Before submitting a PR:
 
 ## Contact
 
-- Security issues: security@pohi-protocol.org
+- Security issues: ikko.ashimine@i-tec.ltd
 - General questions: Open a GitHub Discussion
