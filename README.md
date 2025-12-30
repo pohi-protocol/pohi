@@ -242,7 +242,7 @@ On-chain attestation recording is **optional** and currently in development.
 | Network | Status | Contract Address |
 |---------|--------|------------------|
 | World Chain Mainnet | 🔧 Coming Soon | TBD |
-| World Chain Sepolia | 🔧 Coming Soon | TBD |
+| World Chain Sepolia | ✅ Deployed | [`0xe3aF97c1Eb0c1Bfa872059270a947e8A10FFD9d1`](https://worldchain-sepolia.explorer.alchemy.com/address/0xe3af97c1eb0c1bfa872059270a947e8a10ffd9d1) |
 
 > **Note**: PoHI works without on-chain recording. The core protocol uses off-chain attestations that can be independently verified. On-chain recording adds an additional immutable transparency layer.
 
