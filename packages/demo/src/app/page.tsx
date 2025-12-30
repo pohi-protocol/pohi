@@ -3,6 +3,9 @@
 import { useState, useEffect } from 'react'
 import type { HumanApprovalAttestation, ApprovalSubject } from '@/types'
 import { ProviderSelector } from '@/components/ProviderSelector'
+import { ThemeToggle } from '@/components/ThemeToggle'
+import { CopyButton } from '@/components/CopyButton'
+import { FAQ } from '@/components/FAQ'
 import {
   WorldIDVerification,
   GitcoinPassportVerification,
@@ -141,6 +144,9 @@ function HomeContent() {
   return (
     <main className="min-h-screen p-8 max-w-4xl mx-auto">
       {/* Header */}
+      <div className="flex justify-end mb-4">
+        <ThemeToggle />
+      </div>
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold mb-4">Proof of Human Intent</h1>
         <p className="text-xl text-gray-600 dark:text-gray-400">
@@ -264,12 +270,37 @@ function HomeContent() {
       {/* Attestation Result */}
       {attestation && (
         <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-6 mb-8">
-          <h2 className="text-xl font-semibold mb-4 text-green-800 dark:text-green-200">
-            Attestation Created
-          </h2>
-          <pre className="bg-white dark:bg-gray-900 p-4 rounded overflow-x-auto text-sm">
-            {JSON.stringify(attestation, null, 2)}
-          </pre>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold text-green-800 dark:text-green-200">
+              Attestation Created
+            </h2>
+            <div className="flex gap-2">
+              <CopyButton
+                text={JSON.stringify(attestation, null, 2)}
+                label="Copy JSON"
+              />
+              {attestation.attestation_hash && (
+                <CopyButton
+                  text={attestation.attestation_hash}
+                  label="Copy Hash"
+                />
+              )}
+            </div>
+          </div>
+          {attestation.attestation_hash && (
+            <div className="mb-4 p-3 bg-white dark:bg-gray-900 rounded border border-green-200 dark:border-green-700">
+              <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Attestation Hash</div>
+              <code className="text-sm font-mono break-all">{attestation.attestation_hash}</code>
+            </div>
+          )}
+          <details className="group">
+            <summary className="cursor-pointer text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">
+              View full attestation JSON
+            </summary>
+            <pre className="mt-2 bg-white dark:bg-gray-900 p-4 rounded overflow-x-auto text-sm">
+              {JSON.stringify(attestation, null, 2)}
+            </pre>
+          </details>
         </div>
       )}
 
@@ -327,6 +358,9 @@ function HomeContent() {
           </div>
         </div>
       </div>
+
+      {/* FAQ Section */}
+      <FAQ />
 
       {/* Footer */}
       <footer className="mt-12 pt-8 border-t text-center text-gray-500 text-sm">
