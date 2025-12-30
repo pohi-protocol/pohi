@@ -310,6 +310,14 @@ For full security documentation, see [SECURITY.md](./SECURITY.md).
 
 ---
 
+## 📄 Research Paper
+
+We are preparing an academic paper on PoHI for arXiv submission.
+
+**Seeking arXiv Endorsement**: If you have endorsement capability in `cs.CR` (Cryptography and Security) or `cs.SE` (Software Engineering), we would greatly appreciate your support. Please [open an issue](https://github.com/pohi-protocol/pohi/issues/new) or contact us directly.
+
+---
+
 ## 🤝 Contributing
 
 Contributions are welcome! This project is in early stages.
