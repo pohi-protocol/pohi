@@ -2,7 +2,9 @@
 
 **TL;DR**: AI agents are writing code, reviewing PRs, and deploying to production. But can you *prove* a human approved it? PoHI (Proof of Human Intent) creates verifiable cryptographic attestations binding human approval to specific commits.
 
-[Try the Demo](https://pohi-demo.vercel.app) | [GitHub](https://github.com/pohi-protocol/pohi) | [npm](https://www.npmjs.com/package/pohi-core)
+[Try the Demo](https://pohi-demo.vercel.app) | [GitHub](https://github.com/pohi-protocol/pohi) | [npm](https://www.npmjs.com/package/pohi-core) | [Paper (coming soon)](#)
+
+![PoHI - Proof of Human Intent](https://pohi-demo.vercel.app/opengraph-image)
 
 ---
 
@@ -45,6 +47,19 @@ PoHI creates machine-verifiable proof that a real human approved a specific acti
 ```
 
 The key insight: **World ID proves you're a unique human without revealing who you are**. The nullifier hash ensures one approval per human per commit—no Sybil attacks possible.
+
+### Multiple Identity Providers
+
+PoHI isn't locked to a single provider. We've tested and verified:
+
+| Provider | Type | Status |
+|----------|------|--------|
+| **World ID** | ZK proof (Orb/Device) | ✅ Verified |
+| **Gitcoin Passport** | Web3 identity score | ✅ Verified (Score: 54.33) |
+| **BrightID** | Social graph | 🔧 Implemented |
+| **Civic** | Gateway Pass | 🔧 Implemented |
+
+This means organizations can choose the verification level appropriate for their risk tolerance.
 
 ## Show Me the Code
 
@@ -145,6 +160,17 @@ What's out of scope:
 - Semantic gap (human doesn't understand what they approved)
 - Malicious insiders (authorized human with bad intent)
 
+## Current Status
+
+PoHI is live and testable:
+
+- **Smart Contracts**: Deployed on [World Chain Sepolia](https://worldchain-sepolia.explorer.alchemy.com/address/0xe3af97c1eb0c1bfa872059270a947e8a10ffd9d1)
+- **npm Packages**: `pohi-core`, `pohi-evm`, `pohi-sdk`, `pohi-cli` all published
+- **CI/CD Integrations**: GitHub Action, GitLab CI, Bitbucket Pipe ready
+- **Test Coverage**: 250+ tests across all packages
+
+World Chain Mainnet deployment coming soon.
+
 ## Try It Now
 
 1. **Demo**: [pohi-demo.vercel.app](https://pohi-demo.vercel.app)
@@ -165,9 +191,17 @@ PoHI ensures that when you say "a human approved this," you can prove it.
 - GitHub: [pohi-protocol/pohi](https://github.com/pohi-protocol/pohi)
 - Demo: [pohi-demo.vercel.app](https://pohi-demo.vercel.app)
 - npm: [pohi-core](https://www.npmjs.com/package/pohi-core)
+- Security: [SECURITY.md](https://github.com/pohi-protocol/pohi/blob/main/SECURITY.md)
+- Contract: [World Chain Sepolia](https://worldchain-sepolia.explorer.alchemy.com/address/0xe3af97c1eb0c1bfa872059270a947e8a10ffd9d1)
 
 **Author**: [Ikko Eltociear Ashimine](https://github.com/eltociear)
+
+*Published: December 2025*
 
 ---
 
 *Proof of Human Intent: AI executes. Humans authorize. Machines verify.*
+
+---
+
+**Discussion**: Found this interesting? Have questions or feedback? Open an [issue](https://github.com/pohi-protocol/pohi/issues) or reach out on GitHub.
