@@ -8,7 +8,7 @@
 - [x] Gitcoin Passport 検証済み (Score: 54.33)
 - [x] セキュリティレビュー (SECURITY.md)
 - [x] テストカバレッジ 250+
-- [ ] OG画像の準備 (オプション)
+- [x] OG画像の準備 (動的生成: /opengraph-image, /twitter-image)
 
 ---
 

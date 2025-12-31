@@ -4,6 +4,8 @@
 
 [Try the Demo](https://pohi-demo.vercel.app) | [GitHub](https://github.com/pohi-protocol/pohi) | [npm](https://www.npmjs.com/package/pohi-core) | [Paper (coming soon)](#)
 
+![PoHI - Proof of Human Intent](https://pohi-demo.vercel.app/opengraph-image)
+
 ---
 
 ## The Problem
