@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { ThemeToggle } from '@/components/ThemeToggle'
+import { LanguageSwitcher } from '@/components/LanguageSwitcher'
+import { useTranslation, useI18n } from '@/lib/i18n'
 
 // Contract address on World Chain Sepolia
 const REGISTRY_ADDRESS = '0xe3aF97c1Eb0c1Bfa872059270a947e8A10FFD9d1'
@@ -91,8 +93,8 @@ function calculateStats(attestations: AttestationRecord[]): Stats {
   }
 }
 
-function formatDate(timestamp: number): string {
-  return new Date(timestamp).toLocaleDateString('en-US', {
+function formatDate(timestamp: number, locale: string = 'en-US'): string {
+  return new Date(timestamp).toLocaleDateString(locale === 'ja' ? 'ja-JP' : 'en-US', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
@@ -121,6 +123,8 @@ function getVerificationLevelColor(level: number): string {
 }
 
 export default function DashboardPage() {
+  const t = useTranslation()
+  const { language } = useI18n()
   const [attestations, setAttestations] = useState<AttestationRecord[]>([])
   const [stats, setStats] = useState<Stats | null>(null)
   const [loading, setLoading] = useState(true)
@@ -161,19 +165,22 @@ export default function DashboardPage() {
       <div className="flex justify-between items-center mb-8">
         <div>
           <Link href="/" className="text-blue-600 dark:text-blue-400 hover:underline text-sm">
-            &larr; Back to Demo
+            &larr; {t('backToDemo')}
           </Link>
-          <h1 className="text-3xl font-bold mt-2">PoHI Dashboard</h1>
-          <p className="text-gray-600 dark:text-gray-400">On-chain attestation explorer</p>
+          <h1 className="text-3xl font-bold mt-2">{t('dashboardTitle')}</h1>
+          <p className="text-gray-600 dark:text-gray-400">{t('dashboardSubtitle')}</p>
         </div>
-        <ThemeToggle />
+        <div className="flex items-center gap-4">
+          <LanguageSwitcher />
+          <ThemeToggle />
+        </div>
       </div>
 
       {/* Contract Info */}
       <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 mb-8">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div>
-            <span className="text-sm text-gray-600 dark:text-gray-400">Registry Contract</span>
+            <span className="text-sm text-gray-600 dark:text-gray-400">{t('registryContract')}</span>
             <div className="font-mono text-sm">
               <a
                 href={`${EXPLORER_URL}/address/${REGISTRY_ADDRESS}`}
@@ -186,14 +193,14 @@ export default function DashboardPage() {
             </div>
           </div>
           <div className="text-sm text-gray-500 dark:text-gray-400">
-            Network: World Chain Sepolia (4801)
+            {t('network')}: World Chain Sepolia (4801)
           </div>
         </div>
       </div>
 
       {loading ? (
         <div className="text-center py-12">
-          <div className="animate-pulse text-xl">Loading...</div>
+          <div className="animate-pulse text-xl">{t('loading')}</div>
         </div>
       ) : (
         <>
@@ -204,25 +211,25 @@ export default function DashboardPage() {
                 <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
                   {stats.totalAttestations}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Total Attestations</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">{t('totalAttestations')}</div>
               </div>
               <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
                 <div className="text-3xl font-bold text-green-600 dark:text-green-400">
                   {stats.activeAttestations}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Active</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">{t('active')}</div>
               </div>
               <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
                 <div className="text-3xl font-bold text-red-600 dark:text-red-400">
                   {stats.revokedAttestations}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Revoked</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">{t('revoked')}</div>
               </div>
               <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
                 <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">
                   {stats.uniqueRepositories}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">Repositories</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">{t('repositories')}</div>
               </div>
             </div>
           )}
@@ -230,19 +237,19 @@ export default function DashboardPage() {
           {/* Verification Level Breakdown */}
           {stats && (
             <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700 mb-8">
-              <h2 className="text-lg font-semibold mb-4">By Verification Level</h2>
+              <h2 className="text-lg font-semibold mb-4">{t('byVerificationLevel')}</h2>
               <div className="flex gap-8 flex-wrap">
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 rounded bg-blue-500"></div>
-                  <span>Device: {stats.byVerificationLevel.device}</span>
+                  <span>{t('device')}: {stats.byVerificationLevel.device}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 rounded bg-green-500"></div>
-                  <span>Orb: {stats.byVerificationLevel.orb}</span>
+                  <span>{t('orb')}: {stats.byVerificationLevel.orb}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 rounded bg-purple-500"></div>
-                  <span>Secure Document: {stats.byVerificationLevel.secureDocument}</span>
+                  <span>{t('secureDocument')}: {stats.byVerificationLevel.secureDocument}</span>
                 </div>
               </div>
             </div>
@@ -253,7 +260,7 @@ export default function DashboardPage() {
             <div className="flex-1">
               <input
                 type="text"
-                placeholder="Search by repository, hash, or commit..."
+                placeholder={t('searchPlaceholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full p-3 border rounded-lg dark:bg-gray-800 dark:border-gray-700"
@@ -268,7 +275,7 @@ export default function DashboardPage() {
                     : 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600'
                 }`}
               >
-                All
+                {t('all')}
               </button>
               <button
                 onClick={() => setFilter('active')}
@@ -278,7 +285,7 @@ export default function DashboardPage() {
                     : 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600'
                 }`}
               >
-                Active
+                {t('active')}
               </button>
               <button
                 onClick={() => setFilter('revoked')}
@@ -288,7 +295,7 @@ export default function DashboardPage() {
                     : 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600'
                 }`}
               >
-                Revoked
+                {t('revoked')}
               </button>
             </div>
           </div>
@@ -300,22 +307,22 @@ export default function DashboardPage() {
                 <thead className="bg-gray-50 dark:bg-gray-900">
                   <tr>
                     <th className="px-4 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-400">
-                      Repository
+                      {t('repository')}
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-400">
-                      Commit
+                      {t('commit')}
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-400">
-                      Level
+                      {t('level')}
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-400">
-                      Status
+                      {t('status')}
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-400">
-                      Date
+                      {t('date')}
                     </th>
                     <th className="px-4 py-3 text-left text-sm font-medium text-gray-600 dark:text-gray-400">
-                      Hash
+                      {t('hash')}
                     </th>
                   </tr>
                 </thead>
@@ -323,7 +330,7 @@ export default function DashboardPage() {
                   {filteredAttestations.length === 0 ? (
                     <tr>
                       <td colSpan={6} className="px-4 py-8 text-center text-gray-500">
-                        No attestations found
+                        {t('noAttestationsFound')}
                       </td>
                     </tr>
                   ) : (
@@ -355,16 +362,16 @@ export default function DashboardPage() {
                         <td className="px-4 py-3">
                           {attestation.revoked ? (
                             <span className="text-red-600 dark:text-red-400 font-medium">
-                              Revoked
+                              {t('revoked')}
                             </span>
                           ) : (
                             <span className="text-green-600 dark:text-green-400 font-medium">
-                              Active
+                              {t('active')}
                             </span>
                           )}
                         </td>
                         <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
-                          {formatDate(attestation.timestamp)}
+                          {formatDate(attestation.timestamp, language)}
                         </td>
                         <td className="px-4 py-3 font-mono text-sm">
                           <a
@@ -387,14 +394,14 @@ export default function DashboardPage() {
           {/* Footer */}
           <div className="mt-8 text-center text-sm text-gray-500 dark:text-gray-400">
             <p>
-              Data is fetched from World Chain Sepolia.{' '}
+              {t('dataFetchedFrom')}{' '}
               <a
                 href={`${EXPLORER_URL}/address/${REGISTRY_ADDRESS}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 dark:text-blue-400 hover:underline"
               >
-                View on Explorer
+                {t('viewOnExplorer')}
               </a>
             </p>
           </div>
