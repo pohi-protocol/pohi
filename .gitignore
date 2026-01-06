@@ -26,3 +26,11 @@ packages/contracts/broadcast/
 
 # Test coverage
 coverage/
+
+# Playwright
+playwright-report/
+playwright/.cache/
+test-results/
+
+# TypeDoc output
+packages/core/docs/

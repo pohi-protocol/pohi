@@ -2,6 +2,9 @@
 
 Chain-neutral core library for Proof of Human Intent (PoHI).
 
+[![npm](https://img.shields.io/npm/v/pohi-core)](https://www.npmjs.com/package/pohi-core)
+[![API Docs](https://img.shields.io/badge/API-Docs-blue)](https://pohi-protocol.github.io/pohi/)
+
 ## Installation
 
 ```bash

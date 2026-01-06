@@ -10,7 +10,10 @@
     "build": "npm run build --workspaces --if-present",
     "dev": "npm run dev -w pohi-demo",
     "test": "npm run test --workspaces --if-present",
-    "lint": "npm run lint --workspaces --if-present"
+    "lint": "npm run lint --workspaces --if-present",
+    "format": "prettier --write \"packages/*/src/**/*.{ts,tsx,js,jsx,json}\"",
+    "format:check": "prettier --check \"packages/*/src/**/*.{ts,tsx,js,jsx,json}\"",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
@@ -19,6 +22,21 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@vitest/coverage-v8": "^4.0.16",
+    "husky": "^9.1.0",
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.4.0",
     "typescript": "^5.0.0"
+  },
+  "lint-staged": {
+    "packages/*/src/**/*.{ts,tsx}": [
+      "prettier --write",
+      "eslint --fix --no-error-on-unmatched-pattern"
+    ],
+    "packages/*/src/**/*.{js,jsx,json,md}": [
+      "prettier --write"
+    ],
+    "packages/contracts/src/**/*.sol": [
+      "forge fmt"
+    ]
   }
 }

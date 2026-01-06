@@ -67,7 +67,15 @@ function canonicalizeObject(obj: Record<string, unknown>, fieldOrder: readonly s
 
 /**
  * Compute SHA-256 hash of data
- * Returns hex string with 0x prefix
+ *
+ * @param data - String or Buffer to hash
+ * @returns Hex string with 0x prefix (e.g., "0x1234...")
+ *
+ * @example
+ * ```typescript
+ * const hash = sha256("hello world");
+ * // => "0xb94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9"
+ * ```
  */
 export function sha256(data: string | Buffer): string {
   const hash = createHash('sha256').update(data).digest('hex')
@@ -95,6 +103,28 @@ export function computeSignal(repository: string, commitSha: string): string {
 
 /**
  * Create a new attestation from subject and proof
+ *
+ * @param subject - What is being approved (repository, commit, action)
+ * @param proof - Human verification proof from PoP provider
+ * @returns Complete attestation with computed hash and timestamp
+ *
+ * @example
+ * ```typescript
+ * const attestation = createAttestation(
+ *   {
+ *     repository: 'owner/repo',
+ *     commit_sha: 'abc123',
+ *     action: 'DEPLOY',
+ *     description: 'Production deployment'
+ *   },
+ *   {
+ *     method: 'world_id',
+ *     verification_level: 'orb',
+ *     nullifier_hash: '0x...',
+ *     signal: computeSignal('owner/repo', 'abc123')
+ *   }
+ * );
+ * ```
  */
 export function createAttestation(
   subject: ApprovalSubject,
@@ -118,6 +148,23 @@ export function createAttestation(
 
 /**
  * Validate attestation structure and hash integrity
+ *
+ * Checks:
+ * - Version compatibility (must be "1.0")
+ * - Required fields (repository, commit_sha, action, etc.)
+ * - Timestamp format (ISO 8601)
+ * - Hash integrity (if attestation_hash is present)
+ *
+ * @param attestation - The attestation to validate
+ * @returns Object with `valid` boolean and `errors` array
+ *
+ * @example
+ * ```typescript
+ * const result = validateAttestation(attestation);
+ * if (!result.valid) {
+ *   console.error('Validation errors:', result.errors);
+ * }
+ * ```
  */
 export function validateAttestation(attestation: HumanApprovalAttestation): {
   valid: boolean

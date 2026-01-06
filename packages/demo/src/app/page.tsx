@@ -1,11 +1,14 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import type { HumanApprovalAttestation, ApprovalSubject } from '@/types'
 import { ProviderSelector } from '@/components/ProviderSelector'
 import { ThemeToggle } from '@/components/ThemeToggle'
+import { LanguageSwitcher } from '@/components/LanguageSwitcher'
 import { CopyButton } from '@/components/CopyButton'
 import { FAQ } from '@/components/FAQ'
+import { useTranslation } from '@/lib/i18n'
 import {
   WorldIDVerification,
   GitcoinPassportVerification,
@@ -15,6 +18,7 @@ import {
 } from '@/components/verification'
 
 function HomeContent() {
+  const t = useTranslation()
   const [selectedProvider, setSelectedProvider] = useState<string | null>(null)
   const [verificationStatus, setVerificationStatus] = useState<
     'idle' | 'verifying' | 'success' | 'error'
@@ -144,28 +148,35 @@ function HomeContent() {
   return (
     <main className="min-h-screen p-8 max-w-4xl mx-auto">
       {/* Header */}
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-end items-center gap-4 mb-4">
+        <Link
+          href="/dashboard"
+          className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+        >
+          {t('dashboard')}
+        </Link>
+        <LanguageSwitcher />
         <ThemeToggle />
       </div>
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold mb-4">Proof of Human Intent</h1>
+        <h1 className="text-4xl font-bold mb-4">{t('title')}</h1>
         <p className="text-xl text-gray-600 dark:text-gray-400">
-          AI executes. Humans authorize. Machines verify.
+          {t('tagline')}
         </p>
         {isGitHubActionRequest && (
           <div className="mt-4 inline-block bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200 px-4 py-2 rounded-lg">
-            GitHub Action Approval Request
+            {t('githubActionRequest')}
           </div>
         )}
       </div>
 
       {/* Approval Subject */}
       <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 mb-8">
-        <h2 className="text-xl font-semibold mb-4">Approval Request</h2>
+        <h2 className="text-xl font-semibold mb-4">{t('approvalRequest')}</h2>
 
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1">Repository</label>
+            <label className="block text-sm font-medium mb-1">{t('repository')}</label>
             <input
               type="text"
               value={subject.repository || ''}
@@ -179,7 +190,7 @@ function HomeContent() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Commit SHA</label>
+            <label className="block text-sm font-medium mb-1">{t('commitSha')}</label>
             <input
               type="text"
               value={subject.commit_sha || ''}
@@ -193,7 +204,7 @@ function HomeContent() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Description</label>
+            <label className="block text-sm font-medium mb-1">{t('description')}</label>
             <input
               type="text"
               value={subject.description || ''}
@@ -201,7 +212,7 @@ function HomeContent() {
                 setSubject({ ...subject, description: e.target.value })
               }
               className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
-              placeholder="What are you approving?"
+              placeholder={t('descriptionPlaceholder')}
             />
           </div>
         </div>
@@ -219,12 +230,12 @@ function HomeContent() {
         {selectedProvider && verificationStatus === 'idle' && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold">Verify Your Identity</h2>
+              <h2 className="text-xl font-semibold">{t('verifyIdentity')}</h2>
               <button
                 onClick={() => setSelectedProvider(null)}
                 className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
               >
-                Change provider
+                {t('changeProvider')}
               </button>
             </div>
             {renderVerificationComponent()}
@@ -233,20 +244,20 @@ function HomeContent() {
 
         {verificationStatus === 'verifying' && (
           <div className="text-center py-8">
-            <span className="text-xl animate-pulse">Verifying...</span>
+            <span className="text-xl animate-pulse">{t('verifying')}</span>
           </div>
         )}
 
         {verificationStatus === 'success' && (
           <div className="text-center py-8 space-y-4">
             <div className="text-xl text-green-600 dark:text-green-400">
-              Human Verified!
+              {t('humanVerified')}
             </div>
             <button
               onClick={handleReset}
               className="text-blue-600 dark:text-blue-400 underline"
             >
-              Start new verification
+              {t('startNewVerification')}
             </button>
           </div>
         )}
@@ -254,14 +265,14 @@ function HomeContent() {
         {verificationStatus === 'error' && (
           <div className="text-center py-8 space-y-4">
             <div className="text-xl text-red-600 dark:text-red-400">
-              Verification Failed
+              {t('verificationFailed')}
             </div>
             <p className="text-gray-600 dark:text-gray-400">{error}</p>
             <button
               onClick={handleReset}
               className="text-blue-600 dark:text-blue-400 underline"
             >
-              Try again
+              {t('tryAgain')}
             </button>
           </div>
         )}
@@ -272,30 +283,30 @@ function HomeContent() {
         <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-6 mb-8">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold text-green-800 dark:text-green-200">
-              Attestation Created
+              {t('attestationCreated')}
             </h2>
             <div className="flex gap-2">
               <CopyButton
                 text={JSON.stringify(attestation, null, 2)}
-                label="Copy JSON"
+                label={t('copyJson')}
               />
               {attestation.attestation_hash && (
                 <CopyButton
                   text={attestation.attestation_hash}
-                  label="Copy Hash"
+                  label={t('copyHash')}
                 />
               )}
             </div>
           </div>
           {attestation.attestation_hash && (
             <div className="mb-4 p-3 bg-white dark:bg-gray-900 rounded border border-green-200 dark:border-green-700">
-              <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">Attestation Hash</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">{t('attestationHash')}</div>
               <code className="text-sm font-mono break-all">{attestation.attestation_hash}</code>
             </div>
           )}
           <details className="group">
             <summary className="cursor-pointer text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">
-              View full attestation JSON
+              {t('viewFullJson')}
             </summary>
             <pre className="mt-2 bg-white dark:bg-gray-900 p-4 rounded overflow-x-auto text-sm">
               {JSON.stringify(attestation, null, 2)}
@@ -306,27 +317,27 @@ function HomeContent() {
 
       {/* How it works */}
       <div className="mt-12 border-t pt-8">
-        <h2 className="text-2xl font-semibold mb-6">How it works</h2>
+        <h2 className="text-2xl font-semibold mb-6">{t('howItWorks')}</h2>
         <div className="grid md:grid-cols-3 gap-6">
           <div className="text-center">
             <div className="text-4xl mb-2">1.</div>
-            <h3 className="font-semibold">Choose Provider</h3>
+            <h3 className="font-semibold">{t('step1Title')}</h3>
             <p className="text-gray-600 dark:text-gray-400 text-sm">
-              Select your preferred proof-of-personhood provider
+              {t('step1Desc')}
             </p>
           </div>
           <div className="text-center">
             <div className="text-4xl mb-2">2.</div>
-            <h3 className="font-semibold">Verify Human</h3>
+            <h3 className="font-semibold">{t('step2Title')}</h3>
             <p className="text-gray-600 dark:text-gray-400 text-sm">
-              Complete verification to prove you&apos;re a unique human
+              {t('step2Desc')}
             </p>
           </div>
           <div className="text-center">
             <div className="text-4xl mb-2">3.</div>
-            <h3 className="font-semibold">Create Attestation</h3>
+            <h3 className="font-semibold">{t('step3Title')}</h3>
             <p className="text-gray-600 dark:text-gray-400 text-sm">
-              Attestation is created binding your approval to the action
+              {t('step3Desc')}
             </p>
           </div>
         </div>
@@ -334,27 +345,27 @@ function HomeContent() {
 
       {/* Supported Providers */}
       <div className="mt-12 border-t pt-8">
-        <h2 className="text-2xl font-semibold mb-6">Supported Providers</h2>
+        <h2 className="text-2xl font-semibold mb-6">{t('supportedProviders')}</h2>
         <div className="grid md:grid-cols-5 gap-4 text-center text-sm">
           <div>
-            <div className="text-2xl mb-1">World ID</div>
-            <span className="text-gray-500">ZK Proofs</span>
+            <div className="text-2xl mb-1">{t('worldId')}</div>
+            <span className="text-gray-500">{t('zkProofs')}</span>
           </div>
           <div>
-            <div className="text-2xl mb-1">Gitcoin Passport</div>
-            <span className="text-gray-500">Web3 Score</span>
+            <div className="text-2xl mb-1">{t('gitcoinPassport')}</div>
+            <span className="text-gray-500">{t('web3Score')}</span>
           </div>
           <div>
-            <div className="text-2xl mb-1">BrightID</div>
-            <span className="text-gray-500">Social Graph</span>
+            <div className="text-2xl mb-1">{t('brightId')}</div>
+            <span className="text-gray-500">{t('socialGraph')}</span>
           </div>
           <div>
-            <div className="text-2xl mb-1">Civic</div>
-            <span className="text-gray-500">Gateway Pass</span>
+            <div className="text-2xl mb-1">{t('civic')}</div>
+            <span className="text-gray-500">{t('gatewayPass')}</span>
           </div>
           <div>
             <div className="text-2xl mb-1">PoH</div>
-            <span className="text-gray-500">Kleros</span>
+            <span className="text-gray-500">{t('kleros')}</span>
           </div>
         </div>
       </div>

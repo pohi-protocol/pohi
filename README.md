@@ -4,6 +4,8 @@
 
 [![Demo](https://img.shields.io/badge/Demo-Live-brightgreen)](https://pohi-demo.vercel.app/)
 [![npm](https://img.shields.io/npm/v/pohi-core)](https://www.npmjs.com/package/pohi-core)
+[![CI](https://github.com/pohi-protocol/pohi/actions/workflows/ci.yml/badge.svg)](https://github.com/pohi-protocol/pohi/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/pohi-protocol/pohi/branch/main/graph/badge.svg)](https://codecov.io/gh/pohi-protocol/pohi)
 [![arXiv](https://img.shields.io/badge/arXiv-coming_soon-b31b1b.svg)](https://arxiv.org)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![GitHub](https://img.shields.io/github/stars/pohi-protocol/pohi?style=social)](https://github.com/pohi-protocol/pohi)
@@ -320,6 +322,38 @@ We are preparing an academic paper on PoHI for arXiv submission.
 
 ---
 
+## 🛠️ Development
+
+### Quick Start with Dev Container
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/pohi-protocol/pohi)
+
+1. Click the button above, or open in VS Code with Dev Containers extension
+2. Wait for container to build (includes Node.js 20, Foundry, Playwright)
+3. Run `npm run dev -w pohi-demo` to start the demo app
+
+### Manual Setup
+
+```bash
+# Clone repository
+git clone https://github.com/pohi-protocol/pohi.git
+cd pohi
+
+# Install dependencies
+npm install
+
+# Build all packages
+npm run build
+
+# Run tests
+npm test
+
+# Start demo app
+npm run dev -w pohi-demo
+```
+
+---
+
 ## 🤝 Contributing
 
 Contributions are welcome! This project is in early stages.
@@ -333,6 +367,10 @@ Contributions are welcome! This project is in early stages.
 ## 📜 License
 
 [Apache License 2.0](LICENSE)
+
+## 📋 Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for version history and release notes.
 
 ---
 

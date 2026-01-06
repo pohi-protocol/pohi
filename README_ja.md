@@ -4,6 +4,8 @@
 
 [![Demo](https://img.shields.io/badge/Demo-Live-brightgreen)](https://pohi-demo.vercel.app/)
 [![npm](https://img.shields.io/npm/v/pohi-core)](https://www.npmjs.com/package/pohi-core)
+[![CI](https://github.com/pohi-protocol/pohi/actions/workflows/ci.yml/badge.svg)](https://github.com/pohi-protocol/pohi/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/pohi-protocol/pohi/branch/main/graph/badge.svg)](https://codecov.io/gh/pohi-protocol/pohi)
 [![arXiv](https://img.shields.io/badge/arXiv-coming_soon-b31b1b.svg)](https://arxiv.org)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![GitHub](https://img.shields.io/github/stars/pohi-protocol/pohi?style=social)](https://github.com/pohi-protocol/pohi)
@@ -320,6 +322,38 @@ arXiv投稿に向けてPoHIに関する学術論文を準備中です。
 
 ---
 
+## 🛠️ 開発
+
+### Dev Containerでクイックスタート
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/pohi-protocol/pohi)
+
+1. 上のボタンをクリック、またはVS CodeのDev Containers拡張機能で開く
+2. コンテナのビルドを待つ（Node.js 20、Foundry、Playwright含む）
+3. `npm run dev -w pohi-demo` でデモアプリを起動
+
+### 手動セットアップ
+
+```bash
+# リポジトリをクローン
+git clone https://github.com/pohi-protocol/pohi.git
+cd pohi
+
+# 依存関係をインストール
+npm install
+
+# 全パッケージをビルド
+npm run build
+
+# テストを実行
+npm test
+
+# デモアプリを起動
+npm run dev -w pohi-demo
+```
+
+---
+
 ## 🤝 コントリビューション
 
 コントリビューションを歓迎します！このプロジェクトは初期段階です。
@@ -333,6 +367,10 @@ arXiv投稿に向けてPoHIに関する学術論文を準備中です。
 ## 📜 ライセンス
 
 [Apache License 2.0](LICENSE)
+
+## 📋 変更履歴
+
+バージョン履歴とリリースノートは[CHANGELOG.md](CHANGELOG.md)を参照してください。
 
 ---
 

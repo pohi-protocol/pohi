@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://github.com/pohi-protocol/pohi#readme
+    about: Check our documentation before opening an issue
+  - name: Live Demo
+    url: https://pohi-demo.vercel.app/
+    about: Try the live demo
