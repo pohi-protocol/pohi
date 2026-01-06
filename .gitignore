@@ -31,3 +31,6 @@ coverage/
 playwright-report/
 playwright/.cache/
 test-results/
+
+# TypeDoc output
+packages/core/docs/
