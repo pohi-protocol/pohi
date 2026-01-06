@@ -4,6 +4,8 @@
 
 [![Demo](https://img.shields.io/badge/Demo-Live-brightgreen)](https://pohi-demo.vercel.app/)
 [![npm](https://img.shields.io/npm/v/pohi-core)](https://www.npmjs.com/package/pohi-core)
+[![CI](https://github.com/pohi-protocol/pohi/actions/workflows/ci.yml/badge.svg)](https://github.com/pohi-protocol/pohi/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/pohi-protocol/pohi/branch/main/graph/badge.svg)](https://codecov.io/gh/pohi-protocol/pohi)
 [![arXiv](https://img.shields.io/badge/arXiv-coming_soon-b31b1b.svg)](https://arxiv.org)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![GitHub](https://img.shields.io/github/stars/pohi-protocol/pohi?style=social)](https://github.com/pohi-protocol/pohi)
