@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 import type { HumanApprovalAttestation, ApprovalSubject } from '@/types'
 import { ProviderSelector } from '@/components/ProviderSelector'
 import { ThemeToggle } from '@/components/ThemeToggle'
@@ -144,7 +145,13 @@ function HomeContent() {
   return (
     <main className="min-h-screen p-8 max-w-4xl mx-auto">
       {/* Header */}
-      <div className="flex justify-end mb-4">
+      <div className="flex justify-end items-center gap-4 mb-4">
+        <Link
+          href="/dashboard"
+          className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+        >
+          Dashboard
+        </Link>
         <ThemeToggle />
       </div>
       <div className="text-center mb-12">
