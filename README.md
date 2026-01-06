@@ -320,6 +320,38 @@ We are preparing an academic paper on PoHI for arXiv submission.
 
 ---
 
+## 🛠️ Development
+
+### Quick Start with Dev Container
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/pohi-protocol/pohi)
+
+1. Click the button above, or open in VS Code with Dev Containers extension
+2. Wait for container to build (includes Node.js 20, Foundry, Playwright)
+3. Run `npm run dev -w pohi-demo` to start the demo app
+
+### Manual Setup
+
+```bash
+# Clone repository
+git clone https://github.com/pohi-protocol/pohi.git
+cd pohi
+
+# Install dependencies
+npm install
+
+# Build all packages
+npm run build
+
+# Run tests
+npm test
+
+# Start demo app
+npm run dev -w pohi-demo
+```
+
+---
+
 ## 🤝 Contributing
 
 Contributions are welcome! This project is in early stages.

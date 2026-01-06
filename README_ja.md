@@ -320,6 +320,38 @@ arXiv投稿に向けてPoHIに関する学術論文を準備中です。
 
 ---
 
+## 🛠️ 開発
+
+### Dev Containerでクイックスタート
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/pohi-protocol/pohi)
+
+1. 上のボタンをクリック、またはVS CodeのDev Containers拡張機能で開く
+2. コンテナのビルドを待つ（Node.js 20、Foundry、Playwright含む）
+3. `npm run dev -w pohi-demo` でデモアプリを起動
+
+### 手動セットアップ
+
+```bash
+# リポジトリをクローン
+git clone https://github.com/pohi-protocol/pohi.git
+cd pohi
+
+# 依存関係をインストール
+npm install
+
+# 全パッケージをビルド
+npm run build
+
+# テストを実行
+npm test
+
+# デモアプリを起動
+npm run dev -w pohi-demo
+```
+
+---
+
 ## 🤝 コントリビューション
 
 コントリビューションを歓迎します！このプロジェクトは初期段階です。
