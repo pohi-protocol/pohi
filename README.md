@@ -334,6 +334,10 @@ Contributions are welcome! This project is in early stages.
 
 [Apache License 2.0](LICENSE)
 
+## 📋 Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for version history and release notes.
+
 ---
 
 ## 💬 Philosophy

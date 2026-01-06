@@ -334,6 +334,10 @@ arXiv投稿に向けてPoHIに関する学術論文を準備中です。
 
 [Apache License 2.0](LICENSE)
 
+## 📋 変更履歴
+
+バージョン履歴とリリースノートは[CHANGELOG.md](CHANGELOG.md)を参照してください。
+
 ---
 
 ## 💬 哲学
