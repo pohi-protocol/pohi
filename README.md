@@ -10,6 +10,8 @@
 
 > **[Try the Live Demo](https://pohi-demo.vercel.app/)** - Verify your humanity with World ID
 
+English | [日本語](README_ja.md)
+
 ---
 
 ## 🎯 What is PoHI?
