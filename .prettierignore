@@ -1,0 +1,12 @@
+node_modules
+dist
+.next
+coverage
+playwright-report
+test-results
+packages/core/docs
+packages/contracts/out
+packages/contracts/cache
+packages/contracts/broadcast
+*.min.js
+package-lock.json

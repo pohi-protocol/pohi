@@ -1,0 +1,57 @@
+name: Question
+description: Ask a question about PoHI
+title: "[Question]: "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have a question? We're happy to help!
+
+  - type: dropdown
+    id: topic
+    attributes:
+      label: Topic
+      description: What is your question about?
+      options:
+        - Getting Started
+        - World ID Integration
+        - Gitcoin Passport Integration
+        - Smart Contracts
+        - GitHub Action / CI Integration
+        - API Usage
+        - Security
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: What would you like to know?
+      placeholder: Your question here...
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Any relevant context or what you've already tried
+      placeholder: |
+        - What I'm trying to achieve: ...
+        - What I've tried: ...
+        - Documentation I've read: ...
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: docs
+    attributes:
+      label: Documentation Check
+      options:
+        - label: I have checked the [documentation](https://github.com/pohi-protocol/pohi#readme)
+          required: true
+        - label: I have searched existing issues
+          required: true
