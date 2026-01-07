@@ -12,6 +12,7 @@ import {
 } from 'pohi-core'
 import { attestationStore } from '@/lib/store'
 import { getProviderConfig, isMockModeEnabled } from '@/lib/provider-config'
+import { verifyRateLimiter, getClientIp } from '@/lib/rate-limit'
 
 interface VerifyRequestBody {
   provider?: string
@@ -88,6 +89,27 @@ async function verifyOtherProvider(
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting check
+    const clientIp = getClientIp(request)
+    const rateLimitResult = verifyRateLimiter.check(clientIp)
+
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Too many requests. Please try again later.',
+          retryAfter: Math.ceil(rateLimitResult.resetIn / 1000),
+        },
+        {
+          status: 429,
+          headers: {
+            'Retry-After': String(Math.ceil(rateLimitResult.resetIn / 1000)),
+            'X-RateLimit-Remaining': '0',
+          },
+        }
+      )
+    }
+
     const body: VerifyRequestBody = await request.json()
     const { provider = POP_PROVIDERS.WORLD_ID, proof, subject, signal } = body
 

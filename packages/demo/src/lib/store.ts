@@ -7,7 +7,21 @@ interface AttestationRecord {
 
 /**
  * Simple in-memory store for attestations
- * In production, this should be replaced with a database (Redis, PostgreSQL, etc.)
+ *
+ * ⚠️  SECURITY WARNING: This is for demo/development only!
+ *
+ * Limitations:
+ * - Data is lost on server restart
+ * - Does not scale across multiple instances
+ * - No data persistence or backup
+ * - Potential memory leak with unbounded growth
+ *
+ * TODO: For production deployment, replace with:
+ * - Redis (recommended for ephemeral data with TTL)
+ * - PostgreSQL/MySQL (for persistent storage)
+ * - Vercel KV or similar managed service
+ *
+ * @see https://github.com/pohi-protocol/pohi/issues - File an issue for production store implementation
  */
 class AttestationStore {
   private store = new Map<string, AttestationRecord>()
