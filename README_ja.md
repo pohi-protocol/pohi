@@ -214,9 +214,9 @@ jobs:
 | [`pohi-sdk`](https://www.npmjs.com/package/pohi-sdk) | World Chainクライアント | ✅ v0.1.0 |
 | [`pohi-cli`](https://www.npmjs.com/package/pohi-cli) | コマンドラインツール | ✅ v0.1.0 |
 | [`pohi-action`](https://www.npmjs.com/package/pohi-action) | GitHub Action | ✅ v0.1.0 |
-| `pohi-gitlab-ci` | GitLab CIコンポーネント | ✅ v0.1.0 |
-| `pohi-bitbucket-pipe` | Bitbucket Pipe | ✅ v0.1.0 |
-| `pohi-contracts` | Solidityコントラクト（Foundry） | ✅ v0.1.0 |
+| [`pohi-gitlab-ci`](./packages/gitlab-ci) | GitLab CIコンポーネント | ✅ v0.1.0 |
+| [`pohi-bitbucket-pipe`](./packages/bitbucket-pipe) | Bitbucket Pipe | ✅ v0.1.0 |
+| [`pohi-contracts`](./packages/contracts) | Solidityコントラクト（Foundry） | ✅ v0.1.0 |
 | [`pohi-demo`](https://pohi-demo.vercel.app/) | Next.js + World IDデモ | ✅ 公開中 |
 
 ---
