@@ -13,6 +13,7 @@ import {
 import { attestationStore } from '@/lib/store'
 import { getProviderConfig, isMockModeEnabled } from '@/lib/provider-config'
 import { verifyRateLimiter, getClientIp } from '@/lib/rate-limit'
+import { notifyAttestationApproved, notifyVerificationFailed } from '@/lib/webhook'
 
 interface VerifyRequestBody {
   provider?: string
@@ -146,6 +147,13 @@ export async function POST(request: NextRequest) {
     }
 
     if (!verificationResult.success || !verificationResult.humanProof) {
+      // Send webhook notification for failed verification (non-blocking)
+      notifyVerificationFailed(
+        subject,
+        provider,
+        verificationResult.error || 'Verification failed'
+      ).catch((err) => console.error('Webhook notification error:', err))
+
       return NextResponse.json(
         { success: false, error: verificationResult.error || 'Verification failed' },
         { status: 400 }
@@ -159,6 +167,11 @@ export async function POST(request: NextRequest) {
     if (subject.repository && subject.commit_sha) {
       attestationStore.set(subject.repository, subject.commit_sha, attestation)
     }
+
+    // Send webhook notification for approved attestation (non-blocking)
+    notifyAttestationApproved(attestation, subject, provider).catch((err) =>
+      console.error('Webhook notification error:', err)
+    )
 
     return NextResponse.json({
       success: true,

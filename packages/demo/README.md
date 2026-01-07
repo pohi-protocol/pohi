@@ -69,10 +69,83 @@ For local testing, use the World ID Simulator:
 - Use staging credentials (`app_staging_...`)
 - The simulator allows testing without Orb verification
 
+## Webhook Notifications
+
+Configure outgoing webhooks to notify external services when attestations are approved.
+
+### Configuration
+
+Add to `.env.local`:
+
+```env
+# Webhook endpoint URL
+POHI_WEBHOOK_URL=https://your-service.com/webhook
+
+# Secret for HMAC-SHA256 signature (optional but recommended)
+POHI_WEBHOOK_SECRET=your_secret_here
+
+# Request timeout in milliseconds (default: 10000)
+POHI_WEBHOOK_TIMEOUT_MS=10000
+```
+
+### Webhook Payload
+
+```json
+{
+  "event": "attestation.approved",
+  "timestamp": "2024-01-15T10:30:00.000Z",
+  "data": {
+    "attestation": {
+      "version": "1.0",
+      "type": "pohi-approval",
+      "subject": {
+        "repository": "owner/repo",
+        "commit_sha": "abc123..."
+      },
+      "human_proof": {
+        "method": "world_id",
+        "verification_level": "orb",
+        "nullifier_hash": "0x...",
+        "signal": "..."
+      },
+      "timestamp": "2024-01-15T10:30:00.000Z",
+      "attestation_hash": "0x..."
+    },
+    "subject": { "repository": "owner/repo", "commit_sha": "abc123..." },
+    "provider": "world_id"
+  }
+}
+```
+
+### Events
+
+| Event | Description |
+|-------|-------------|
+| `attestation.approved` | Attestation successfully created |
+| `verification.failed` | Verification failed |
+
+### Security
+
+When `POHI_WEBHOOK_SECRET` is configured, requests include:
+- `X-PoHI-Signature`: HMAC-SHA256 signature (`sha256=...`)
+- `X-PoHI-Event`: Event type
+- `X-PoHI-Timestamp`: ISO timestamp
+
+Verify signature in your webhook receiver:
+
+```typescript
+import { createHmac } from 'crypto'
+
+function verifySignature(payload: string, signature: string, secret: string): boolean {
+  const expected = `sha256=${createHmac('sha256', secret).update(payload).digest('hex')}`
+  return signature === expected
+}
+```
+
 ## Next Steps
 
 - [ ] Add database storage for attestations
-- [ ] Implement GitHub webhook integration
+- [x] Implement webhook notifications
 - [ ] Add signature to attestations
 - [ ] Create GitHub Action wrapper
 
