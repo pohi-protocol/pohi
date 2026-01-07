@@ -13,6 +13,8 @@
 \usepackage{hyperref}
 \usepackage{listings}
 \usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, backgrounds}
 
 % Code listing style
 \lstset{
@@ -211,6 +213,51 @@ PoHI consists of four layers that work together to create verifiable human appro
     \item \textbf{Integration Layer}: Connects with Git workflows.
 \end{enumerate}
 
+Figure \ref{fig:architecture} illustrates the layered architecture and data flow between components.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[
+    layer/.style={draw, rounded corners, minimum width=2.8cm, minimum height=0.9cm, align=center, font=\footnotesize},
+    arrow/.style={-{Stealth[length=2mm]}, thick},
+    desc/.style={font=\tiny, text width=2.5cm, align=center}
+]
+% Layer 1: Identity
+\node[layer, fill=blue!20] (identity) at (0, 3) {Identity\\(World ID)};
+\node[desc, below=0.1cm of identity] {ZK Proofs\\Nullifier Hash};
+
+% Layer 2: Authority
+\node[layer, fill=green!20] (authority) at (3.5, 3) {Authority\\(DID/VC)};
+\node[desc, below=0.1cm of authority] {Permissions\\Credentials};
+
+% Layer 3: Attestation
+\node[layer, fill=orange!20] (attestation) at (7, 3) {Attestation\\(SCITT)};
+\node[desc, below=0.1cm of attestation] {Transparency Log\\Hash Records};
+
+% Layer 4: Integration (spans bottom)
+\node[layer, fill=purple!20, minimum width=9cm] (integration) at (3.5, 0.5) {Integration Layer (GitHub Actions, Webhooks, Status API)};
+
+% Arrows between layers
+\draw[arrow] (identity) -- (authority);
+\draw[arrow] (authority) -- (attestation);
+
+% Arrows to integration layer
+\draw[arrow] (identity) -- (0, 1.3);
+\draw[arrow] (authority) -- (3.5, 1.3);
+\draw[arrow] (attestation) -- (7, 1.3);
+
+% External actors
+\node[draw, ellipse, fill=gray!10, font=\footnotesize] (human) at (-2.5, 3) {Human};
+\node[draw, ellipse, fill=gray!10, font=\footnotesize] (git) at (-2.5, 0.5) {Git/CI};
+
+\draw[arrow] (human) -- (identity);
+\draw[arrow] (git) -- (integration);
+
+\end{tikzpicture}
+\caption{PoHI Four-Layer Architecture. Human approval flows through identity verification (Layer 1), optional authority checks (Layer 2), and attestation recording (Layer 3), all connected to developer workflows via the integration layer (Layer 4).}
+\label{fig:architecture}
+\end{figure}
+
 The core data structure is the \texttt{HumanApprovalAttestation}, which binds:
 \begin{itemize}
     \item A proof of human identity (World ID nullifier hash)
@@ -281,6 +328,45 @@ The Integration Layer connects PoHI to developer workflows:
     \item Waits for human approval via the World App
     \item Records the attestation and updates PR status
 \end{enumerate}
+
+Figure \ref{fig:flow} illustrates the complete verification flow from pull request creation to merge enablement.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[
+    box/.style={draw, rounded corners, minimum width=1.6cm, minimum height=0.7cm, align=center, font=\tiny},
+    arrow/.style={-{Stealth[length=1.5mm]}, thick},
+    node distance=0.3cm and 0.5cm
+]
+% Actors row
+\node[box, fill=gray!20] (pr) {PR\\Created};
+\node[box, fill=blue!20, right=of pr] (action) {GitHub\\Action};
+\node[box, fill=yellow!20, right=of action] (qr) {QR Code\\Posted};
+\node[box, fill=green!20, right=of qr] (scan) {Human\\Scans};
+\node[box, fill=orange!20, right=of scan] (verify) {ZK Proof\\Verified};
+\node[box, fill=purple!20, right=of verify] (attest) {Attestation\\Created};
+\node[box, fill=teal!20, right=of attest] (merge) {Merge\\Enabled};
+
+% Arrows
+\draw[arrow] (pr) -- (action);
+\draw[arrow] (action) -- (qr);
+\draw[arrow] (qr) -- (scan);
+\draw[arrow] (scan) -- (verify);
+\draw[arrow] (verify) -- (attest);
+\draw[arrow] (attest) -- (merge);
+
+% Labels
+\node[font=\tiny, above=0.05cm of action] {1};
+\node[font=\tiny, above=0.05cm of qr] {2};
+\node[font=\tiny, above=0.05cm of scan] {3};
+\node[font=\tiny, above=0.05cm of verify] {4};
+\node[font=\tiny, above=0.05cm of attest] {5};
+\node[font=\tiny, above=0.05cm of merge] {6};
+
+\end{tikzpicture}
+\caption{Verification Flow. (1) GitHub Action triggers on PR, (2) posts QR code comment, (3) human scans with World App, (4) ZK proof verified against World ID API, (5) attestation created and stored, (6) PR status updated to enable merge.}
+\label{fig:flow}
+\end{figure}
 
 \textbf{CLI Tool}: A command-line interface for requesting and verifying approvals outside of CI/CD contexts.
 
