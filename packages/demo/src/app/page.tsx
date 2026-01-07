@@ -176,8 +176,9 @@ function HomeContent() {
 
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1">{t('repository')}</label>
+            <label htmlFor="repository" className="block text-sm font-medium mb-1">{t('repository')}</label>
             <input
+              id="repository"
               type="text"
               value={subject.repository || ''}
               onChange={(e) =>
@@ -190,8 +191,9 @@ function HomeContent() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">{t('commitSha')}</label>
+            <label htmlFor="commit-sha" className="block text-sm font-medium mb-1">{t('commitSha')}</label>
             <input
+              id="commit-sha"
               type="text"
               value={subject.commit_sha || ''}
               onChange={(e) =>
@@ -204,8 +206,9 @@ function HomeContent() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">{t('description')}</label>
+            <label htmlFor="description" className="block text-sm font-medium mb-1">{t('description')}</label>
             <input
+              id="description"
               type="text"
               value={subject.description || ''}
               onChange={(e) =>

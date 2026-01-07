@@ -122,6 +122,14 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Validate subject
+    if (!subject) {
+      return NextResponse.json(
+        { success: false, error: 'Subject is required' },
+        { status: 400 }
+      )
+    }
+
     // Check mock mode
     const mockEnabled = isMockModeEnabled() || isMockMode()
 
