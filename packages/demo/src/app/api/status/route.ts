@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
     )
   }
 
-  const record = attestationStore.get(repo, commit)
+  const record = await attestationStore.get(repo, commit)
 
   if (!record) {
     return NextResponse.json({
@@ -33,6 +33,6 @@ export async function GET(request: NextRequest) {
     repository: repo,
     commit_sha: commit,
     attestation: record.attestation,
-    approved_at: record.createdAt.toISOString(),
+    approved_at: record.createdAt,
   })
 }

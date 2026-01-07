@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@eslint/eslintrc": "^3.3.3",
+    "@vercel/kv": "^3.0.0",
     "@worldcoin/idkit": "^2.4.2",
     "next": "^16.1.1",
     "pohi-core": "^0.1.0",

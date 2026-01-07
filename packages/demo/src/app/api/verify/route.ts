@@ -173,7 +173,7 @@ export async function POST(request: NextRequest) {
 
     // Store attestation for status polling (used by GitHub Actions)
     if (subject.repository && subject.commit_sha) {
-      attestationStore.set(subject.repository, subject.commit_sha, attestation)
+      await attestationStore.set(subject.repository, subject.commit_sha, attestation)
     }
 
     // Send webhook notification for approved attestation (non-blocking)
