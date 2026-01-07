@@ -71,9 +71,11 @@ PoHI answers three questions:
 |----------|------------------|------------------|--------|
 | **World ID** | ZK proof (Orb/Device) | High | ✅ Tested (2025-01) |
 | **Gitcoin Passport** | Web3 identity score | Medium | ✅ Tested (2025-12, Score: 54.33) |
-| **BrightID** | Social graph verification | Medium | 🔧 Implemented |
-| **Civic** | Gateway Pass | Medium | 🔧 Implemented |
-| **Proof of Humanity** | Kleros registry | High | 🔧 Implemented |
+| **BrightID** | Social graph verification | Medium | ✅ Implemented |
+| **Civic** | Gateway Pass | Medium | ✅ Implemented |
+| **Proof of Humanity** | Kleros registry | High | ✅ Implemented |
+
+> 📖 **[Provider Documentation](./docs/providers.md)** - Configuration, usage examples, and integration guides for each provider.
 
 ### Architecture
 
