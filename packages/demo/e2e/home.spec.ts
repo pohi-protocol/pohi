@@ -18,10 +18,11 @@ test.describe('Home Page', () => {
   })
 
   test('displays provider selection', async ({ page }) => {
-    await expect(page.getByText('World ID')).toBeVisible()
-    await expect(page.getByText('Gitcoin Passport')).toBeVisible()
-    await expect(page.getByText('BrightID')).toBeVisible()
-    await expect(page.getByText('Civic')).toBeVisible()
+    // Use role-based selectors to target the provider buttons specifically
+    await expect(page.getByRole('button', { name: /World ID/i })).toBeVisible()
+    await expect(page.getByRole('button', { name: /Gitcoin Passport/i })).toBeVisible()
+    await expect(page.getByRole('button', { name: /BrightID/i })).toBeVisible()
+    await expect(page.getByRole('button', { name: /Civic/i })).toBeVisible()
   })
 
   test('displays How it works section', async ({ page }) => {

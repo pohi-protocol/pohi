@@ -67,8 +67,8 @@ test.describe('Verification Flow - Mock API', () => {
               action: 'GENERIC',
             },
             human_proof: {
-              method: 'world_id',
-              verification_level: 'device',
+              method: 'gitcoin_passport',
+              verification_level: 'score_15',
             },
             attestation_hash: '0x1234567890abcdef',
           },
@@ -76,16 +76,19 @@ test.describe('Verification Flow - Mock API', () => {
       })
     })
 
-    // Select provider and trigger verification (this depends on provider implementation)
-    await page.getByRole('button', { name: /BrightID/i }).click()
+    // Select Gitcoin Passport (simpler flow)
+    await page.getByRole('button', { name: /Gitcoin Passport/i }).click()
 
-    // Look for a verify/connect button in the BrightID component
-    const verifyButton = page.getByRole('button', { name: /verify|connect|link/i })
-    if (await verifyButton.isVisible()) {
-      await verifyButton.click()
-      // May show verifying state
-      // await expect(page.getByText('Verifying...')).toBeVisible()
-    }
+    // Fill in an Ethereum address
+    const addressInput = page.getByPlaceholder('0x...')
+    await addressInput.fill('0x1234567890abcdef1234567890abcdef12345678')
+
+    // Click verify button
+    const verifyButton = page.getByRole('button', { name: /Verify with Gitcoin/i })
+    await verifyButton.click()
+
+    // Should show verifying state (button shows "Checking Passport...")
+    await expect(page.getByText(/Checking Passport/i)).toBeVisible()
   })
 
   test('shows success state after successful verification', async ({ page }) => {
@@ -119,19 +122,21 @@ test.describe('Verification Flow - Mock API', () => {
       })
     })
 
-    // Select Gitcoin Passport
+    // Select Gitcoin Passport (simpler flow - just needs address input)
     await page.getByRole('button', { name: /Gitcoin Passport/i }).click()
 
-    // Find and click verify button
-    const verifyButton = page.getByRole('button', { name: /verify|connect|check/i })
-    if (await verifyButton.isVisible()) {
-      await verifyButton.click()
+    // Fill in an Ethereum address (required for Gitcoin Passport)
+    const addressInput = page.getByPlaceholder('0x...')
+    await addressInput.fill('0x1234567890abcdef1234567890abcdef12345678')
 
-      // Should show success
-      await expect(page.getByText('Human Verified!')).toBeVisible({ timeout: 10000 })
-      await expect(page.getByText('Attestation Created')).toBeVisible()
-      await expect(page.getByText('Start new verification')).toBeVisible()
-    }
+    // Find and click verify button
+    const verifyButton = page.getByRole('button', { name: /Verify with Gitcoin/i })
+    await verifyButton.click()
+
+    // Should show success
+    await expect(page.getByText('Human Verified!')).toBeVisible({ timeout: 10000 })
+    await expect(page.getByText('Attestation Created')).toBeVisible()
+    await expect(page.getByText('Start new verification')).toBeVisible()
   })
 
   test('shows error state after failed verification', async ({ page }) => {
@@ -149,19 +154,21 @@ test.describe('Verification Flow - Mock API', () => {
       })
     })
 
-    // Select BrightID (simpler flow for testing)
-    await page.getByRole('button', { name: /BrightID/i }).click()
+    // Select Gitcoin Passport (simpler flow - just needs address input)
+    await page.getByRole('button', { name: /Gitcoin Passport/i }).click()
 
-    // Find and click verify button
-    const verifyButton = page.getByRole('button', { name: /verify|connect|link/i })
-    if (await verifyButton.isVisible()) {
-      await verifyButton.click()
+    // Fill in an Ethereum address
+    const addressInput = page.getByPlaceholder('0x...')
+    await addressInput.fill('0x1234567890abcdef1234567890abcdef12345678')
 
-      // Should show error
-      await expect(page.getByText('Verification Failed')).toBeVisible({ timeout: 10000 })
-      await expect(page.getByText('Verification failed: Invalid proof')).toBeVisible()
-      await expect(page.getByText('Try again')).toBeVisible()
-    }
+    // Click verify button
+    const verifyButton = page.getByRole('button', { name: /Verify with Gitcoin/i })
+    await verifyButton.click()
+
+    // Should show error
+    await expect(page.getByText('Verification Failed')).toBeVisible({ timeout: 10000 })
+    await expect(page.getByText('Verification failed: Invalid proof')).toBeVisible()
+    await expect(page.getByText('Try again')).toBeVisible()
   })
 
   test('can reset after verification', async ({ page }) => {
@@ -183,22 +190,25 @@ test.describe('Verification Flow - Mock API', () => {
       })
     })
 
-    // Select provider
-    await page.getByRole('button', { name: /BrightID/i }).click()
+    // Select Gitcoin Passport
+    await page.getByRole('button', { name: /Gitcoin Passport/i }).click()
 
-    const verifyButton = page.getByRole('button', { name: /verify|connect|link/i })
-    if (await verifyButton.isVisible()) {
-      await verifyButton.click()
+    // Fill in an Ethereum address
+    const addressInput = page.getByPlaceholder('0x...')
+    await addressInput.fill('0x1234567890abcdef1234567890abcdef12345678')
 
-      // Wait for success
-      await expect(page.getByText('Human Verified!')).toBeVisible({ timeout: 10000 })
+    // Click verify button
+    const verifyButton = page.getByRole('button', { name: /Verify with Gitcoin/i })
+    await verifyButton.click()
 
-      // Click reset
-      await page.getByText('Start new verification').click()
+    // Wait for success
+    await expect(page.getByText('Human Verified!')).toBeVisible({ timeout: 10000 })
 
-      // Should show provider selection again
-      await expect(page.getByRole('button', { name: /World ID/i })).toBeVisible()
-    }
+    // Click reset
+    await page.getByText('Start new verification').click()
+
+    // Should show provider selection again
+    await expect(page.getByRole('button', { name: /World ID/i })).toBeVisible()
   })
 })
 
@@ -222,15 +232,19 @@ test.describe('Attestation Display', () => {
       })
     })
 
-    await page.getByRole('button', { name: /BrightID/i }).click()
+    // Select Gitcoin Passport
+    await page.getByRole('button', { name: /Gitcoin Passport/i }).click()
 
-    const verifyButton = page.getByRole('button', { name: /verify|connect|link/i })
-    if (await verifyButton.isVisible()) {
-      await verifyButton.click()
+    // Fill in an Ethereum address
+    const addressInput = page.getByPlaceholder('0x...')
+    await addressInput.fill('0x1234567890abcdef1234567890abcdef12345678')
 
-      await expect(page.getByText('Attestation Hash')).toBeVisible({ timeout: 10000 })
-      await expect(page.getByText(mockHash)).toBeVisible()
-    }
+    // Click verify button
+    const verifyButton = page.getByRole('button', { name: /Verify with Gitcoin/i })
+    await verifyButton.click()
+
+    await expect(page.getByText('Attestation Hash')).toBeVisible({ timeout: 10000 })
+    await expect(page.getByText(mockHash)).toBeVisible()
   })
 
   test('can expand attestation JSON details', async ({ page }) => {
@@ -251,19 +265,23 @@ test.describe('Attestation Display', () => {
       })
     })
 
-    await page.getByRole('button', { name: /BrightID/i }).click()
+    // Select Gitcoin Passport
+    await page.getByRole('button', { name: /Gitcoin Passport/i }).click()
 
-    const verifyButton = page.getByRole('button', { name: /verify|connect|link/i })
-    if (await verifyButton.isVisible()) {
-      await verifyButton.click()
+    // Fill in an Ethereum address
+    const addressInput = page.getByPlaceholder('0x...')
+    await addressInput.fill('0x1234567890abcdef1234567890abcdef12345678')
 
-      await expect(page.getByText('Attestation Created')).toBeVisible({ timeout: 10000 })
+    // Click verify button
+    const verifyButton = page.getByRole('button', { name: /Verify with Gitcoin/i })
+    await verifyButton.click()
 
-      // Click to expand JSON
-      await page.getByText('View full attestation JSON').click()
+    await expect(page.getByText('Attestation Created')).toBeVisible({ timeout: 10000 })
 
-      // Should show JSON content
-      await expect(page.getByText('"version": "1.0"')).toBeVisible()
-    }
+    // Click to expand JSON
+    await page.getByText('View full attestation JSON').click()
+
+    // Should show JSON content
+    await expect(page.getByText('"version": "1.0"')).toBeVisible()
   })
 })
