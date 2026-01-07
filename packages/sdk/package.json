@@ -35,7 +35,7 @@
   "dependencies": {
     "pohi-core": "^0.1.0",
     "pohi-evm": "^0.1.0",
-    "viem": "^2.0.0"
+    "viem": "^2.43.5"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^4.0.16",
