@@ -19,16 +19,28 @@ jobs:
             const prNumber = context.payload.pull_request.number;
             const repo = context.repo.repo;
             const owner = context.repo.owner;
-            const approvalUrl = `https://pohi-demo.vercel.app/approve?repo=${owner}/${repo}&pr=${prNumber}`;
+            const headSha = context.payload.pull_request.head.sha;
+            const shortSha = headSha.substring(0, 7);
 
-            const body = `## Human Approval Required
+            // URL with repo and commit parameters that the demo app expects
+            const approvalUrl = `https://pohi-demo.vercel.app/?repo=${owner}/${repo}&commit=${headSha}`;
 
-This PR requires human verification via World ID before it can be merged.
+            const body = `## 🔏 Human Approval Required
 
-**[Approve with World ID](${approvalUrl})**
+This PR requires human verification before it can be merged.
+
+| | |
+|---|---|
+| **Repository** | \`${owner}/${repo}\` |
+| **Commit** | \`${shortSha}\` |
+| **PR** | #${prNumber} |
+
+### 👉 [Approve with World ID](${approvalUrl})
+
+Once approved, the attestation hash will be recorded on-chain.
 
 ---
-_Powered by [PoHI Protocol](https://github.com/pohi-protocol/pohi)_`;
+_Powered by [PoHI Protocol](https://github.com/pohi-protocol/pohi) - Proof of Human Intent_`;
 
             await github.rest.issues.createComment({
               owner,
