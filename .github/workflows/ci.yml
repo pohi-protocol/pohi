@@ -115,6 +115,7 @@ jobs:
         env:
           NEXT_PUBLIC_WORLD_ID_APP_ID: app_staging_test
           NEXT_PUBLIC_WORLD_ID_ACTION: test_action
+          POHI_MOCK_PROVIDERS: true
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
