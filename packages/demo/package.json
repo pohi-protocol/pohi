@@ -7,18 +7,19 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:debug": "playwright test --debug"
   },
   "dependencies": {
-    "pohi-core": "^0.1.0",
+    "@eslint/eslintrc": "^3.3.3",
     "@worldcoin/idkit": "^2.4.2",
-    "next": "^14.2.0",
-    "react": "^18.3.0",
-    "react-dom": "^18.3.0"
+    "next": "^16.1.1",
+    "pohi-core": "^0.1.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
   },
   "devDependencies": {
     "@playwright/test": "^1.49.0",
@@ -26,8 +27,8 @@
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.0",
-    "eslint": "^8.0.0",
-    "eslint-config-next": "^14.2.0",
+    "eslint": "^9.39.2",
+    "eslint-config-next": "^16.1.1",
     "postcss": "^8.4.0",
     "tailwindcss": "^3.4.0",
     "typescript": "^5.0.0"
