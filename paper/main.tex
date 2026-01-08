@@ -60,7 +60,7 @@ The reference implementation is available at \url{https://github.com/pohi-protoc
 % KEYWORDS
 % =============================================================================
 \begin{IEEEkeywords}
-AI agents, human-in-the-loop, proof of personhood, software supply chain security, zero-knowledge proofs, decentralized identity, verifiable credentials, transparency logs
+AI agents, human-in-the-loop, proof of personhood, software supply chain security, zero-knowledge proofs, decentralized identity
 \end{IEEEkeywords}
 
 % =============================================================================
@@ -119,7 +119,7 @@ Proof of Personhood (PoP) systems aim to verify that an entity is a unique human
 
 \textbf{Gitcoin Passport} aggregates multiple identity signals (social accounts, on-chain activity) into a ``humanity score.'' This provides gradual verification but lacks the binary uniqueness guarantee of biometric systems.
 
-We choose World ID as our primary PoP provider due to its strong Sybil resistance and privacy-preserving properties through zero-knowledge proofs.
+We use World ID as a concrete PoP provider in our reference implementation due to its strong Sybil resistance and privacy-preserving properties through zero-knowledge proofs.
 
 \subsection{Software Supply Chain Security}
 
@@ -187,6 +187,7 @@ PoHI guarantees that a specific signal (commit hash) was approved by a unique hu
 However, it does not guarantee that the human approver semantically understood the code changes or verified their correctness.
 Social engineering attacks where a human is coerced or tricked into scanning the QR code for a malicious commit are considered out of scope for the cryptographic protocol, though UI mitigations (e.g., displaying commit details clearly before approval) are recommended.
 Additionally, PoHI does not prevent a malicious insider with legitimate World ID credentials from approving harmful changes---organizational access controls and code review processes remain complementary safeguards.
+PoHI provides cryptographic evidence of human approval but does not replace legal or organizational authorization frameworks; rather, it offers verifiable records that can support existing governance and compliance requirements.
 
 % =============================================================================
 % 4. PROPOSED ARCHITECTURE
@@ -264,8 +265,11 @@ The Identity Layer leverages World ID's zero-knowledge proof system. When a user
 \begin{enumerate}
     \item The system generates a \texttt{signal} by hashing the repository and commit SHA: \\ \texttt{signal = SHA256(repository || ":" || commit\_sha)}
     \item The user scans a QR code with the World App, which generates a ZK proof binding their World ID to this signal.
-    \item The proof includes a \texttt{nullifier\_hash} unique to this user-action combination, preventing the same human from approving the same commit twice while preserving privacy.
+    \item The proof includes a \texttt{nullifier\_hash} unique to this user-action combination, preventing the same human from approving the same commit twice within the same repository and action scope, while preserving privacy.
 \end{enumerate}
+
+The signal is deliberately limited to repository and commit SHA to provide a minimal, unambiguous cryptographic binding.
+Additional metadata such as action type or timestamp is recorded in the attestation structure rather than in the signal itself, allowing the same ZK proof to be verified independently of attestation formatting choices.
 
 Verification levels provide flexibility:
 \begin{itemize}
@@ -449,15 +453,15 @@ Table \ref{tab:latency} shows the breakdown of processing time for a typical val
 \label{tab:latency}
 \begin{tabular}{lrr}
 \toprule
-\textbf{Operation} & \textbf{Average Time} & \textbf{Std Dev} \\
+\textbf{Operation} & \textbf{Time (ms)} & \textbf{Std Dev (ms)} \\
 \midrule
-Attestation Construction & $<$ 5 ms & $\pm$1 ms \\
-Hash Computation (SHA-256) & $<$ 1 ms & $\pm$0.1 ms \\
-World ID Proof Verification (API) & 1,200 ms & $\pm$300 ms \\
-GitHub Status Update & 250 ms & $\pm$50 ms \\
-On-chain Recording (optional) & 3,000 ms & $\pm$500 ms \\
+Attestation Construction & $<$5 & $\pm$1 \\
+Hash Computation (SHA-256) & $<$1 & $\pm$0.1 \\
+World ID Proof Verification (API) & 1,200 & $\pm$300 \\
+GitHub Status Update & 250 & $\pm$50 \\
+On-chain Recording (optional) & 3,000 & $\pm$500 \\
 \midrule
-\textbf{Total Machine Time} & \textbf{$\sim$1.5 s} & - \\
+\textbf{Total Machine Time} & \textbf{$\sim$1,500} & - \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -508,6 +512,8 @@ These results indicate that PoHI can be integrated into existing CI/CD pipelines
     \item Policy-as-code integration.
     \item Cross-organization trust federation.
     \item Privacy-preserving audit mechanisms.
+    \item Support for emerging standards such as Verifiable Credentials v2.0.
+    \item Broader interoperability across proof-of-personhood providers.
 \end{itemize}
 
 % =============================================================================
@@ -558,7 +564,7 @@ R. Mahari, C. Pentland, and S. Weitzner, ``Authenticated Delegation and Authoriz
 E. Ben-Sasson, A. Chiesa, D. Genkin, E. Tromer, and M. Virza, ``SNARKs for C: Verifying Program Executions Succinctly and in Zero Knowledge,'' in Proc. CRYPTO, 2013.
 
 \bibitem{semgrep}
-R. Shen, ``Semgrep: Lightweight Static Analysis for Many Languages,'' in Proc. IEEE Symposium on Security and Privacy (S\&P), 2020.
+r2c, Inc., ``Semgrep: Lightweight Static Analysis for Security,'' 2024. [Online]. Available: https://semgrep.dev
 
 \bibitem{supplychain}
 C. Ladisa, H. Plate, M. Martinez, and O. Barais, ``SoK: Taxonomy of Attacks on Open-Source Software Supply Chains,'' in Proc. IEEE S\&P, 2023.

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2026.1.8)  9 JAN 2026 02:20
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2026.1.8)  9 JAN 2026 02:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -908,57 +908,62 @@ usr/local/texlive/2025basic/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}
 
 [2]
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
-52.
+53.
  (/usr/local/texlive/2025basic/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-Underfull \hbox (badness 10000) in paragraph at lines 252--254
+Underfull \hbox (badness 10000) in paragraph at lines 253--255
 []\T1/lmr/m/n/10 The core data struc-ture is the
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 265--266
+Underfull \hbox (badness 10000) in paragraph at lines 266--267
 \T1/lmtt/m/n/10 signal = SHA256(repository || ":" ||
  []
 
 
 
 
-Underfull \hbox (badness 4378) in paragraph at lines 379--380
+
+[3]
+Underfull \hbox (badness 4378) in paragraph at lines 383--384
 []\T1/lmtt/m/n/10 @pohi-protocol/contracts\T1/lmr/m/n/10 : So-lid-ity smart con
 -
  []
 
-
-
-[3]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 419.
+(Font)              <8> on input line 423.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 
-Overfull \hbox (6.09975pt too wide) in paragraph at lines 450--463
+
+Overfull \hbox (14.52786pt too wide) in paragraph at lines 454--467
  [][] 
  []
 
 
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
 
 [4]
-Underfull \hbox (badness 2035) in paragraph at lines 518--519
+Underfull \hbox (badness 2035) in paragraph at lines 524--525
 []\T1/lmr/m/n/10 As AI agents be-come in-creas-ingly ca-pa-ble of au-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 537--538
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 543--544
 []\T1/lmr/m/n/8 World Foun-da-tion, ``World ID: Privacy-Preserving
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 537--538
+Underfull \hbox (badness 10000) in paragraph at lines 543--544
 \T1/lmr/m/n/8 Proof of Per-son-hood,'' 2024. [On-line]. Avail-able:
  []
-
-
 
 
 ** Conference Paper **
@@ -984,7 +989,7 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 Here is how much of TeX's memory you used:
  22805 strings out of 474662
  430262 string characters out of 5751110
- 823147 words of memory out of 5000000
+ 823307 words of memory out of 5000000
  45370 multiletter control sequences out of 15000+600000
  757044 words of font info for 151 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
@@ -1007,7 +1012,7 @@ r7.pfb></usr/local/texlive/2025basic/texmf-dist/fonts/type1/public/lm/lmr8.pfb>
 l/texlive/2025basic/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></usr/local/texl
 ive/2025basic/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/local/texlive/20
 25basic/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on main.pdf (5 pages, 408528 bytes).
+Output written on main.pdf (5 pages, 409785 bytes).
 PDF statistics:
  310 PDF objects out of 1000 (max. 8388607)
  262 compressed objects within 3 object streams
