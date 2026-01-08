@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2026.1.8)  9 JAN 2026 02:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2026.1.8)  9 JAN 2026 02:20
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -113,7 +113,50 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <24> not available
 \IEEEPARstartletwidth=\dimen164
 \c@IEEEbiography=\count276
 \@IEEEtranrubishbin=\box53
-) (/usr/local/texlive/2025basic/texmf-dist/tex/latex/cite/cite.sty
+) (/usr/local/texlive/2025basic/texmf-dist/tex/latex/base/fontenc.sty
+Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
+LaTeX Font Info:    Trying to load font information for T1+ptm on input line 11
+6.
+
+(/usr/local/texlive/2025basic/texmf-dist/tex/latex/psnfss/t1ptm.fd
+File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
+))
+(/usr/local/texlive/2025basic/texmf-dist/tex/latex/lm/lmodern.sty
+Package: lmodern 2015/05/01 v1.6.1 Latin Modern Fonts
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> OT1/lmr/m/n on input line 22.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `normal'
+(Font)                  OML/cmm/m/it --> OML/lmm/m/it on input line 23.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
+(Font)                  OMS/cmsy/m/n --> OMS/lmsy/m/n on input line 24.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
+(Font)                  OMX/cmex/m/n --> OMX/lmex/m/n on input line 25.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 26.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/cmm/b/it --> OML/lmm/b/it on input line 27.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/cmsy/b/n --> OMS/lmsy/b/n on input line 28.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  OMX/cmex/m/n --> OMX/lmex/m/n on input line 29.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
+(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 31.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
+(Font)                  OT1/cmss/m/n --> OT1/lmss/m/n on input line 32.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/cmr/m/it --> OT1/lmr/m/it on input line 33.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
+(Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 34.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/lmr/bx/n on input line 35.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
+(Font)                  OT1/cmss/bx/n --> OT1/lmss/bx/n on input line 36.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/cmr/bx/it --> OT1/lmr/bx/it on input line 37.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
+(Font)                  OT1/cmtt/m/n --> OT1/lmtt/m/n on input line 38.
+)
+(/usr/local/texlive/2025basic/texmf-dist/tex/latex/cite/cite.sty
 LaTeX Info: Redefining \cite on input line 302.
 LaTeX Info: Redefining \nocite on input line 332.
 Package: cite 2015/02/27  v 5.5
@@ -721,8 +764,13 @@ File: tikzlibrarybackgrounds.code.tex 2023-01-15 v3.1.10 (3.1.10)
 \pgf@layerbox@background=\box67
 \pgf@layerboxsaved@background=\box68
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 22.
+Package hyperref Info: Option `colorlinks' set `true' on input line 24.
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 26
+.
 
+(/usr/local/texlive/2025basic/texmf-dist/tex/latex/lm/t1lmr.fd
+File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
 (/usr/local/texlive/2025basic/texmf-dist/tex/latex/l3backend/l3backend-pdftex.d
 ef
 File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
@@ -731,24 +779,24 @@ File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
 ) (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 24.
-LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
 
 -- Lines per column: 56 (exact).
 (/usr/local/texlive/2025basic/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
@@ -775,292 +823,143 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-Package hyperref Info: Link coloring ON on input line 24.
+Package hyperref Info: Link coloring ON on input line 26.
  (./main.out) (./main.out)
 \@outlinefile=\write4
 \openout4 = `main.out'.
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 53.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 5
+5.
+
+(/usr/local/texlive/2025basic/texmf-dist/tex/latex/lm/ot1lmr.fd
+File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 5
+5.
+
+(/usr/local/texlive/2025basic/texmf-dist/tex/latex/lm/omllmm.fd
+File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
+55.
+
+(/usr/local/texlive/2025basic/texmf-dist/tex/latex/lm/omslmsy.fd
+File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
+55.
+
+(/usr/local/texlive/2025basic/texmf-dist/tex/latex/lm/omxlmex.fd
+File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <9> on input line 55.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <6> on input line 55.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 55.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 55.
 
 
 (/usr/local/texlive/2025basic/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 53.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 55.
 
 
 (/usr/local/texlive/2025basic/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
+Underfull \hbox (badness 1478) in paragraph at lines 49--57
+\T1/lmr/bx/n/9 hold. As these agents in-creas-ingly au-to-mate code
+ []
 
 
-Underfull \hbox (badness 3471) in paragraph at lines 102--103
-[]\OT1/ptm/b/n/10 Phase 1 (2021-2023): Completion-based as-sis-tants.
+Underfull \hbox (badness 2582) in paragraph at lines 71--72
+\T1/lmr/m/n/10 has fun-da-men-tally trans-formed soft-ware de-vel-op-ment
+ []
+
+
+
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 77.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 77.
+
+Underfull \hbox (badness 6792) in paragraph at lines 90--91
+[]\T1/lmr/m/n/10 We pro-pose the PoHI ar-chi-tec-ture that in-te-
+ []
+
+
+Underfull \hbox (badness 1895) in paragraph at lines 90--91
+\T1/lmr/m/n/10 grates proof-of-personhood, de-cen-tral-ized iden-tity,
  []
 
 
 
 [1{/usr/local/texlive/2025basic/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/
-usr/local/texlive/2025basic/texmf-dist/fonts/enc/dvips/base/8r.enc}
+usr/local/texlive/2025basic/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}
 
 
-]
-
-
-Underfull \hbox (badness 3635) in paragraph at lines 201--202
-[]\OT1/ptm/b/n/10 Attestation Layer\OT1/ptm/m/n/10 : Records events in a SCITT-
-
- []
+{/usr/local/texlive/2025basic/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr
+/local/texlive/2025basic/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}]
 
 
 
 [2]
-LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 2
-50.
- (/usr/local/texlive/2025basic/texmf-dist/tex/latex/psnfss/ot1pcr.fd
-File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
+52.
+ (/usr/local/texlive/2025basic/texmf-dist/tex/latex/lm/t1lmtt.fd
+File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-! Font OT1/pcr/m/n/10=pcrr7t at 10.0pt not loadable: Metric (TFM) file not foun
-d.
-<to be read again> 
-                   relax 
-l.250 ... is the \texttt{HumanApprovalAttestation}
-                                                  , which binds:
-I wasn't able to read the size data for this font,
-so I will ignore the font specification.
-[Wizards can fix TFM files using TFtoPL/PLtoTF.]
-You might try inserting a different font spec;
-e.g., type `I\font<same font id>=<substitute font name>'.
-
-Missing character: There is no H in font nullfont!
-Missing character: There is no u in font nullfont!
-Missing character: There is no m in font nullfont!
-Missing character: There is no a in font nullfont!
-Missing character: There is no n in font nullfont!
-Missing character: There is no A in font nullfont!
-Missing character: There is no p in font nullfont!
-Missing character: There is no p in font nullfont!
-Missing character: There is no r in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no v in font nullfont!
-Missing character: There is no a in font nullfont!
-Missing character: There is no l in font nullfont!
-Missing character: There is no A in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no e in font nullfont!
-Missing character: There is no s in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no a in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no n in font nullfont!
-Missing character: There is no s in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no g in font nullfont!
-Missing character: There is no n in font nullfont!
-Missing character: There is no a in font nullfont!
-Missing character: There is no l in font nullfont!
-Missing character: There is no s in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no g in font nullfont!
-Missing character: There is no n in font nullfont!
-Missing character: There is no a in font nullfont!
-Missing character: There is no l in font nullfont!
-Missing character: There is no = in font nullfont!
-Missing character: There is no S in font nullfont!
-Missing character: There is no H in font nullfont!
-Missing character: There is no A in font nullfont!
-Missing character: There is no 2 in font nullfont!
-Missing character: There is no 5 in font nullfont!
-Missing character: There is no 6 in font nullfont!
-Missing character: There is no ( in font nullfont!
-Missing character: There is no r in font nullfont!
-Missing character: There is no e in font nullfont!
-Missing character: There is no p in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no s in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no r in font nullfont!
-Missing character: There is no y in font nullfont!
-Missing character: There is no | in font nullfont!
-Missing character: There is no | in font nullfont!
-Missing character: There is no " in font nullfont!
-Missing character: There is no : in font nullfont!
-Missing character: There is no " in font nullfont!
-Missing character: There is no | in font nullfont!
-Missing character: There is no | in font nullfont!
-Missing character: There is no c in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no m in font nullfont!
-Missing character: There is no m in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no _ in font nullfont!
-Missing character: There is no s in font nullfont!
-Missing character: There is no h in font nullfont!
-Missing character: There is no a in font nullfont!
-Missing character: There is no ) in font nullfont!
-
-Underfull \hbox (badness 10000) in paragraph at lines 263--264
-
+Underfull \hbox (badness 10000) in paragraph at lines 252--254
+[]\T1/lmr/m/n/10 The core data struc-ture is the
  []
 
-Missing character: There is no n in font nullfont!
-Missing character: There is no u in font nullfont!
-Missing character: There is no l in font nullfont!
-Missing character: There is no l in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no f in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no e in font nullfont!
-Missing character: There is no r in font nullfont!
-Missing character: There is no _ in font nullfont!
-Missing character: There is no h in font nullfont!
-Missing character: There is no a in font nullfont!
-Missing character: There is no s in font nullfont!
-Missing character: There is no h in font nullfont!
+
+Underfull \hbox (badness 10000) in paragraph at lines 265--266
+\T1/lmtt/m/n/10 signal = SHA256(repository || ":" ||
+ []
 
 
-Missing character: There is no @ in font nullfont!
-Missing character: There is no p in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no h in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no - in font nullfont!
-Missing character: There is no p in font nullfont!
-Missing character: There is no r in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no c in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no l in font nullfont!
-Missing character: There is no / in font nullfont!
-Missing character: There is no c in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no r in font nullfont!
-Missing character: There is no e in font nullfont!
-Missing character: There is no @ in font nullfont!
-Missing character: There is no p in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no h in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no - in font nullfont!
-Missing character: There is no p in font nullfont!
-Missing character: There is no r in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no c in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no l in font nullfont!
-Missing character: There is no / in font nullfont!
-Missing character: There is no e in font nullfont!
-Missing character: There is no v in font nullfont!
-Missing character: There is no m in font nullfont!
-Missing character: There is no @ in font nullfont!
-Missing character: There is no p in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no h in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no - in font nullfont!
-Missing character: There is no p in font nullfont!
-Missing character: There is no r in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no c in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no l in font nullfont!
-Missing character: There is no / in font nullfont!
-Missing character: There is no s in font nullfont!
-Missing character: There is no d in font nullfont!
-Missing character: There is no k in font nullfont!
-Missing character: There is no @ in font nullfont!
-Missing character: There is no p in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no h in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no - in font nullfont!
-Missing character: There is no p in font nullfont!
-Missing character: There is no r in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no c in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no l in font nullfont!
-Missing character: There is no / in font nullfont!
-Missing character: There is no c in font nullfont!
-Missing character: There is no l in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no @ in font nullfont!
-Missing character: There is no p in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no h in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no - in font nullfont!
-Missing character: There is no p in font nullfont!
-Missing character: There is no r in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no c in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no l in font nullfont!
-Missing character: There is no / in font nullfont!
-Missing character: There is no a in font nullfont!
-Missing character: There is no c in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no n in font nullfont!
-Missing character: There is no @ in font nullfont!
-Missing character: There is no p in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no h in font nullfont!
-Missing character: There is no i in font nullfont!
-Missing character: There is no - in font nullfont!
-Missing character: There is no p in font nullfont!
-Missing character: There is no r in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no c in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no l in font nullfont!
-Missing character: There is no / in font nullfont!
-Missing character: There is no c in font nullfont!
-Missing character: There is no o in font nullfont!
-Missing character: There is no n in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no r in font nullfont!
-Missing character: There is no a in font nullfont!
-Missing character: There is no c in font nullfont!
-Missing character: There is no t in font nullfont!
-Missing character: There is no s in font nullfont!
 
-LaTeX Warning: `h' float specifier changed to `ht'.
+
+Underfull \hbox (badness 4378) in paragraph at lines 379--380
+[]\T1/lmtt/m/n/10 @pohi-protocol/contracts\T1/lmr/m/n/10 : So-lid-ity smart con
+-
+ []
 
 
 
 [3]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <8> on input line 419.
 
-LaTeX Warning: `h' float specifier changed to `ht'.
 
 
+Overfull \hbox (6.09975pt too wide) in paragraph at lines 450--463
+ [][] 
+ []
 
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 4
-85.
-(/usr/local/texlive/2025basic/texmf-dist/tex/latex/psnfss/ts1ptm.fd
-File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
-)
+
 
 [4]
+Underfull \hbox (badness 2035) in paragraph at lines 518--519
+[]\T1/lmr/m/n/10 As AI agents be-come in-creas-ingly ca-pa-ble of au-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 537--538
+[]\T1/lmr/m/n/8 World Foun-da-tion, ``World ID: Privacy-Preserving
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 537--538
+\T1/lmr/m/n/8 Proof of Per-son-hood,'' 2024. [On-line]. Avail-able:
+ []
+
+
+
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -1074,51 +973,44 @@ Before submitting the final camera ready copy, remember to:
 
 
 
-
-
-[5
-
-] (./main.aux)
+[5] (./main.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-
-Package rerunfilecheck Warning: File `main.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `main.out':
-(rerunfilecheck)             Before: 2A9AF71009FB0E4FDAAB73BE5A6FA5D0;4187
-(rerunfilecheck)             After:  978CDA83214EAFCDD11CDDE967F45C07;4187.
+Package rerunfilecheck Info: File `main.out' has not changed.
+(rerunfilecheck)             Checksum: 978CDA83214EAFCDD11CDDE967F45C07;4187.
  ) 
 Here is how much of TeX's memory you used:
- 22403 strings out of 474662
- 424256 string characters out of 5751110
- 824633 words of memory out of 5000000
- 45006 multiletter control sequences out of 15000+600000
- 600956 words of font info for 117 fonts, out of 8000000 for 9000
+ 22805 strings out of 474662
+ 430262 string characters out of 5751110
+ 823147 words of memory out of 5000000
+ 45370 multiletter control sequences out of 15000+600000
+ 757044 words of font info for 151 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
  84i,9n,87p,570b,794s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2025basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi1
-0.pfb></usr/local/texlive/2025basic/texmf-dist/fonts/type1/public/amsfonts/cm/c
-mmi8.pfb></usr/local/texlive/2025basic/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmmi9.pfb></usr/local/texlive/2025basic/texmf-dist/fonts/type1/public/amsfont
-s/cm/cmsy10.pfb></usr/local/texlive/2025basic/texmf-dist/fonts/type1/public/ams
-fonts/cm/cmsy7.pfb></usr/local/texlive/2025basic/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmsy8.pfb></usr/local/texlive/2025basic/texmf-dist/fonts/type1/urw/
-times/utmb8a.pfb></usr/local/texlive/2025basic/texmf-dist/fonts/type1/urw/times
-/utmbi8a.pfb></usr/local/texlive/2025basic/texmf-dist/fonts/type1/urw/times/utm
-r8a.pfb></usr/local/texlive/2025basic/texmf-dist/fonts/type1/urw/times/utmri8a.
-pfb>
-Output written on main.pdf (5 pages, 137400 bytes).
+</usr/local/texlive/2025basic/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></u
+sr/local/texlive/2025basic/texmf-dist/fonts/type1/public/lm/lmbx8.pfb></usr/loc
+al/texlive/2025basic/texmf-dist/fonts/type1/public/lm/lmbx9.pfb></usr/local/tex
+live/2025basic/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb></usr/local/texlive
+/2025basic/texmf-dist/fonts/type1/public/lm/lmcsc10.pfb></usr/local/texlive/202
+5basic/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></usr/local/texlive/2025basi
+c/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></usr/local/texlive/2025basic/texm
+f-dist/fonts/type1/public/lm/lmmi9.pfb></usr/local/texlive/2025basic/texmf-dist
+/fonts/type1/public/lm/lmr10.pfb></usr/local/texlive/2025basic/texmf-dist/fonts
+/type1/public/lm/lmr12.pfb></usr/local/texlive/2025basic/texmf-dist/fonts/type1
+/public/lm/lmr17.pfb></usr/local/texlive/2025basic/texmf-dist/fonts/type1/publi
+c/lm/lmr5.pfb></usr/local/texlive/2025basic/texmf-dist/fonts/type1/public/lm/lm
+r7.pfb></usr/local/texlive/2025basic/texmf-dist/fonts/type1/public/lm/lmr8.pfb>
+</usr/local/texlive/2025basic/texmf-dist/fonts/type1/public/lm/lmri10.pfb></usr
+/local/texlive/2025basic/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/loca
+l/texlive/2025basic/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></usr/local/texl
+ive/2025basic/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/local/texlive/20
+25basic/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
+Output written on main.pdf (5 pages, 408528 bytes).
 PDF statistics:
- 263 PDF objects out of 1000 (max. 8388607)
- 233 compressed objects within 3 object streams
+ 310 PDF objects out of 1000 (max. 8388607)
+ 262 compressed objects within 3 object streams
  69 named destinations out of 1000 (max. 500000)
  253 words of extra memory for PDF output out of 10000 (max. 10000000)
 

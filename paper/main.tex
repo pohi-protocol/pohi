@@ -4,6 +4,8 @@
 \documentclass[conference]{IEEEtran}
 
 % Packages
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
 \usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{graphicx}
@@ -48,7 +50,7 @@ ORCID: 0000-0002-3576-6677
 With the rise of autonomous AI agents capable of proposing and executing software changes, traditional human-in-the-loop assumptions no longer hold.
 As these agents increasingly automate code generation, review, and deployment, the provenance of ``human intent''---the accountability behind critical decisions---is becoming obscured.
 Current systems lack mechanisms to cryptographically verify that a human—rather than an automated process—authorized specific actions such as merging pull requests or deploying to production.
-We present \textbf{Proof of Human Intent (PoHI)}, a protocol that combines zero-knowledge proofs of personhood (World ID), decentralized identifiers (DIDs), verifiable credentials (VCs), and transparency logs (SCITT) to create tamper-evident, machine-verifiable records of human approval.
+We present \textbf{Proof of Human Intent (PoHI)}, a protocol that combines zero-knowledge proofs of personhood (e.g., World ID), decentralized identifiers (DIDs), verifiable credentials (VCs), and transparency logs (SCITT) to create tamper-evident, machine-verifiable records of human approval.
 Our architecture addresses three fundamental questions: (1) \textit{who} approved an action (unique human verification), (2) \textit{what} was approved (cryptographic binding to specific commits), and (3) \textit{when} it was approved (immutable timestamping).
 We implement a proof-of-concept integration with GitHub Actions and demonstrate that PoHI prevents unauthorized automated merges with negligible latency overhead ($<$2 seconds total machine time).
 The reference implementation is available at \url{https://github.com/pohi-protocol/pohi}.
@@ -109,7 +111,7 @@ This progression shifts developers from ``implementers'' to ``approvers,'' creat
 
 \subsection{Proof of Personhood}
 
-Proof of Personhood (PoP) systems aim to verify that an entity is a unique human without revealing their identity. Notable approaches include:
+Proof of Personhood (PoP) systems aim to verify that an entity is a unique human without revealing their identity. While PoHI is designed to be provider-agnostic, we use World ID as a concrete instantiation in this work due to its strong cryptographic guarantees. Notable approaches include:
 
 \textbf{World ID} \cite{worldid} uses iris biometrics via specialized hardware (Orb) to create a unique identifier. Zero-knowledge proofs allow users to prove their humanity without revealing biometric data. World ID provides both ``Device'' level (phone-based) and ``Orb'' level (biometric) verification.
 
@@ -174,7 +176,7 @@ PoHI aims to ensure:
 \begin{enumerate}
     \item \textbf{Human Verification}: Actions are verifiably approved by unique humans.
     \item \textbf{Binding}: Approval is bound to specific code states.
-    \item \textbf{Non-repudiation}: Approvers cannot deny approvals.
+    \item \textbf{Non-repudiation} (cryptographic): Approvals cannot be denied without compromising cryptographic assumptions.
     \item \textbf{Tamper Evidence}: Modifications to records are detectable.
 \end{enumerate}
 
@@ -463,6 +465,7 @@ On-chain Recording (optional) & 3,000 ms & $\pm$500 ms \\
 The primary latency factor is the external World ID verification API call ($\sim$1.2s), which is acceptable for asynchronous pull request workflows.
 The computational overhead for cryptographic binding (SHA-256 hashing and signature verification) is negligible ($<$ 5ms) on standard CI/CD runners.
 Human interaction time (scanning QR code with World App) is excluded from machine time as it varies by user but typically requires 5--15 seconds.
+The protocol overhead introduced by PoHI itself remains negligible, independent of the underlying proof-of-personhood provider.
 
 \subsection{Gas Costs}
 
@@ -521,7 +524,7 @@ PoHI shifts accountability in AI-driven development from implicit trust to crypt
 % =============================================================================
 \section*{Acknowledgments}
 
-The author thanks the World Foundation for developing World ID and making proof-of-personhood technology accessible. This work was inspired by discussions in the broader Web3 and decentralized identity communities.
+The author acknowledges the World Foundation for publicly documenting the World ID protocol. This work was inspired by discussions in the broader Web3 and decentralized identity communities.
 
 % =============================================================================
 % REFERENCES
