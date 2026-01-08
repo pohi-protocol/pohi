@@ -6,23 +6,12 @@
 % Packages
 \usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
-\usepackage{algorithmic}
 \usepackage{graphicx}
-\usepackage{textcomp}
 \usepackage{xcolor}
 \usepackage{hyperref}
-\usepackage{listings}
 \usepackage{booktabs}
 \usepackage{tikz}
 \usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, backgrounds}
-
-% Code listing style
-\lstset{
-  basicstyle=\ttfamily\small,
-  breaklines=true,
-  frame=single,
-  language=Python
-}
 
 % Hyperref setup
 \hypersetup{
@@ -215,7 +204,7 @@ PoHI consists of four layers that work together to create verifiable human appro
 
 Figure \ref{fig:architecture} illustrates the layered architecture and data flow between components.
 
-\begin{figure}[ht]
+\begin{figure*}[ht]
 \centering
 \begin{tikzpicture}[
     layer/.style={draw, rounded corners, minimum width=2.8cm, minimum height=0.9cm, align=center, font=\footnotesize},
@@ -227,15 +216,15 @@ Figure \ref{fig:architecture} illustrates the layered architecture and data flow
 \node[desc, below=0.1cm of identity] {ZK Proofs\\Nullifier Hash};
 
 % Layer 2: Authority
-\node[layer, fill=green!20] (authority) at (3.5, 3) {Authority\\(DID/VC)};
+\node[layer, fill=green!20] (authority) at (4, 3) {Authority\\(DID/VC)};
 \node[desc, below=0.1cm of authority] {Permissions\\Credentials};
 
 % Layer 3: Attestation
-\node[layer, fill=orange!20] (attestation) at (7, 3) {Attestation\\(SCITT)};
+\node[layer, fill=orange!20] (attestation) at (8, 3) {Attestation\\(SCITT)};
 \node[desc, below=0.1cm of attestation] {Transparency Log\\Hash Records};
 
 % Layer 4: Integration (spans bottom)
-\node[layer, fill=purple!20, minimum width=9cm] (integration) at (3.5, 0.5) {Integration Layer (GitHub Actions, Webhooks, Status API)};
+\node[layer, fill=purple!20, minimum width=10cm] (integration) at (4, 0.5) {Integration Layer (GitHub Actions, Webhooks, Status API)};
 
 % Arrows between layers
 \draw[arrow] (identity) -- (authority);
@@ -243,12 +232,12 @@ Figure \ref{fig:architecture} illustrates the layered architecture and data flow
 
 % Arrows to integration layer
 \draw[arrow] (identity) -- (0, 1.3);
-\draw[arrow] (authority) -- (3.5, 1.3);
-\draw[arrow] (attestation) -- (7, 1.3);
+\draw[arrow] (authority) -- (4, 1.3);
+\draw[arrow] (attestation) -- (8, 1.3);
 
 % External actors
-\node[draw, ellipse, fill=gray!10, font=\footnotesize] (human) at (-2.5, 3) {Human};
-\node[draw, ellipse, fill=gray!10, font=\footnotesize] (git) at (-2.5, 0.5) {Git/CI};
+\node[draw, ellipse, fill=gray!10, font=\footnotesize] (human) at (-3, 3) {Human};
+\node[draw, ellipse, fill=gray!10, font=\footnotesize] (git) at (-3, 0.5) {Git/CI};
 
 \draw[arrow] (human) -- (identity);
 \draw[arrow] (git) -- (integration);
@@ -256,7 +245,7 @@ Figure \ref{fig:architecture} illustrates the layered architecture and data flow
 \end{tikzpicture}
 \caption{PoHI Four-Layer Architecture. Human approval flows through identity verification (Layer 1), optional authority checks (Layer 2), and attestation recording (Layer 3), all connected to developer workflows via the integration layer (Layer 4).}
 \label{fig:architecture}
-\end{figure}
+\end{figure*}
 
 The core data structure is the \texttt{HumanApprovalAttestation}, which binds:
 \begin{itemize}
@@ -331,12 +320,12 @@ The Integration Layer connects PoHI to developer workflows:
 
 Figure \ref{fig:flow} illustrates the complete verification flow from pull request creation to merge enablement.
 
-\begin{figure}[ht]
+\begin{figure*}[ht]
 \centering
 \begin{tikzpicture}[
-    box/.style={draw, rounded corners, minimum width=1.6cm, minimum height=0.7cm, align=center, font=\tiny},
-    arrow/.style={-{Stealth[length=1.5mm]}, thick},
-    node distance=0.3cm and 0.5cm
+    box/.style={draw, rounded corners, minimum width=1.8cm, minimum height=0.8cm, align=center, font=\scriptsize},
+    arrow/.style={-{Stealth[length=2mm]}, thick},
+    node distance=0.4cm and 0.6cm
 ]
 % Actors row
 \node[box, fill=gray!20] (pr) {PR\\Created};
@@ -356,17 +345,17 @@ Figure \ref{fig:flow} illustrates the complete verification flow from pull reque
 \draw[arrow] (attest) -- (merge);
 
 % Labels
-\node[font=\tiny, above=0.05cm of action] {1};
-\node[font=\tiny, above=0.05cm of qr] {2};
-\node[font=\tiny, above=0.05cm of scan] {3};
-\node[font=\tiny, above=0.05cm of verify] {4};
-\node[font=\tiny, above=0.05cm of attest] {5};
-\node[font=\tiny, above=0.05cm of merge] {6};
+\node[font=\scriptsize, above=0.1cm of action] {1};
+\node[font=\scriptsize, above=0.1cm of qr] {2};
+\node[font=\scriptsize, above=0.1cm of scan] {3};
+\node[font=\scriptsize, above=0.1cm of verify] {4};
+\node[font=\scriptsize, above=0.1cm of attest] {5};
+\node[font=\scriptsize, above=0.1cm of merge] {6};
 
 \end{tikzpicture}
 \caption{Verification Flow. (1) GitHub Action triggers on PR, (2) posts QR code comment, (3) human scans with World App, (4) ZK proof verified against World ID API, (5) attestation created and stored, (6) PR status updated to enable merge.}
 \label{fig:flow}
-\end{figure}
+\end{figure*}
 
 \textbf{CLI Tool}: A command-line interface for requesting and verifying approvals outside of CI/CD contexts.
 
@@ -392,24 +381,26 @@ The core library has zero runtime dependencies, enabling use in constrained envi
 
 \subsection{Attestation Data Model}
 
-\begin{lstlisting}[language=Python,caption={Attestation JSON structure}]
-{
-  "version": "1.0",
-  "type": "HumanApprovalAttestation",
-  "subject": {
-    "repository": "org/repo",
-    "commit_sha": "abc123...",
-    "action": "PR_MERGE"
-  },
-  "human_proof": {
-    "method": "world_id",
-    "verification_level": "orb",
-    "nullifier_hash": "0x..."
-  },
-  "timestamp": "2025-12-15T10:30:00Z",
-  "proof": { "type": "Ed25519", "jws": "..." }
-}
-\end{lstlisting}
+The attestation JSON structure contains the following fields:
+
+\begin{itemize}
+    \item \textbf{version}: Schema version (e.g., ``1.0'')
+    \item \textbf{type}: ``HumanApprovalAttestation''
+    \item \textbf{subject}: Object containing:
+    \begin{itemize}
+        \item \textit{repository}: Target repository (e.g., ``org/repo'')
+        \item \textit{commit\_sha}: Git commit hash
+        \item \textit{action}: Action type (PR\_MERGE, DEPLOY, etc.)
+    \end{itemize}
+    \item \textbf{human\_proof}: Object containing:
+    \begin{itemize}
+        \item \textit{method}: Verification method (``world\_id'')
+        \item \textit{verification\_level}: ``device'' or ``orb''
+        \item \textit{nullifier\_hash}: Unique identifier preventing replay
+    \end{itemize}
+    \item \textbf{timestamp}: ISO 8601 timestamp
+    \item \textbf{proof}: Cryptographic signature (Ed25519 JWS)
+\end{itemize}
 
 % =============================================================================
 % 6. EVALUATION
