@@ -141,7 +141,7 @@ PoHI leverages these standards for its Authority Layer, enabling organizations t
 
 \subsection{AI Agent Authorization}
 
-Mahari et al. \cite{mitdelegation} from MIT propose ``Authenticated Delegation'' for AI agents, introducing the concept of capability delegation from humans to AI systems. Their work focuses on what AI agents are authorized to do.
+South et al. \cite{mitdelegation} propose ``Authenticated Delegation'' for AI agents, introducing the concept of capability delegation from humans to AI systems. Their work focuses on what AI agents are authorized to do.
 
 PoHI addresses a complementary problem: verifying that a human actually approved an action, regardless of whether AI agents were involved in the execution. While their approach defines ``what can be done,'' PoHI proves ``a human approved this.''
 
@@ -188,6 +188,7 @@ However, it does not guarantee that the human approver semantically understood t
 Social engineering attacks where a human is coerced or tricked into scanning the QR code for a malicious commit are considered out of scope for the cryptographic protocol, though UI mitigations (e.g., displaying commit details clearly before approval) are recommended.
 Additionally, PoHI does not prevent a malicious insider with legitimate World ID credentials from approving harmful changes---organizational access controls and code review processes remain complementary safeguards.
 PoHI provides cryptographic evidence of human approval but does not replace legal or organizational authorization frameworks; rather, it offers verifiable records that can support existing governance and compliance requirements.
+PoHI explicitly separates proof of human presence from authorization semantics; authority is enforced through external policy and governance layers.
 
 % =============================================================================
 % 4. PROPOSED ARCHITECTURE
@@ -270,6 +271,7 @@ The Identity Layer leverages World ID's zero-knowledge proof system. When a user
 
 The signal is deliberately limited to repository and commit SHA to provide a minimal, unambiguous cryptographic binding.
 Additional metadata such as action type or timestamp is recorded in the attestation structure rather than in the signal itself, allowing the same ZK proof to be verified independently of attestation formatting choices.
+The nullifier is domain-separated by the World ID application identifier, preventing cross-application correlation.
 
 Verification levels provide flexibility:
 \begin{itemize}
@@ -549,16 +551,16 @@ M. Blania, A. Tromer, et al., ``Worldcoin: A Global Identity and Financial Netwo
 M. Sporny, D. Longley, M. Sabadello, D. Reed, O. Steele, and C. Allen, ``Decentralized Identifiers (DIDs) v1.0,'' W3C Recommendation, Jul. 2022.
 
 \bibitem{vc}
-M. Sporny, D. Longley, and D. Chadwick, ``Verifiable Credentials Data Model v1.1,'' W3C Recommendation, Mar. 2022.
+M. Sporny, D. Longley, and D. Chadwick, ``Verifiable Credentials Data Model v2.0,'' W3C Recommendation, May 2025. [Online]. Available: https://www.w3.org/TR/vc-data-model-2.0/
 
 \bibitem{scitt}
-H. Birkholz, A. Delignat-Lavaud, C. Fournet, Y. Deshpande, and S. Lasker, ``An Architecture for Trustworthy and Transparent Digital Supply Chains,'' IETF Internet-Draft, 2024.
+H. Birkholz, A. Delignat-Lavaud, C. Fournet, Y. Deshpande, and S. Lasker, ``An Architecture for Trustworthy and Transparent Digital Supply Chains,'' IETF Internet-Draft draft-ietf-scitt-architecture, 2024. [Online]. Available: https://datatracker.ietf.org/doc/draft-ietf-scitt-architecture/
 
 \bibitem{sigstore}
 L. Newman, B. Beyer, et al., ``Sigstore: Software Artifact Signing and Verification,'' in Proc. USENIX Security Symposium, 2022.
 
 \bibitem{mitdelegation}
-R. Mahari, C. Pentland, and S. Weitzner, ``Authenticated Delegation and Authorized AI Agents,'' MIT Media Lab Technical Report, 2024.
+T. South, S. Marro, T. Hardjono, R. Mahari, C. D. Whitney, D. Greenwood, A. Chan, and A. Pentland, ``Authenticated Delegation and Authorized AI Agents,'' arXiv:2501.09674, 2025. [Online]. Available: https://arxiv.org/abs/2501.09674
 
 \bibitem{zksnark}
 E. Ben-Sasson, A. Chiesa, D. Genkin, E. Tromer, and M. Virza, ``SNARKs for C: Verifying Program Executions Succinctly and in Zero Knowledge,'' in Proc. CRYPTO, 2013.
