@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2026.1.8)  8 JAN 2026 19:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2026.1.8)  9 JAN 2026 02:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1083,14 +1083,24 @@ Before submitting the final camera ready copy, remember to:
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
-Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 2A9AF71009FB0E4FDAAB73BE5A6FA5D0;4187.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `main.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `main.out':
+(rerunfilecheck)             Before: 2A9AF71009FB0E4FDAAB73BE5A6FA5D0;4187
+(rerunfilecheck)             After:  978CDA83214EAFCDD11CDDE967F45C07;4187.
  ) 
 Here is how much of TeX's memory you used:
- 22390 strings out of 474662
- 424114 string characters out of 5751110
- 824634 words of memory out of 5000000
- 45000 multiletter control sequences out of 15000+600000
+ 22403 strings out of 474662
+ 424256 string characters out of 5751110
+ 824633 words of memory out of 5000000
+ 45006 multiletter control sequences out of 15000+600000
  600956 words of font info for 117 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
  84i,9n,87p,570b,794s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1105,10 +1115,10 @@ times/utmb8a.pfb></usr/local/texlive/2025basic/texmf-dist/fonts/type1/urw/times
 /utmbi8a.pfb></usr/local/texlive/2025basic/texmf-dist/fonts/type1/urw/times/utm
 r8a.pfb></usr/local/texlive/2025basic/texmf-dist/fonts/type1/urw/times/utmri8a.
 pfb>
-Output written on main.pdf (5 pages, 135784 bytes).
+Output written on main.pdf (5 pages, 137400 bytes).
 PDF statistics:
- 255 PDF objects out of 1000 (max. 8388607)
- 225 compressed objects within 3 object streams
- 62 named destinations out of 1000 (max. 500000)
+ 263 PDF objects out of 1000 (max. 8388607)
+ 233 compressed objects within 3 object streams
+ 69 named destinations out of 1000 (max. 500000)
  253 words of extra memory for PDF output out of 10000 (max. 10000000)
 

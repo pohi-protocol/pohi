@@ -10,8 +10,8 @@
 
 ## Target
 
-- **Primary**: arXiv (cs.CR - Cryptography and Security)
-- **Secondary**: Academic conferences (IEEE S&P, USENIX Security)
+- **Primary**: IACR ePrint (Cryptology ePrint Archive)
+- **Secondary**: arXiv (cs.CR), Academic conferences (IEEE S&P, USENIX Security)
 
 ## Files
 
@@ -48,10 +48,10 @@ pdflatex main.tex
 
 ## TODO Before Submission
 
-- [ ] Add architecture diagram (TikZ or figure)
-- [ ] Expand references with proper bibtex
-- [ ] Proofread and polish language
-- [ ] Add acknowledgments section
+- [x] Add architecture diagram (TikZ or figure)
+- [x] Expand references with proper bibtex
+- [x] Proofread and polish language
+- [x] Add acknowledgments section
 
 ## Author
 
