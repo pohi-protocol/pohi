@@ -46,12 +46,18 @@ pdflatex main.tex
 8. Discussion ✅
 9. Conclusion ✅
 
-## TODO Before Submission
+## Completed Tasks
 
 - [x] Add architecture diagram (TikZ or figure)
 - [x] Expand references with proper bibtex
 - [x] Proofread and polish language
 - [x] Add acknowledgments section
+- [x] Submit to IACR ePrint
+
+## Future
+
+- [ ] arXiv cross-posting (after ePrint publication)
+- [ ] Conference submission (IEEE S&P, USENIX Security)
 
 ## Author
 

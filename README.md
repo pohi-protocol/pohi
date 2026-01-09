@@ -299,7 +299,8 @@ For full security documentation, see [SECURITY.md](./SECURITY.md).
 - [x] npm publish (v0.1.0)
 - [x] Live demo deployment
 - [x] Security self-review (see [SECURITY.md](./SECURITY.md))
-- [ ] arXiv submission
+- [x] IACR ePrint submission
+- [ ] arXiv cross-posting
 - [ ] External audit
 - [ ] v1.0 release
 
