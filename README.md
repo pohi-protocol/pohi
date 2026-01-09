@@ -69,7 +69,7 @@ PoHI answers three questions:
 
 | Provider | Verification Type | Sybil Resistance | Status |
 |----------|------------------|------------------|--------|
-| **World ID** | ZK proof (Orb/Device) | High | ✅ Tested (2025-01) |
+| **World ID** | ZK proof (Orb/Device) | High | ✅ Tested (2026-01) |
 | **Gitcoin Passport** | Web3 identity score | Medium | ✅ Tested (2025-12, Score: 54.33) |
 | **BrightID** | Social graph verification | Medium | ✅ Implemented |
 | **Civic** | Gateway Pass | Medium | ✅ Implemented |
