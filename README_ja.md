@@ -6,7 +6,7 @@
 [![npm](https://img.shields.io/npm/v/pohi-core)](https://www.npmjs.com/package/pohi-core)
 [![CI](https://github.com/pohi-protocol/pohi/actions/workflows/ci.yml/badge.svg)](https://github.com/pohi-protocol/pohi/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/pohi-protocol/pohi/branch/main/graph/badge.svg)](https://codecov.io/gh/pohi-protocol/pohi)
-[![arXiv](https://img.shields.io/badge/arXiv-coming_soon-b31b1b.svg)](https://arxiv.org)
+[![ePrint](https://img.shields.io/badge/ePrint-submitted-yellow.svg)](https://eprint.iacr.org/)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![GitHub](https://img.shields.io/github/stars/pohi-protocol/pohi?style=social)](https://github.com/pohi-protocol/pohi)
 
@@ -69,7 +69,7 @@ PoHIは3つの質問に答えます：
 
 | プロバイダー | 検証タイプ | Sybil耐性 | ステータス |
 |-------------|-----------|-----------|-----------|
-| **World ID** | ZK証明（Orb/Device） | 高 | ✅ テスト済み (2025-01) |
+| **World ID** | ZK証明（Orb/Device） | 高 | ✅ テスト済み (2026-01) |
 | **Gitcoin Passport** | Web3アイデンティティスコア | 中 | ✅ テスト済み (2025-12, スコア: 54.33) |
 | **BrightID** | ソーシャルグラフ検証 | 中 | ✅ 実装済み |
 | **Civic** | Gateway Pass | 中 | ✅ 実装済み |
@@ -225,17 +225,18 @@ jobs:
 
 **「Proof of Human Intent: AI駆動ソフトウェア開発における暗号学的に検証可能な人間の承認」**
 
-- 📝 arXiv: 準備中（2026年予定）
+- 📝 IACR ePrint: 投稿済み（審査中）
+- 📝 arXiv: ePrint公開後に予定
 - 📁 ソース: [`paper/`](./paper/)
 
 ### 引用
 
 ```bibtex
-@article{pohi2026,
+@misc{pohi2026,
   title={Proof of Human Intent: Cryptographically Verifiable Human Approval for AI-Driven Software Development},
   author={Ikko Eltociear Ashimine},
-  journal={arXiv preprint},
-  year={2026}
+  year={2026},
+  howpublished={IACR Cryptology ePrint Archive}
 }
 ```
 
@@ -318,9 +319,9 @@ PoHIは以下に焦点を当てた初期セルフレビューを実施しまし�
 
 ## 📄 研究論文
 
-arXiv投稿に向けてPoHIに関する学術論文を準備中です。
+PoHIに関する学術論文をIACR ePrintに投稿しました（審査中）。ePrint公開後、arXivへのクロスポストを予定しています。
 
-**arXivエンドースメント募集中**: `cs.CR`（暗号とセキュリティ）または`cs.SE`（ソフトウェア工学）のエンドースメント権限をお持ちの方は、ぜひご協力ください。[Issueを作成](https://github.com/pohi-protocol/pohi/issues/new)するか、直接ご連絡ください。
+**arXivエンドースメント募集中**: `cs.CR`（暗号とセキュリティ）または`cs.SE`（ソフトウェア工学）のエンドースメント権限をお持ちの方は、将来のarXiv投稿のためにご協力いただけると幸いです。[Issueを作成](https://github.com/pohi-protocol/pohi/issues/new)するか、直接ご連絡ください。
 
 ---
 

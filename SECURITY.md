@@ -47,7 +47,7 @@ Include:
 
 ---
 
-## Self-Review Summary (2025-01)
+## Self-Review Summary (2026-01)
 
 This security self-review was conducted to identify potential vulnerabilities and document the security posture of PoHI before public release.
 
@@ -333,7 +333,7 @@ Human A → Tries to approve commit X again → Same nullifier N
 
 ### Core Library (`packages/core/`)
 
-#### Reviewed: 2025-01
+#### Reviewed: 2026-01
 
 | Finding | Severity | Status |
 |---------|----------|--------|
@@ -346,7 +346,7 @@ Human A → Tries to approve commit X again → Same nullifier N
 
 ### GitHub Action (`packages/action/`)
 
-#### Reviewed: 2025-01
+#### Reviewed: 2026-01
 
 | Finding | Severity | Status |
 |---------|----------|--------|
@@ -360,7 +360,7 @@ Human A → Tries to approve commit X again → Same nullifier N
 
 ### Smart Contract (`packages/contracts/`)
 
-#### Reviewed: 2025-01
+#### Reviewed: 2026-01
 
 | Finding | Severity | Status |
 |---------|----------|--------|
@@ -380,7 +380,7 @@ Human A → Tries to approve commit X again → Same nullifier N
 
 ### GitLab CI Component (`packages/gitlab-ci/`)
 
-#### Reviewed: 2025-01
+#### Reviewed: 2026-01
 
 | Finding | Severity | Status |
 |---------|----------|--------|
@@ -397,7 +397,7 @@ Human A → Tries to approve commit X again → Same nullifier N
 
 ### Bitbucket Pipe (`packages/bitbucket-pipe/`)
 
-#### Reviewed: 2025-01
+#### Reviewed: 2026-01
 
 | Finding | Severity | Status |
 |---------|----------|--------|
@@ -521,11 +521,11 @@ Both hashes are computed for each attestation to support both off-chain verifica
 
 | Component | Method | Status | Date |
 |-----------|--------|--------|------|
-| World ID Integration | Manual testing with Orb verification | ✅ Verified | 2025-01 |
-| Attestation Hashing | Unit tests (deterministic output) | ✅ Verified | 2025-01 |
-| Nullifier Uniqueness | Unit tests + manual testing | ✅ Verified | 2025-01 |
-| Signal Binding | Unit tests | ✅ Verified | 2025-01 |
-| On-chain Recording | Testnet deployment | ✅ Verified | 2025-01 |
+| World ID Integration | Manual testing with Orb verification | ✅ Verified | 2026-01 |
+| Attestation Hashing | Unit tests (deterministic output) | ✅ Verified | 2026-01 |
+| Nullifier Uniqueness | Unit tests + manual testing | ✅ Verified | 2026-01 |
+| Signal Binding | Unit tests | ✅ Verified | 2026-01 |
+| On-chain Recording | Testnet deployment | ✅ Verified | 2026-01 |
 
 ### Test Coverage
 
@@ -590,9 +590,9 @@ Before submitting a PR:
 
 | Version | Date | Changes |
 |---------|------|---------|
-| 1.2 | 2025-01 | Added GitLab CI/Bitbucket Pipe, self-review summary, attack scenarios |
-| 1.1 | 2024-12 | Added detailed threat analysis, component review |
-| 1.0 | 2024-12 | Initial security policy |
+| 1.2 | 2026-01 | Added GitLab CI/Bitbucket Pipe, self-review summary, attack scenarios |
+| 1.1 | 2025-12 | Added detailed threat analysis, component review |
+| 1.0 | 2025-12 | Initial security policy |
 
 ---
 

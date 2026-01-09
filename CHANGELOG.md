@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Japanese README (README_ja.md)
 - Dynamic OG images for social sharing
 
-## [0.1.0] - 2025-01-06
+## [0.1.0] - 2026-01-06
 
 ### Added
 
@@ -94,7 +94,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Version | Date | Description |
 |---------|------|-------------|
-| 0.1.0 | 2025-01-06 | Initial release with core functionality |
+| 0.1.0 | 2065-01-06 | Initial release with core functionality |
 
 [Unreleased]: https://github.com/pohi-protocol/pohi/compare/v0.1.0...HEAD
 [0.1.0]: https://github.com/pohi-protocol/pohi/releases/tag/v0.1.0

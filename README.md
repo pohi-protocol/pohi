@@ -6,7 +6,7 @@
 [![npm](https://img.shields.io/npm/v/pohi-core)](https://www.npmjs.com/package/pohi-core)
 [![CI](https://github.com/pohi-protocol/pohi/actions/workflows/ci.yml/badge.svg)](https://github.com/pohi-protocol/pohi/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/pohi-protocol/pohi/branch/main/graph/badge.svg)](https://codecov.io/gh/pohi-protocol/pohi)
-[![arXiv](https://img.shields.io/badge/arXiv-coming_soon-b31b1b.svg)](https://arxiv.org)
+[![ePrint](https://img.shields.io/badge/ePrint-submitted-yellow.svg)](https://eprint.iacr.org/)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![GitHub](https://img.shields.io/github/stars/pohi-protocol/pohi?style=social)](https://github.com/pohi-protocol/pohi)
 
@@ -225,17 +225,18 @@ jobs:
 
 **"Proof of Human Intent: Cryptographically Verifiable Human Approval for AI-Driven Software Development"**
 
-- 📝 arXiv: In preparation (expected 2026)
+- 📝 IACR ePrint: Submitted (pending review)
+- 📝 arXiv: Planned (after ePrint publication)
 - 📁 Source: [`paper/`](./paper/)
 
 ### Citation
 
 ```bibtex
-@article{pohi2026,
+@misc{pohi2026,
   title={Proof of Human Intent: Cryptographically Verifiable Human Approval for AI-Driven Software Development},
   author={Ikko Eltociear Ashimine},
-  journal={arXiv preprint},
-  year={2026}
+  year={2026},
+  howpublished={IACR Cryptology ePrint Archive}
 }
 ```
 
@@ -318,9 +319,9 @@ For full security documentation, see [SECURITY.md](./SECURITY.md).
 
 ## 📄 Research Paper
 
-We are preparing an academic paper on PoHI for arXiv submission.
+We have submitted our academic paper on PoHI to IACR ePrint (pending review). Cross-posting to arXiv is planned after ePrint publication.
 
-**Seeking arXiv Endorsement**: If you have endorsement capability in `cs.CR` (Cryptography and Security) or `cs.SE` (Software Engineering), we would greatly appreciate your support. Please [open an issue](https://github.com/pohi-protocol/pohi/issues/new) or contact us directly.
+**Seeking arXiv Endorsement**: If you have endorsement capability in `cs.CR` (Cryptography and Security) or `cs.SE` (Software Engineering), we would appreciate your support for future arXiv submission. Please [open an issue](https://github.com/pohi-protocol/pohi/issues/new) or contact us directly.
 
 ---
 

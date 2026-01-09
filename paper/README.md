@@ -2,7 +2,7 @@
 
 ## Status
 
-🚧 **Draft Complete** - Target submission: Q1 2025
+📤 **Submitted to IACR ePrint** - Pending review (January 2026)
 
 ## Title
 
