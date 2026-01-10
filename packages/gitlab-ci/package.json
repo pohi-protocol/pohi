@@ -1,6 +1,6 @@
 {
   "name": "pohi-gitlab-ci",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "PoHI Human Approval for GitLab CI/CD",
   "type": "module",
   "main": "dist/index.js",

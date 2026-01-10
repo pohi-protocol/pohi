@@ -1,6 +1,6 @@
 {
   "name": "pohi-evm",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "EVM/blockchain utilities for PoHI attestations - Keccak-256 hashing and conversion",
   "author": "Ikko Eltociear Ashimine",
   "keywords": [

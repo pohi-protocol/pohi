@@ -7,11 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-01-10
+
 ### Added
 - E2E tests for demo application using Playwright
 - TypeDoc API documentation generation
 - Japanese README (README_ja.md)
 - Dynamic OG images for social sharing
+- IACR ePrint paper submission
+- BrightID provider registration (in progress)
+
+### Changed
+- Updated paper references (VC v2.0, SCITT draft, arXiv:2501.09674)
+- Improved README with ePrint submission status
 
 ## [0.1.0] - 2026-01-06
 
@@ -94,7 +102,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Version | Date | Description |
 |---------|------|-------------|
+| 0.2.0 | 2026-01-10 | E2E tests, TypeDoc, Japanese README, ePrint submission |
 | 0.1.0 | 2026-01-06 | Initial release with core functionality |
 
-[Unreleased]: https://github.com/pohi-protocol/pohi/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/pohi-protocol/pohi/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/pohi-protocol/pohi/releases/tag/v0.2.0
 [0.1.0]: https://github.com/pohi-protocol/pohi/releases/tag/v0.1.0
