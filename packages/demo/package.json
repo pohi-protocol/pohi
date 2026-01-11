@@ -18,7 +18,7 @@
     "@vercel/kv": "^3.0.0",
     "@worldcoin/idkit": "^2.4.2",
     "next": "^16.1.1",
-    "pohi-core": "^0.1.0",
+    "pohi-core": "^0.2.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3"
   },
