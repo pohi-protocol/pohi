@@ -50,7 +50,7 @@ ORCID: 0000-0002-3576-6677
 With the rise of autonomous AI agents capable of proposing and executing software changes, traditional human-in-the-loop assumptions no longer hold.
 As these agents increasingly automate code generation, review, and deployment, the provenance of ``human intent''---the accountability behind critical decisions---is becoming obscured.
 Current systems lack mechanisms to cryptographically verify that a human—rather than an automated process—authorized specific actions such as merging pull requests or deploying to production.
-We present \textbf{Proof of Human Intent (PoHI)}, a protocol that combines zero-knowledge proofs of personhood (e.g., World ID), decentralized identifiers (DIDs), verifiable credentials (VCs), and transparency logs (SCITT) to create tamper-evident, machine-verifiable records of human approval.
+We present \textbf{Proof of Human Intent (PoHI)}, a protocol that leverages zero-knowledge proofs of personhood (e.g., World ID) and on-chain transparency logs to create tamper-evident, machine-verifiable records of human approval. The architecture can optionally integrate with decentralized identifiers (DIDs) and verifiable credentials (VCs) for enterprise authorization policies.
 Our architecture addresses three fundamental questions: (1) \textit{who} approved an action (unique human verification), (2) \textit{what} was approved (cryptographic binding to specific commits), and (3) \textit{when} it was approved (immutable timestamping).
 We implement a proof-of-concept integration with GitHub Actions and demonstrate that PoHI prevents unauthorized automated merges with negligible latency overhead ($<$2 seconds total machine time).
 The reference implementation is available at \url{https://github.com/pohi-protocol/pohi}.
@@ -68,7 +68,7 @@ AI agents, human-in-the-loop, proof of personhood, software supply chain securit
 % =============================================================================
 \section{Introduction}
 
-The rapid advancement of AI-driven development tools has fundamentally transformed software development workflows. Tools such as GitHub Copilot, Claude Code, and autonomous coding agents can now generate, review, and even propose merging code changes with minimal human intervention. While this automation dramatically increases developer productivity, it raises critical questions about accountability: \textit{Who approved this code? Was it a human or an AI? Can we prove it?}
+The rapid advancement of AI-driven development tools has fundamentally transformed software development workflows. Tools such as GitHub Copilot \cite{copilot}, Claude Code, and autonomous coding agents can now generate, review, and even propose merging code changes with minimal human intervention. While this automation dramatically increases developer productivity, it raises critical questions about accountability: \textit{Who approved this code? Was it a human or an AI? Can we prove it?}
 
 Consider a scenario where an AI agent autonomously creates a pull request, reviews it using another AI system, and merges it into production—all without meaningful human oversight. In 2024, GitHub Copilot assists in over 46\% of code written by developers using the tool. By 2025, autonomous coding agents like Devin, Claude Code Agent, and GPT Engineer can complete entire development tasks end-to-end. This trend points toward a future where AI systems not only write code but also manage significant portions of the software lifecycle.
 
@@ -80,7 +80,7 @@ The accountability gap becomes critical when we consider:
     \item \textbf{Legal liability}: Contracts may require human sign-off for software releases.
 \end{itemize}
 
-Current solutions rely on social conventions (e.g., requiring reviews) or process controls (e.g., protected branches), but these are easily circumvented and lack cryptographic verifiability. There is no mechanism to prove, after the fact, that a genuine human—not a bot or automated system—approved a specific action.
+Current solutions rely on social conventions (e.g., requiring reviews) or process controls (e.g., protected branches), but these are easily circumvented and lack cryptographic verifiability \cite{supplychain}. There is no mechanism to prove, after the fact, that a genuine human—not a bot or automated system—approved a specific action.
 
 \subsection{Contributions}
 
@@ -113,7 +113,7 @@ This progression shifts developers from ``implementers'' to ``approvers,'' creat
 
 Proof of Personhood (PoP) systems aim to verify that an entity is a unique human without revealing their identity. While PoHI is designed to be provider-agnostic, we use World ID as a concrete instantiation in this work due to its strong cryptographic guarantees. Notable approaches include:
 
-\textbf{World ID} \cite{worldid} uses iris biometrics via specialized hardware (Orb) to create a unique identifier. Zero-knowledge proofs allow users to prove their humanity without revealing biometric data. World ID provides both ``Device'' level (phone-based) and ``Orb'' level (biometric) verification.
+\textbf{World ID} \cite{worldid, worldcoin} uses iris biometrics via specialized hardware (Orb) to create a unique identifier. Zero-knowledge proofs allow users to prove their humanity without revealing biometric data. World ID provides both ``Device'' level (phone-based) and ``Orb'' level (biometric) verification.
 
 \textbf{BrightID} uses a social graph approach where existing verified humans vouch for new members. While more accessible, it is more susceptible to Sybil attacks through collusion.
 
@@ -155,7 +155,7 @@ Table \ref{tab:comparison} summarizes the key differences between PoHI and exist
 \label{tab:comparison}
 \begin{tabular}{lccc}
 \toprule
-\textbf{System} & \textbf{Human} & \textbf{Crypto} & \textbf{Sybil} \\
+\textbf{System} & \textbf{Human} & \textbf{Artifact} & \textbf{Sybil} \\
  & \textbf{Verify} & \textbf{Binding} & \textbf{Resist} \\
 \midrule
 SLSA \cite{slsa} & \texttimes & \checkmark & \texttimes \\
@@ -168,7 +168,7 @@ Gitcoin Passport & \checkmark & \texttimes & Medium \\
 \end{tabular}
 \end{table}
 
-Existing supply chain security frameworks (SLSA, Sigstore, SCITT) provide cryptographic binding and artifact integrity but do not verify that a \textit{human} performed the action. Proof-of-personhood systems (BrightID, Gitcoin Passport) verify human uniqueness but lack cryptographic binding to specific software artifacts. PoHI uniquely combines both properties, providing verifiable human approval with strong cryptographic guarantees.
+Existing supply chain security frameworks (SLSA, Sigstore, SCITT) provide artifact integrity and provenance but do not verify that a \textit{human} performed the action. Proof-of-personhood systems (BrightID, Gitcoin Passport) verify human uniqueness but lack binding to specific software artifacts (commits, releases). PoHI uniquely combines both properties: cryptographic proof of human identity bound to specific software artifacts.
 
 % =============================================================================
 % 3. THREAT MODEL
@@ -205,6 +205,15 @@ PoHI aims to ensure:
     \item \textbf{Tamper Evidence}: Modifications to records are detectable.
 \end{enumerate}
 
+\subsection{Trust Assumptions}
+
+The security of PoHI relies on the following trust assumptions:
+\begin{itemize}
+    \item \textbf{World ID System}: We assume the World ID ZK-SNARK system is sound and the biometric enrollment process (Orb) provides strong uniqueness guarantees. Device-level verification provides weaker assurance.
+    \item \textbf{Verification API}: The reference implementation uses the World ID verification API as a trusted third party. For higher assurance, on-chain verification against World ID's verification contracts can eliminate this trust assumption at the cost of increased latency and gas costs.
+    \item \textbf{Blockchain Integrity}: We assume the underlying blockchain (World Chain) provides standard properties: immutability, censorship resistance, and reliable timestamping.
+\end{itemize}
+
 \subsection{Scope and Limitations}
 
 It is important to distinguish between \textit{cryptographic authorization} and \textit{semantic understanding}.
@@ -226,8 +235,8 @@ PoHI consists of four layers that work together to create verifiable human appro
 
 \begin{enumerate}
     \item \textbf{Identity Layer}: Verifies the approver is a unique human using World ID.
-    \item \textbf{Authority Layer}: Manages permissions using DIDs and VCs.
-    \item \textbf{Attestation Layer}: Records events in a SCITT-compatible log.
+    \item \textbf{Authority Layer}: Manages permissions using DIDs and VCs (optional).
+    \item \textbf{Attestation Layer}: Records events on-chain for immutable transparency.
     \item \textbf{Integration Layer}: Connects with Git workflows.
 \end{enumerate}
 
@@ -249,7 +258,7 @@ Figure \ref{fig:architecture} illustrates the layered architecture and data flow
 \node[desc, below=0.1cm of authority] {Permissions\\Credentials};
 
 % Layer 3: Attestation
-\node[layer, fill=orange!20] (attestation) at (8, 3) {Attestation\\(SCITT)};
+\node[layer, fill=orange!20] (attestation) at (8, 3) {Attestation\\(On-chain)};
 \node[desc, below=0.1cm of attestation] {Transparency Log\\Hash Records};
 
 % Layer 4: Integration (spans bottom)
@@ -402,12 +411,12 @@ Figure \ref{fig:flow} illustrates the complete verification flow from pull reque
 We implement PoHI as a modular TypeScript library with the following packages:
 
 \begin{itemize}
-    \item \texttt{@pohi-protocol/core}: Chain-neutral types, validation, and SHA-256 hashing (zero dependencies)
-    \item \texttt{@pohi-protocol/evm}: EVM utilities for Keccak-256 and on-chain encoding
-    \item \texttt{@pohi-protocol/sdk}: Client for World Chain interaction
-    \item \texttt{@pohi-protocol/cli}: Command-line tool
-    \item \texttt{@pohi-protocol/action}: GitHub Action
-    \item \texttt{@pohi-protocol/contracts}: Solidity smart contracts (Foundry)
+    \item \texttt{pohi-core}: Chain-neutral types, validation, and SHA-256 hashing (zero dependencies)
+    \item \texttt{pohi-evm}: EVM utilities for Keccak-256 and on-chain encoding
+    \item \texttt{pohi-sdk}: Client for World Chain interaction
+    \item \texttt{pohi-cli}: Command-line tool
+    \item \texttt{pohi-action}: GitHub Action for CI/CD integration
+    \item \texttt{pohi-contracts}: Solidity smart contracts (Foundry)
 \end{itemize}
 
 The core library has zero runtime dependencies, enabling use in constrained environments. The modular design allows users to adopt only the components they need.
@@ -458,7 +467,7 @@ Let $\mathcal{A}$ denote an attestation, $H$ a cryptographic hash function (SHA-
 
 \subsubsection{Security Proofs}
 
-\textbf{Theorem 1 (Unforgeability).} PoHI attestations are unforgeable under the soundness of the World ID ZK-SNARK system and collision resistance of SHA-256.
+\textbf{Theorem 1 (Unforgeability).} PoHI attestations are unforgeable under the soundness of the World ID ZK-SNARK system \cite{zksnark} and collision resistance of SHA-256.
 
 \textit{Proof.} Assume an adversary $\mathcal{E}$ can forge an attestation $\mathcal{A}^*$ for commit $c$ without a valid World ID proof. The attestation verification requires:
 (1) a valid ZK proof $\pi$ that verifies against the World ID verification contract, and
@@ -557,9 +566,11 @@ These results indicate that PoHI can be integrated into existing CI/CD pipelines
 \subsection{Limitations}
 
 \begin{itemize}
-    \item World ID Orb availability constraints.
-    \item Privacy considerations in transparency logs.
-    \item Adoption barriers in existing workflows.
+    \item \textbf{World ID Orb Availability}: The highest assurance level (Orb verification) requires physical access to specialized hardware, which has limited global availability. Device-level verification provides a fallback but with weaker Sybil resistance.
+    \item \textbf{Verification Level Trade-offs}: Device-level verification relies on phone attestation rather than biometrics, making it susceptible to sophisticated device spoofing. Organizations requiring strong guarantees should mandate Orb-level verification.
+    \item \textbf{API Trust Dependency}: The reference implementation relies on World ID's verification API, introducing a trusted third party. While on-chain verification is possible, it increases latency and costs.
+    \item \textbf{Privacy in Transparency Logs}: On-chain attestations are publicly visible. While nullifier hashes preserve identity privacy, the fact that \textit{someone} approved a specific commit is public. Organizations requiring private approvals must use off-chain storage with selective disclosure.
+    \item \textbf{Adoption Barriers}: Integrating PoHI requires developers to install the World App and complete verification, adding friction to existing workflows. Organizational rollout requires change management.
 \end{itemize}
 
 \subsection{Future Work}
@@ -618,9 +629,6 @@ T. South, S. Marro, T. Hardjono, R. Mahari, C. D. Whitney, D. Greenwood, A. Chan
 
 \bibitem{zksnark}
 E. Ben-Sasson, A. Chiesa, D. Genkin, E. Tromer, and M. Virza, ``SNARKs for C: Verifying Program Executions Succinctly and in Zero Knowledge,'' in Proc. CRYPTO, 2013.
-
-\bibitem{semgrep}
-r2c, Inc., ``Semgrep: Lightweight Static Analysis for Security,'' 2024. [Online]. Available: https://semgrep.dev
 
 \bibitem{supplychain}
 C. Ladisa, H. Plate, M. Martinez, and O. Barais, ``SoK: Taxonomy of Attacks on Open-Source Software Supply Chains,'' in Proc. IEEE S\&P, 2023.

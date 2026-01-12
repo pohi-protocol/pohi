@@ -2,9 +2,11 @@
 \providecommand\hyper@newdestlabel[2]{}
 \providecommand\HyField@AuxAddToFields[1]{}
 \providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{copilot}
+\citation{supplychain}
 \@writefile{toc}{\contentsline {section}{\numberline {I}Introduction}{1}{section.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {I-A}}Contributions}{1}{subsection.1.1}\protected@file@percent }
-\citation{worldid}
+\citation{worldid,worldcoin}
 \citation{scitt}
 \citation{sigstore}
 \citation{did}
@@ -26,22 +28,24 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-A}}System Model}{3}{subsection.3.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-B}}Adversary Capabilities}{3}{subsection.3.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-C}}Security Goals}{3}{subsection.3.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-D}}Scope and Limitations}{3}{subsection.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-D}}Trust Assumptions}{3}{subsection.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-E}}Scope and Limitations}{3}{subsection.3.5}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {IV}Proposed Architecture}{3}{section.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Overview}{3}{subsection.4.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}Identity Layer}{3}{subsection.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Authority Layer}{3}{subsection.4.3}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces PoHI Four-Layer Architecture. Human approval flows through identity verification (Layer 1), optional authority checks (Layer 2), and attestation recording (Layer 3), all connected to developer workflows via the integration layer (Layer 4).}}{4}{figure.1}\protected@file@percent }
 \newlabel{fig:architecture}{{1}{4}{PoHI Four-Layer Architecture. Human approval flows through identity verification (Layer 1), optional authority checks (Layer 2), and attestation recording (Layer 3), all connected to developer workflows via the integration layer (Layer 4)}{figure.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Authority Layer}{4}{subsection.4.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}Attestation Layer}{4}{subsection.4.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}Integration Layer}{4}{subsection.4.5}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {V}Implementation}{4}{section.5}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Attestation Data Model}{4}{subsection.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {VI}Evaluation}{4}{section.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-A}}Formal Security Analysis}{4}{subsection.6.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-A}1}Security Definitions}{4}{subsubsection.6.1.1}\protected@file@percent }
+\citation{zksnark}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Verification Flow. (1) GitHub Action triggers on PR, (2) posts QR code comment, (3) human scans with World App, (4) ZK proof verified against World ID API, (5) attestation created and stored, (6) PR status updated to enable merge.}}{5}{figure.2}\protected@file@percent }
 \newlabel{fig:flow}{{2}{5}{Verification Flow. (1) GitHub Action triggers on PR, (2) posts QR code comment, (3) human scans with World App, (4) ZK proof verified against World ID API, (5) attestation created and stored, (6) PR status updated to enable merge}{figure.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Evaluation}{5}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-A}}Formal Security Analysis}{5}{subsection.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-A}1}Security Definitions}{5}{subsubsection.6.1.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-A}2}Security Proofs}{5}{subsubsection.6.1.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-A}3}Attack Vector Analysis}{5}{subsubsection.6.1.3}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Security Analysis Against Attack Vectors}}{5}{table.2}\protected@file@percent }
@@ -49,7 +53,6 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Performance Evaluation}{5}{subsection.6.2}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces Operation Latency (Reference Implementation)}}{5}{table.3}\protected@file@percent }
 \newlabel{tab:latency}{{III}{5}{Operation Latency (Reference Implementation)}{table.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-C}}Gas Costs}{5}{subsection.6.3}\protected@file@percent }
 \bibstyle{IEEEtran}
 \bibcite{worldid}{1}
 \bibcite{worldcoin}{2}
@@ -59,10 +62,10 @@
 \bibcite{sigstore}{6}
 \bibcite{mitdelegation}{7}
 \bibcite{zksnark}{8}
-\bibcite{semgrep}{9}
-\bibcite{supplychain}{10}
-\bibcite{copilot}{11}
-\bibcite{slsa}{12}
+\bibcite{supplychain}{9}
+\bibcite{copilot}{10}
+\bibcite{slsa}{11}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-C}}Gas Costs}{6}{subsection.6.3}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces Estimated Gas Costs}}{6}{table.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {VII}Discussion}{6}{section.7}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-A}}Limitations}{6}{subsection.7.1}\protected@file@percent }
