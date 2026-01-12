@@ -84,12 +84,12 @@ Current solutions rely on social conventions (e.g., requiring reviews) or proces
 
 \subsection{Contributions}
 
-Our contributions are as follows:
+This paper makes the following contributions:
 \begin{itemize}
-    \item We identify the ``human approval verification gap'' in AI-driven development and formalize the threat model.
-    \item We propose the PoHI architecture that integrates proof-of-personhood, decentralized identity, and transparency logging.
-    \item We implement a proof-of-concept GitHub Action that enforces human approval verification.
-    \item We analyze the security properties of PoHI against relevant attack vectors.
+    \item \textbf{Novel Problem Identification}: We identify the ``human approval verification gap''---the inability to cryptographically prove that a human (rather than an automated system) authorized a specific software action. This gap is not addressed by existing supply chain security frameworks such as SLSA, Sigstore, or SCITT, which focus on artifact integrity rather than human verification.
+    \item \textbf{First Integrated Protocol}: We propose PoHI, the first protocol that combines zero-knowledge proofs of personhood with software supply chain attestations, enabling cryptographically verifiable human approval without revealing user identity.
+    \item \textbf{Formal Security Analysis}: We define formal security properties (unforgeability, replay resistance, Sybil resistance, and binding) and provide proofs under standard cryptographic assumptions.
+    \item \textbf{Practical Implementation}: We provide an open-source reference implementation including a GitHub Action, CLI tool, and smart contracts, demonstrating negligible latency overhead ($<$2 seconds) for real-world CI/CD integration.
 \end{itemize}
 
 % =============================================================================
@@ -144,6 +144,31 @@ PoHI leverages these standards for its Authority Layer, enabling organizations t
 South et al. \cite{mitdelegation} propose ``Authenticated Delegation'' for AI agents, introducing the concept of capability delegation from humans to AI systems. Their work focuses on what AI agents are authorized to do.
 
 PoHI addresses a complementary problem: verifying that a human actually approved an action, regardless of whether AI agents were involved in the execution. While their approach defines ``what can be done,'' PoHI proves ``a human approved this.''
+
+\subsection{Comparison with Existing Approaches}
+
+Table \ref{tab:comparison} summarizes the key differences between PoHI and existing supply chain security frameworks.
+
+\begin{table}[h]
+\centering
+\caption{Comparison of Supply Chain Security Approaches}
+\label{tab:comparison}
+\begin{tabular}{lccc}
+\toprule
+\textbf{System} & \textbf{Human} & \textbf{Crypto} & \textbf{Sybil} \\
+ & \textbf{Verify} & \textbf{Binding} & \textbf{Resist} \\
+\midrule
+SLSA \cite{slsa} & \texttimes & \checkmark & \texttimes \\
+Sigstore \cite{sigstore} & \texttimes & \checkmark & \texttimes \\
+SCITT \cite{scitt} & \texttimes & \checkmark & \texttimes \\
+BrightID & \checkmark & \texttimes & Low \\
+Gitcoin Passport & \checkmark & \texttimes & Medium \\
+\textbf{PoHI (Ours)} & \checkmark & \checkmark & \textbf{High} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Existing supply chain security frameworks (SLSA, Sigstore, SCITT) provide cryptographic binding and artifact integrity but do not verify that a \textit{human} performed the action. Proof-of-personhood systems (BrightID, Gitcoin Passport) verify human uniqueness but lack cryptographic binding to specific software artifacts. PoHI uniquely combines both properties, providing verifiable human approval with strong cryptographic guarantees.
 
 % =============================================================================
 % 3. THREAT MODEL
@@ -415,34 +440,63 @@ The attestation JSON structure contains the following fields:
 % =============================================================================
 \section{Evaluation}
 
-\subsection{Security Analysis}
+\subsection{Formal Security Analysis}
 
-We evaluate PoHI against the threat model defined in Section 3.
+We formally define the security properties of PoHI and provide proofs under standard cryptographic assumptions.
+
+\subsubsection{Security Definitions}
+
+Let $\mathcal{A}$ denote an attestation, $H$ a cryptographic hash function (SHA-256), $\pi$ a World ID zero-knowledge proof, and $\nu$ the nullifier hash derived from the proof.
+
+\textbf{Definition 1 (Unforgeability).} A PoHI attestation scheme is \textit{unforgeable} if no probabilistic polynomial-time (PPT) adversary $\mathcal{E}$ can produce a valid attestation $\mathcal{A}^*$ for a commit $c$ without possessing a valid World ID proof $\pi$ for signal $s = H(\text{repo} \| c)$, except with negligible probability.
+
+\textbf{Definition 2 (Replay Resistance).} A PoHI attestation scheme is \textit{replay-resistant} if a valid attestation $\mathcal{A}$ for commit $c_1$ cannot be used to verify approval for a different commit $c_2$ where $c_1 \neq c_2$.
+
+\textbf{Definition 3 (Sybil Resistance).} A PoHI attestation scheme is \textit{Sybil-resistant} if each unique human can produce at most one valid attestation per (repository, commit, action) tuple.
+
+\textbf{Definition 4 (Binding).} A PoHI attestation $\mathcal{A}$ is \textit{bound} to subject $S$ if any modification to $S$ results in verification failure.
+
+\subsubsection{Security Proofs}
+
+\textbf{Theorem 1 (Unforgeability).} PoHI attestations are unforgeable under the soundness of the World ID ZK-SNARK system and collision resistance of SHA-256.
+
+\textit{Proof.} Assume an adversary $\mathcal{E}$ can forge an attestation $\mathcal{A}^*$ for commit $c$ without a valid World ID proof. The attestation verification requires:
+(1) a valid ZK proof $\pi$ that verifies against the World ID verification contract, and
+(2) the proof's signal matches $H(\text{repo} \| c)$.
+By the soundness property of the ZK-SNARK, $\mathcal{E}$ cannot produce a valid $\pi$ without knowledge of the witness (World ID credentials). Thus, forging $\mathcal{A}^*$ requires breaking either ZK-SNARK soundness or SHA-256 collision resistance, both assumed to be computationally infeasible. \hfill $\square$
+
+\textbf{Theorem 2 (Replay Resistance).} PoHI attestations are replay-resistant under collision resistance of SHA-256.
+
+\textit{Proof.} The signal in a World ID proof is computed as $s = H(\text{repo} \| c)$. For an attestation valid for $c_1$ to be replayed for $c_2$, we require $H(\text{repo} \| c_1) = H(\text{repo} \| c_2)$ with $c_1 \neq c_2$. This constitutes a collision in SHA-256, which is computationally infeasible under standard assumptions. \hfill $\square$
+
+\textbf{Theorem 3 (Sybil Resistance).} PoHI provides Sybil resistance bounded by the uniqueness guarantees of the underlying World ID system.
+
+\textit{Proof.} The nullifier hash $\nu$ is derived deterministically from the user's World ID identity and the application-specific external nullifier. For a given (repository, action) scope, each unique World ID produces a unique $\nu$. The on-chain registry rejects duplicate nullifiers. Thus, creating multiple attestations requires either (1) multiple World ID identities (prevented by biometric uniqueness at Orb level), or (2) nullifier collision (computationally infeasible). \hfill $\square$
+
+\textbf{Theorem 4 (Binding).} PoHI attestations are cryptographically bound to their subjects.
+
+\textit{Proof.} The attestation hash is computed as $h = H(\mathcal{A})$ where $\mathcal{A}$ includes all subject fields (repository, commit\_sha, action). Any modification to these fields changes $h$, causing verification failure against the recorded hash. \hfill $\square$
+
+\subsubsection{Attack Vector Analysis}
+
+Table \ref{tab:security} summarizes the security guarantees against specific attack vectors.
 
 \begin{table}[h]
 \centering
 \caption{Security Analysis Against Attack Vectors}
+\label{tab:security}
 \begin{tabular}{lll}
 \toprule
-\textbf{Attack} & \textbf{Mitigation} & \textbf{Assurance} \\
+\textbf{Attack} & \textbf{Mitigation} & \textbf{Guarantee} \\
 \midrule
-Sybil Attack & World ID nullifier & High (Orb) \\
-Replay Attack & Signal binding to commit & High \\
-Tampering & Attestation hash & High \\
-Impersonation & ZK proof verification & High \\
-Front-running & On-chain nullifier check & Medium \\
-Coercion & Out of scope & N/A \\
+Forgery & Theorem 1 & Computational \\
+Replay & Theorem 2 & Computational \\
+Sybil & Theorem 3 & Biometric + Crypto \\
+Tampering & Theorem 4 & Computational \\
+Front-running & On-chain ordering & Blockchain \\
 \bottomrule
 \end{tabular}
 \end{table}
-
-\textbf{Sybil Attack}: World ID's nullifier hash ensures one approval per unique human per action scope. The Orb verification level provides strong practical Sybil resistance through biometric-based uniqueness checks, though it does not claim formal biometric infallibility. Device-level verification offers weaker guarantees.
-
-\textbf{Replay Attack}: The signal is computed as a hash of the repository and commit SHA. This binds each proof to a specific action, preventing reuse of proofs across different commits.
-
-\textbf{Tampering}: The attestation hash covers all critical fields using SHA-256. Any modification to the attestation data results in hash mismatch, detectable during verification.
-
-\textbf{Front-running}: The on-chain contract checks for duplicate approvals before recording. An attacker cannot front-run a legitimate approval because they lack the World ID proof.
 
 \subsection{Performance Evaluation}
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2026.1.8)  9 JAN 2026 02:54
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2026.1.8)  12 JAN 2026 14:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -886,16 +886,6 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <7> on input line 77.
 
-Underfull \hbox (badness 6792) in paragraph at lines 90--91
-[]\T1/lmr/m/n/10 We pro-pose the PoHI ar-chi-tec-ture that in-te-
- []
-
-
-Underfull \hbox (badness 1895) in paragraph at lines 90--91
-\T1/lmr/m/n/10 grates proof-of-personhood, de-cen-tral-ized iden-tity,
- []
-
-
 
 [1{/usr/local/texlive/2025basic/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/
 usr/local/texlive/2025basic/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}
@@ -904,81 +894,91 @@ usr/local/texlive/2025basic/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}
 {/usr/local/texlive/2025basic/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr
 /local/texlive/2025basic/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}]
 
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <8> on input line 156.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 1
+61.
+(/usr/local/texlive/2025basic/texmf-dist/tex/latex/lm/ts1lmr.fd
+File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
 
+[2{/usr/local/texlive/2025basic/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}]
 
-[2]
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
-54.
- (/usr/local/texlive/2025basic/texmf-dist/tex/latex/lm/t1lmtt.fd
+79.
+(/usr/local/texlive/2025basic/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-Underfull \hbox (badness 10000) in paragraph at lines 254--256
+Underfull \hbox (badness 10000) in paragraph at lines 279--281
 []\T1/lmr/m/n/10 The core data struc-ture is the
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 267--268
+Underfull \hbox (badness 10000) in paragraph at lines 292--293
 \T1/lmtt/m/n/10 signal = SHA256(repository || ":" ||
  []
 
 
 
-
-
 [3]
-Underfull \hbox (badness 4378) in paragraph at lines 385--386
+
+
+Underfull \hbox (badness 4378) in paragraph at lines 410--411
 []\T1/lmtt/m/n/10 @pohi-protocol/contracts\T1/lmr/m/n/10 : So-lid-ity smart con
 -
  []
 
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 425.
 
 
+[4{/usr/local/texlive/2025basic/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}]
 
 
-[4]
-Overfull \hbox (14.52786pt too wide) in paragraph at lines 456--469
+Overfull \hbox (14.52786pt too wide) in paragraph at lines 510--523
  [][] 
  []
 
 
-Underfull \hbox (badness 2035) in paragraph at lines 526--527
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+
+[5]
+Underfull \hbox (badness 2035) in paragraph at lines 580--581
 []\T1/lmr/m/n/10 As AI agents be-come in-creas-ingly ca-pa-ble of au-
  []
 
 
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 545--546
+Underfull \hbox (badness 10000) in paragraph at lines 599--600
 []\T1/lmr/m/n/8 World Foun-da-tion, ``World ID: Privacy-Preserving
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 545--546
+Underfull \hbox (badness 10000) in paragraph at lines 599--600
 \T1/lmr/m/n/8 Proof of Per-son-hood,'' 2024. [On-line]. Avail-able:
  []
 
 
-Underfull \hbox (badness 4378) in paragraph at lines 557--558
+Underfull \hbox (badness 4378) in paragraph at lines 611--612
 []\T1/lmr/m/n/8 H. Birkholz, A. Delignat-Lavaud, C. Four-net, Y. Desh-
  []
 
 
-Underfull \hbox (badness 2644) in paragraph at lines 557--558
+Underfull \hbox (badness 2644) in paragraph at lines 611--612
 \T1/lmr/m/n/8 pande, and S. Lasker, ``An Ar-chi-tec-ture for Trust-wor-thy
  []
 
 
-Underfull \hbox (badness 2932) in paragraph at lines 557--558
+Underfull \hbox (badness 2932) in paragraph at lines 611--612
 \T1/lmr/m/n/8 and Trans-par-ent Dig-i-tal Sup-ply Chains,'' IETF Internet-
  []
 
 
-Underfull \hbox (badness 2680) in paragraph at lines 557--558
+Underfull \hbox (badness 2680) in paragraph at lines 611--612
 \T1/lmr/m/n/8 Draft draft-ietf-scitt-architecture, 2024. [On-line]. Avail-able:
 
  []
+
+
 
 
 ** Conference Paper **
@@ -993,22 +993,22 @@ Before submitting the final camera ready copy, remember to:
 
 
 
-[5] (./main.aux)
+[6] (./main.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 978CDA83214EAFCDD11CDDE967F45C07;4187.
+(rerunfilecheck)             Checksum: 2C92F24A639008E6C9CC8528A194C9D6;4968.
  ) 
 Here is how much of TeX's memory you used:
- 22805 strings out of 474662
- 430262 string characters out of 5751110
- 821427 words of memory out of 5000000
- 45370 multiletter control sequences out of 15000+600000
- 757044 words of font info for 151 fonts, out of 8000000 for 9000
+ 22853 strings out of 474662
+ 431365 string characters out of 5751110
+ 819711 words of memory out of 5000000
+ 45406 multiletter control sequences out of 15000+600000
+ 757416 words of font info for 152 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
- 84i,9n,87p,570b,794s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 84i,10n,87p,570b,794s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025basic/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></u
 sr/local/texlive/2025basic/texmf-dist/fonts/type1/public/lm/lmbx8.pfb></usr/loc
 al/texlive/2025basic/texmf-dist/fonts/type1/public/lm/lmbx9.pfb></usr/local/tex
@@ -1026,11 +1026,12 @@ r7.pfb></usr/local/texlive/2025basic/texmf-dist/fonts/type1/public/lm/lmr8.pfb>
 /local/texlive/2025basic/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/loca
 l/texlive/2025basic/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></usr/local/texl
 ive/2025basic/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/local/texlive/20
-25basic/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on main.pdf (5 pages, 410219 bytes).
+25basic/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/2025bas
+ic/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb>
+Output written on main.pdf (6 pages, 434216 bytes).
 PDF statistics:
- 310 PDF objects out of 1000 (max. 8388607)
- 262 compressed objects within 3 object streams
- 69 named destinations out of 1000 (max. 500000)
- 253 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 354 PDF objects out of 1000 (max. 8388607)
+ 300 compressed objects within 3 object streams
+ 75 named destinations out of 1000 (max. 500000)
+ 285 words of extra memory for PDF output out of 10000 (max. 10000000)
 
