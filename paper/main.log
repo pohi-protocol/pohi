@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2026.1.8)  12 JAN 2026 15:06
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2026.1.8)  12 JAN 2026 15:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -895,35 +895,39 @@ usr/local/texlive/2025basic/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}
 /local/texlive/2025basic/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}]
 
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 156.
+(Font)              <8> on input line 165.
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 1
-61.
+70.
 (/usr/local/texlive/2025basic/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 
-[2{/usr/local/texlive/2025basic/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}]
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+
+[2]
 
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
-88.
+98.
 (/usr/local/texlive/2025basic/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-Underfull \hbox (badness 10000) in paragraph at lines 288--290
+Underfull \hbox (badness 10000) in paragraph at lines 298--300
 []\T1/lmr/m/n/10 The core data struc-ture is the
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 301--302
+
+[3{/usr/local/texlive/2025basic/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}]
+Underfull \hbox (badness 10000) in paragraph at lines 311--312
 \T1/lmtt/m/n/10 signal = SHA256(repository || ":" ||
  []
 
 
 
-[3]
 
-
-Underfull \hbox (badness 3407) in paragraph at lines 414--415
+Underfull \hbox (badness 3407) in paragraph at lines 424--425
 []\T1/lmtt/m/n/10 pohi-core\T1/lmr/m/n/10 : Chain-neutral types, val-i-da-tion,
  and
  []
@@ -933,46 +937,60 @@ Underfull \hbox (badness 3407) in paragraph at lines 414--415
 [4]
 
 
-Overfull \hbox (14.52786pt too wide) in paragraph at lines 519--532
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Overfull \hbox (14.52786pt too wide) in paragraph at lines 529--542
  [][] 
  []
 
 
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
 
 [5{/usr/local/texlive/2025basic/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}]
+Underfull \hbox (badness 2165) in paragraph at lines 571--572
+[]\T1/lmr/bx/n/10 Reproducibility. \T1/lmr/m/n/10 The ref-er-ence im-ple-men-ta
+-tion is
+ []
 
 
-Underfull \hbox (badness 2035) in paragraph at lines 591--592
+
+
+
+[6]
+Underfull \hbox (badness 2035) in paragraph at lines 611--612
 []\T1/lmr/m/n/10 As AI agents be-come in-creas-ingly ca-pa-ble of au-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 610--611
+Underfull \hbox (badness 10000) in paragraph at lines 630--631
 []\T1/lmr/m/n/8 World Foun-da-tion, ``World ID: Privacy-Preserving
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 610--611
+Underfull \hbox (badness 10000) in paragraph at lines 630--631
 \T1/lmr/m/n/8 Proof of Per-son-hood,'' 2024. [On-line]. Avail-able:
  []
 
 
-Underfull \hbox (badness 4378) in paragraph at lines 622--623
+Underfull \hbox (badness 4378) in paragraph at lines 642--643
 []\T1/lmr/m/n/8 H. Birkholz, A. Delignat-Lavaud, C. Four-net, Y. Desh-
  []
 
 
-Underfull \hbox (badness 2644) in paragraph at lines 622--623
+Underfull \hbox (badness 2644) in paragraph at lines 642--643
 \T1/lmr/m/n/8 pande, and S. Lasker, ``An Ar-chi-tec-ture for Trust-wor-thy
  []
 
 
-Underfull \hbox (badness 2932) in paragraph at lines 622--623
+Underfull \hbox (badness 2932) in paragraph at lines 642--643
 \T1/lmr/m/n/8 and Trans-par-ent Dig-i-tal Sup-ply Chains,'' IETF Internet-
  []
 
 
-Underfull \hbox (badness 2680) in paragraph at lines 622--623
+Underfull \hbox (badness 2680) in paragraph at lines 642--643
 \T1/lmr/m/n/8 Draft draft-ietf-scitt-architecture, 2024. [On-line]. Avail-able:
 
  []
@@ -990,19 +1008,23 @@ Before submitting the final camera ready copy, remember to:
 
 
 
-[6] (./main.aux)
+
+
+[7
+
+] (./main.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 1FECD5CAC0D9989BD385AEB79577706A;5114.
+(rerunfilecheck)             Checksum: B7C81E30C2BA81A4DCD42AE1A0D60C87;5630.
  ) 
 Here is how much of TeX's memory you used:
- 22853 strings out of 474662
- 431374 string characters out of 5751110
- 820931 words of memory out of 5000000
- 45406 multiletter control sequences out of 15000+600000
+ 22861 strings out of 474662
+ 431471 string characters out of 5751110
+ 819634 words of memory out of 5000000
+ 45408 multiletter control sequences out of 15000+600000
  757416 words of font info for 152 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
  84i,10n,87p,570b,794s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1025,10 +1047,10 @@ l/texlive/2025basic/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></usr/local/texl
 ive/2025basic/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/local/texlive/20
 25basic/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/2025bas
 ic/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb>
-Output written on main.pdf (6 pages, 435483 bytes).
+Output written on main.pdf (7 pages, 439353 bytes).
 PDF statistics:
- 363 PDF objects out of 1000 (max. 8388607)
- 308 compressed objects within 4 object streams
- 75 named destinations out of 1000 (max. 500000)
- 293 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 384 PDF objects out of 1000 (max. 8388607)
+ 328 compressed objects within 4 object streams
+ 81 named destinations out of 1000 (max. 500000)
+ 309 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -60,7 +60,7 @@ The reference implementation is available at \url{https://github.com/pohi-protoc
 % KEYWORDS
 % =============================================================================
 \begin{IEEEkeywords}
-AI agents, human-in-the-loop, proof of personhood, software supply chain security, zero-knowledge proofs, decentralized identity
+AI agents, human-in-the-loop, proof of personhood, software supply chain security, zero-knowledge proofs, decentralized identity, AI governance, human approval
 \end{IEEEkeywords}
 
 % =============================================================================
@@ -121,6 +121,15 @@ Proof of Personhood (PoP) systems aim to verify that an entity is a unique human
 
 We use World ID as a concrete PoP provider in our reference implementation due to its strong Sybil resistance and privacy-preserving properties through zero-knowledge proofs.
 
+\subsubsection{Provider-Agnostic Requirements}
+Although World ID is used as a concrete instantiation, PoHI is designed to be provider-agnostic. The protocol requires any proof-of-personhood system to satisfy three properties:
+\begin{enumerate}
+    \item \textbf{Uniqueness}: Each human can obtain at most one valid credential.
+    \item \textbf{Unlinkability}: Proofs for different actions cannot be correlated to the same individual.
+    \item \textbf{Binding}: Proofs can be cryptographically bound to arbitrary signals (e.g., commit hashes).
+\end{enumerate}
+Any PoP scheme meeting these properties---including future systems based on social graphs, behavioral biometrics, or hardware attestation---can be substituted without changes to the core PoHI protocol.
+
 \subsection{Software Supply Chain Security}
 
 Recent initiatives address software supply chain integrity:
@@ -161,9 +170,9 @@ Table \ref{tab:comparison} summarizes the key differences between PoHI and exist
 SLSA \cite{slsa} & \texttimes & \checkmark & \texttimes \\
 Sigstore \cite{sigstore} & \texttimes & \checkmark & \texttimes \\
 SCITT \cite{scitt} & \texttimes & \checkmark & \texttimes \\
-BrightID & \checkmark & \texttimes & Low \\
-Gitcoin Passport & \checkmark & \texttimes & Medium \\
-\textbf{PoHI (Ours)} & \checkmark & \checkmark & \textbf{High} \\
+BrightID & \checkmark & \texttimes & Weak \\
+Gitcoin Passport & \checkmark & \texttimes & Heuristic \\
+\textbf{PoHI (Ours)} & \checkmark & \checkmark & \textbf{Strong} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -193,6 +202,7 @@ We assume an adversary who can:
     \item Create commits and pull requests programmatically.
     \item Attempt to forge or replay approval attestations.
     \item Create multiple fake identities (Sybil attack).
+    \item \textbf{Insider threat}: A legitimate user with valid World ID credentials who intentionally approves malicious changes. PoHI provides cryptographic evidence of who approved, enabling post-incident attribution, but does not prevent authorized insiders from acting maliciously.
 \end{itemize}
 
 \subsection{Security Goals}
@@ -395,7 +405,7 @@ Figure \ref{fig:flow} illustrates the complete verification flow from pull reque
 \node[font=\scriptsize, above=0.1cm of merge] {6};
 
 \end{tikzpicture}
-\caption{Verification Flow. (1) GitHub Action triggers on PR, (2) posts QR code comment, (3) human scans with World App, (4) ZK proof verified against World ID API, (5) attestation created and stored, (6) PR status updated to enable merge.}
+\caption{Verification Flow. (1) GitHub Action triggers on PR, (2) posts QR code comment, (3) human scans with World App, (4) ZK proof verified against World ID API, (5) attestation created and stored (on-chain recording is optional), (6) PR status updated to enable merge.}
 \label{fig:flow}
 \end{figure*}
 
@@ -558,10 +568,20 @@ At typical World Chain gas prices, recording an attestation costs less than \$0.
 
 These results indicate that PoHI can be integrated into existing CI/CD pipelines with negligible overhead, making human approval verification practical for real-world software development workflows.
 
+\textbf{Reproducibility.} The reference implementation is publicly available at \url{https://github.com/pohi-protocol/pohi} under the Apache 2.0 license. Performance measurements were conducted on GitHub Actions runners (Ubuntu 22.04, 2-core CPU) using the deployed World Chain Sepolia testnet. The demo application is accessible at \url{https://pohi-demo.vercel.app} for interactive verification flow demonstration.
+
 % =============================================================================
 % 7. DISCUSSION
 % =============================================================================
 \section{Discussion}
+
+\subsection{Design Philosophy: Presence vs. Understanding}
+
+A natural critique of PoHI is that it proves human \textit{presence} but not human \textit{understanding}. This separation is intentional. PoHI verifies that a unique human approved a specific action at a specific time---cryptography can provide this guarantee. However, whether that human semantically understood the code changes, verified their correctness, or made an informed decision remains a socio-technical responsibility that no cryptographic protocol can enforce.
+
+We argue this separation is appropriate: (1) it matches real-world accountability models where signatures attest to approval, not comprehension; (2) it enables automation of the verifiable component while leaving judgment to humans and organizations; and (3) attempting to cryptographically verify ``understanding'' would require solving fundamentally unsolvable problems in human cognition assessment.
+
+PoHI provides the cryptographic foundation; organizational policies, code review practices, and user interface design must address the understanding component.
 
 \subsection{Limitations}
 
