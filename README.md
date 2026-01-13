@@ -398,6 +398,39 @@ See [NOTICE](NOTICE) for full attribution and prior art declaration.
 
 ---
 
+## 🔌 PoHI-compatible Implementations
+
+An implementation may describe itself as **"PoHI-compatible"** if it satisfies the following conditions:
+
+### Definition
+
+"PoHI-compatible" refers to systems or implementations that align with the **Proof of Human Intent (PoHI)** protocol as defined in this repository and associated publications.
+
+PoHI-compatible implementations are expected to:
+
+- Follow the core concept of **cryptographically verifiable human intent**
+- Preserve the distinction between **human approval** and **automated actions**
+- Support verifiable provenance of intent (e.g., signatures, logs, or proofs)
+- Avoid treating PoHI as a mechanism for identity disclosure or KYC
+
+### Reference Requirement
+
+Implementations claiming PoHI compatibility are expected to reference this repository as the **original definition and prior art of PoHI**, and clearly document any deviations from the reference implementation.
+
+### Non-Exclusivity
+
+PoHI compatibility does **not** require strict conformance to a single implementation. PoHI is designed as an **open protocol concept**, and compatible implementations may vary in architecture or cryptographic primitives, provided the core intent model remains intact.
+
+### Trademark Notice
+
+"PoHI-compatible" is a descriptive term, not a trademark. Use of this term does not imply endorsement or affiliation with the PoHI authors.
+
+> Projects are encouraged to describe their implementation as "PoHI-compatible" rather than redefining the PoHI concept independently.
+
+For detailed compatibility levels (Core / Extended / Advanced), see [docs/pohi-compatibility.md](docs/pohi-compatibility.md).
+
+---
+
 <p align="center">
   <b>Proof of Human Intent</b><br>
   <i>Your approval, cryptographically preserved for the future.</i>
