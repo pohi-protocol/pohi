@@ -3,14 +3,14 @@ name: Approval Comment
 on:
   pull_request:
     types: [labeled]
-    branches: [main]
+
+permissions:
+  pull-requests: write
 
 jobs:
   comment:
     if: github.event.label.name == 'needs-human-approval'
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
 
     steps:
       - name: Post approval link comment
