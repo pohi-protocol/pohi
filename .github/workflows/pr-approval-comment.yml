@@ -3,6 +3,7 @@ name: Approval Comment
 on:
   pull_request:
     types: [labeled]
+    branches: [main]
 
 jobs:
   comment:
