@@ -21,11 +21,12 @@ function HomeContent() {
   const t = useTranslation()
   const [selectedProvider, setSelectedProvider] = useState<string | null>(null)
   const [verificationStatus, setVerificationStatus] = useState<
-    'idle' | 'verifying' | 'success' | 'error'
+    'idle' | 'verifying' | 'success' | 'error' | 'already_approved' | 'checking'
   >('idle')
   const [attestation, setAttestation] =
     useState<HumanApprovalAttestation | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [approvedAt, setApprovedAt] = useState<string | null>(null)
 
   // URL params state
   const [repoParam, setRepoParam] = useState<string | null>(null)
@@ -58,6 +59,25 @@ function HomeContent() {
           repository: repo || 'pohi-protocol/pohi',
           commit_sha: commit || 'abc123def456',
         })
+
+        // Check if this commit is already approved
+        if (repo && commit) {
+          setVerificationStatus('checking')
+          fetch(`/api/status?repo=${encodeURIComponent(repo)}&commit=${encodeURIComponent(commit)}`)
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.status === 'approved') {
+                setVerificationStatus('already_approved')
+                setAttestation(data.attestation)
+                setApprovedAt(data.approved_at)
+              } else {
+                setVerificationStatus('idle')
+              }
+            })
+            .catch(() => {
+              setVerificationStatus('idle')
+            })
+        }
       }
     }
   }, [])
@@ -89,6 +109,11 @@ function HomeContent() {
       if (data.success) {
         setVerificationStatus('success')
         setAttestation(data.attestation)
+      } else if (data.alreadyApproved) {
+        // Handle already approved case (409 Conflict)
+        setVerificationStatus('already_approved')
+        setAttestation(data.attestation)
+        setApprovedAt(data.approvedAt)
       } else {
         setVerificationStatus('error')
         setError(data.error || 'Verification failed')
@@ -245,9 +270,31 @@ function HomeContent() {
           </div>
         )}
 
+        {verificationStatus === 'checking' && (
+          <div className="text-center py-8">
+            <span className="text-xl animate-pulse">{t('checkingStatus')}</span>
+          </div>
+        )}
+
         {verificationStatus === 'verifying' && (
           <div className="text-center py-8">
             <span className="text-xl animate-pulse">{t('verifying')}</span>
+          </div>
+        )}
+
+        {verificationStatus === 'already_approved' && (
+          <div className="text-center py-8 space-y-4">
+            <div className="text-xl text-blue-600 dark:text-blue-400">
+              {t('alreadyApproved')}
+            </div>
+            <p className="text-gray-600 dark:text-gray-400">
+              {t('alreadyApprovedDesc')}
+            </p>
+            {approvedAt && (
+              <p className="text-sm text-gray-500">
+                {t('approvedAt')}: {new Date(approvedAt).toLocaleString()}
+              </p>
+            )}
           </div>
         )}
 
@@ -283,10 +330,10 @@ function HomeContent() {
 
       {/* Attestation Result */}
       {attestation && (
-        <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-6 mb-8">
+        <div className={`${verificationStatus === 'already_approved' ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800' : 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'} border rounded-lg p-6 mb-8`}>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-green-800 dark:text-green-200">
-              {t('attestationCreated')}
+            <h2 className={`text-xl font-semibold ${verificationStatus === 'already_approved' ? 'text-blue-800 dark:text-blue-200' : 'text-green-800 dark:text-green-200'}`}>
+              {verificationStatus === 'already_approved' ? t('alreadyApproved') : t('attestationCreated')}
             </h2>
             <div className="flex gap-2">
               <CopyButton
@@ -302,7 +349,7 @@ function HomeContent() {
             </div>
           </div>
           {attestation.attestation_hash && (
-            <div className="mb-4 p-3 bg-white dark:bg-gray-900 rounded border border-green-200 dark:border-green-700">
+            <div className={`mb-4 p-3 bg-white dark:bg-gray-900 rounded border ${verificationStatus === 'already_approved' ? 'border-blue-200 dark:border-blue-700' : 'border-green-200 dark:border-green-700'}`}>
               <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">{t('attestationHash')}</div>
               <code className="text-sm font-mono break-all">{attestation.attestation_hash}</code>
             </div>

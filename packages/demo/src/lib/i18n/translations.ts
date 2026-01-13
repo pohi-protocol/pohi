@@ -37,6 +37,10 @@ export const translations = {
     verificationFailed: 'Verification Failed',
     startNewVerification: 'Start new verification',
     tryAgain: 'Try again',
+    alreadyApproved: 'Already Approved',
+    alreadyApprovedDesc: 'This commit has already been verified by a human.',
+    approvedAt: 'Approved at',
+    checkingStatus: 'Checking approval status...',
 
     // Attestation
     attestationCreated: 'Attestation Created',
@@ -143,6 +147,10 @@ export const translations = {
     verificationFailed: '検証に失敗しました',
     startNewVerification: '新しい検証を開始',
     tryAgain: '再試行',
+    alreadyApproved: '承認済み',
+    alreadyApprovedDesc: 'このコミットは既に人間によって検証されています。',
+    approvedAt: '承認日時',
+    checkingStatus: '承認状態を確認中...',
 
     // Attestation
     attestationCreated: '証明が作成されました',

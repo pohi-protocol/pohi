@@ -14,6 +14,7 @@ import { attestationStore } from '@/lib/store'
 import { getProviderConfig, isMockModeEnabled } from '@/lib/provider-config'
 import { verifyRateLimiter, getClientIp } from '@/lib/rate-limit'
 import { notifyAttestationApproved, notifyVerificationFailed } from '@/lib/webhook'
+import { updatePRCommentAfterApproval } from '@/lib/github'
 
 interface VerifyRequestBody {
   provider?: string
@@ -130,6 +131,23 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Check if this commit is already approved (prevent re-verification)
+    if (subject.repository && subject.commit_sha) {
+      const existingAttestation = await attestationStore.get(subject.repository, subject.commit_sha)
+      if (existingAttestation) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'This commit has already been approved',
+            alreadyApproved: true,
+            attestation: existingAttestation.attestation,
+            approvedAt: existingAttestation.createdAt,
+          },
+          { status: 409 } // Conflict
+        )
+      }
+    }
+
     // Check mock mode
     const mockEnabled = isMockModeEnabled() || isMockMode()
 
@@ -179,6 +197,11 @@ export async function POST(request: NextRequest) {
     // Send webhook notification for approved attestation (non-blocking)
     notifyAttestationApproved(attestation, subject, provider).catch((err) =>
       console.error('Webhook notification error:', err)
+    )
+
+    // Update GitHub PR comment to show approved status (non-blocking)
+    updatePRCommentAfterApproval(subject, attestation, provider).catch((err) =>
+      console.error('GitHub PR comment update error:', err)
     )
 
     return NextResponse.json({
