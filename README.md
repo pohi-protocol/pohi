@@ -435,3 +435,4 @@ For detailed compatibility levels (Core / Extended / Advanced), see [docs/pohi-c
   <b>Proof of Human Intent</b><br>
   <i>Your approval, cryptographically preserved for the future.</i>
 </p>
+
