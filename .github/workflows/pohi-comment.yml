@@ -1,4 +1,4 @@
-name: Approval Comment
+name: PoHI Approval Comment
 
 on:
   pull_request:
@@ -8,10 +8,9 @@ permissions:
   pull-requests: write
 
 jobs:
-  comment:
+  post-comment:
     if: github.event.label.name == 'needs-human-approval'
     runs-on: ubuntu-latest
-
     steps:
       - name: Post approval link comment
         uses: actions/github-script@v7
@@ -23,7 +22,6 @@ jobs:
             const headSha = context.payload.pull_request.head.sha;
             const shortSha = headSha.substring(0, 7);
 
-            // URL with repo and commit parameters that the demo app expects
             const approvalUrl = `https://pohi-demo.vercel.app/?repo=${owner}/${repo}&commit=${headSha}`;
 
             const body = `## 🔏 Human Approval Required
