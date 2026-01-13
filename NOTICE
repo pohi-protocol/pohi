@@ -9,6 +9,8 @@ PRIOR ART NOTICE
 ================================================================================
 
 PoHI is published as prior art.
+The initial public disclosure of PoHI occurred in 2025
+via publicly accessible source code repositories.
 
 The intent of this project is to enable open research, standardization, and
 interoperable implementations of cryptographically verifiable human intent
@@ -17,6 +19,8 @@ in AI-driven systems.
 This repository and associated publications (including academic papers,
 documentation, and reference implementations) define the original concept
 and reference implementation of "Proof of Human Intent" (PoHI).
+The term "Proof of Human Intent (PoHI)" originates from this project
+and refers to the protocol defined herein.
 
 Any patents, if applicable, are intended to be used defensively and not to
 restrict adoption, implementation, or standardization of this protocol.
@@ -28,10 +32,13 @@ ATTRIBUTION
 PoHI incorporates concepts and builds upon the following open standards
 and technologies:
 
-- World ID (World Foundation) - Zero-knowledge proof of personhood
+- World ID (by World Foundation) - Zero-knowledge proof of personhood
 - W3C Decentralized Identifiers (DIDs) - Decentralized identity standard
 - W3C Verifiable Credentials (VCs) - Verifiable claims standard
 - IETF SCITT - Supply Chain Integrity, Transparency, and Trust
+
+These technologies are referenced as related work. This project is not
+officially endorsed by or affiliated with any of the above organizations.
 
 We acknowledge and thank the communities developing these foundational
 technologies.
