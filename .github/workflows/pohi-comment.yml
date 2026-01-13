@@ -15,7 +15,7 @@ jobs:
       - name: Post approval link comment
         uses: actions/github-script@v7
         with:
-          script: |
+          script: |-
             const prNumber = context.payload.pull_request.number;
             const repo = context.repo.repo;
             const owner = context.repo.owner;
@@ -24,22 +24,22 @@ jobs:
 
             const approvalUrl = `https://pohi-demo.vercel.app/?repo=${owner}/${repo}&commit=${headSha}`;
 
-            const body = `## 🔏 Human Approval Required
-
-This PR requires human verification before it can be merged.
-
-| | |
-|---|---|
-| **Repository** | \`${owner}/${repo}\` |
-| **Commit** | \`${shortSha}\` |
-| **PR** | #${prNumber} |
-
-### 👉 [Approve with World ID](${approvalUrl})
-
-Once approved, the attestation hash will be recorded on-chain.
-
----
-_Powered by [PoHI Protocol](https://github.com/pohi-protocol/pohi) - Proof of Human Intent_`;
+            const body = [
+              '## 🔏 Human Approval Required',
+              '',
+              'This PR requires human verification before it can be merged.',
+              '',
+              '- **Repository:** `' + owner + '/' + repo + '`',
+              '- **Commit:** `' + shortSha + '`',
+              '- **PR:** #' + prNumber,
+              '',
+              '### 👉 [Approve with World ID](' + approvalUrl + ')',
+              '',
+              'Once approved, the attestation hash will be recorded on-chain.',
+              '',
+              '---',
+              '_Powered by [PoHI Protocol](https://github.com/pohi-protocol/pohi) - Proof of Human Intent_'
+            ].join('\n');
 
             await github.rest.issues.createComment({
               owner,
