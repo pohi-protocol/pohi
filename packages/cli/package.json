@@ -36,7 +36,7 @@
     "qrcode-terminal": "^0.12.0"
   },
   "devDependencies": {
-    "@types/node": "^20.10.0",
+    "@types/node": "^20.19.28",
     "@types/qrcode-terminal": "^0.12.2",
     "tsup": "^8.0.0",
     "typescript": "^5.9.3"
