@@ -383,8 +383,18 @@ See [CHANGELOG.md](CHANGELOG.md) for version history and release notes.
 > **Web3 is not for speculation.**
 > **It's infrastructure for preserving human intent and accountability.**
 
-As AI takes over implementation, humans become approvers.  
+As AI takes over implementation, humans become approvers.
 PoHI ensures that approval is real, verifiable, and permanent.
+
+---
+
+## 📜 Prior Art Notice
+
+**Proof of Human Intent (PoHI) is published as prior art.**
+
+This repository and associated publications define the original concept and reference implementation of PoHI. The intent is to enable open research, standardization, and interoperable implementations of cryptographically verifiable human intent in AI-driven systems.
+
+See [NOTICE](NOTICE) for full attribution and prior art declaration.
 
 ---
 

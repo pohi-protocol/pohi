@@ -1,0 +1,37 @@
+Proof of Human Intent (PoHI)
+
+Copyright 2025-2026 Ikko Eltociear Ashimine
+
+This project is licensed under the Apache License, Version 2.0.
+
+================================================================================
+PRIOR ART NOTICE
+================================================================================
+
+PoHI is published as prior art.
+
+The intent of this project is to enable open research, standardization, and
+interoperable implementations of cryptographically verifiable human intent
+in AI-driven systems.
+
+This repository and associated publications (including academic papers,
+documentation, and reference implementations) define the original concept
+and reference implementation of "Proof of Human Intent" (PoHI).
+
+Any patents, if applicable, are intended to be used defensively and not to
+restrict adoption, implementation, or standardization of this protocol.
+
+================================================================================
+ATTRIBUTION
+================================================================================
+
+PoHI incorporates concepts and builds upon the following open standards
+and technologies:
+
+- World ID (World Foundation) - Zero-knowledge proof of personhood
+- W3C Decentralized Identifiers (DIDs) - Decentralized identity standard
+- W3C Verifiable Credentials (VCs) - Verifiable claims standard
+- IETF SCITT - Supply Chain Integrity, Transparency, and Trust
+
+We acknowledge and thank the communities developing these foundational
+technologies.
