@@ -13,6 +13,7 @@ import { CivicVerifier } from './civic'
 import { ProofOfHumanityVerifier } from './proof-of-humanity'
 import { HolonymVerifier } from './holonym'
 import { IdenaVerifier } from './idena'
+import { CoinbaseVerificationsVerifier } from './coinbase-verifications'
 
 // Mock fetch globally
 const mockFetch = vi.fn()
@@ -116,6 +117,7 @@ describe('hasVerifier', () => {
     expect(hasVerifier(POP_PROVIDERS.PROOF_OF_HUMANITY)).toBe(true)
     expect(hasVerifier(POP_PROVIDERS.HOLONYM)).toBe(true)
     expect(hasVerifier(POP_PROVIDERS.IDENA)).toBe(true)
+    expect(hasVerifier(POP_PROVIDERS.COINBASE_VERIFICATIONS)).toBe(true)
   })
 
   it('should return true for any provider in mock mode', () => {
@@ -145,6 +147,7 @@ describe('getAvailableProviders', () => {
     expect(providers).toContain(POP_PROVIDERS.PROOF_OF_HUMANITY)
     expect(providers).toContain(POP_PROVIDERS.HOLONYM)
     expect(providers).toContain(POP_PROVIDERS.IDENA)
+    expect(providers).toContain(POP_PROVIDERS.COINBASE_VERIFICATIONS)
   })
 })
 
@@ -1488,5 +1491,464 @@ describe('IdenaVerifier', () => {
         body: expect.stringContaining('0xabcdef1234567890123456789012345678901234'),
       })
     )
+  })
+})
+
+describe('CoinbaseVerificationsVerifier', () => {
+  beforeEach(() => {
+    mockFetch.mockReset()
+  })
+
+  it('should verify user with verified_account attestation', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: {
+          attestations: [
+            {
+              id: '0xabc123',
+              attester: '0xcoinbase',
+              recipient: '0x1234567890123456789012345678901234567890',
+              schemaId: '0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9',
+              revoked: false,
+              time: Math.floor(Date.now() / 1000) - 3600,
+              expirationTime: 0,
+              data: '0x',
+            },
+          ],
+        },
+      }),
+    })
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(true)
+    expect(result.verification_level).toBe('verified_account')
+  })
+
+  it('should verify user with verified_country attestation', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: {
+          attestations: [
+            {
+              id: '0xdef456',
+              attester: '0xcoinbase',
+              recipient: '0x1234567890123456789012345678901234567890',
+              schemaId: '0x1801901fabd0e6189356b4fb52bb0ab855276d84f7ec140839fbd1f6801ca065',
+              revoked: false,
+              time: Math.floor(Date.now() / 1000) - 3600,
+              expirationTime: 0,
+              data: '0x',
+            },
+          ],
+        },
+      }),
+    })
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890', attestation_type: 'verified_country' },
+      {}
+    )
+
+    expect(result.success).toBe(true)
+    expect(result.verification_level).toBe('verified_country')
+  })
+
+  it('should reject when no attestation found', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: {
+          attestations: [],
+        },
+      }),
+    })
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('No valid Coinbase')
+  })
+
+  it('should reject revoked attestation by default', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: {
+          attestations: [
+            {
+              id: '0xabc123',
+              attester: '0xcoinbase',
+              recipient: '0x1234567890123456789012345678901234567890',
+              schemaId: '0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9',
+              revoked: true,
+              time: Math.floor(Date.now() / 1000) - 3600,
+              expirationTime: 0,
+              data: '0x',
+            },
+          ],
+        },
+      }),
+    })
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+  })
+
+  it('should accept revoked attestation when allow_revoked is true', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: {
+          attestations: [
+            {
+              id: '0xabc123',
+              attester: '0xcoinbase',
+              recipient: '0x1234567890123456789012345678901234567890',
+              schemaId: '0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9',
+              revoked: true,
+              time: Math.floor(Date.now() / 1000) - 3600,
+              expirationTime: 0,
+              data: '0x',
+            },
+          ],
+        },
+      }),
+    })
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      { allow_revoked: true }
+    )
+
+    expect(result.success).toBe(true)
+  })
+
+  it('should reject expired attestation', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: {
+          attestations: [
+            {
+              id: '0xabc123',
+              attester: '0xcoinbase',
+              recipient: '0x1234567890123456789012345678901234567890',
+              schemaId: '0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9',
+              revoked: false,
+              time: Math.floor(Date.now() / 1000) - 3600,
+              expirationTime: Math.floor(Date.now() / 1000) - 60, // Expired 60 seconds ago
+              data: '0x',
+            },
+          ],
+        },
+      }),
+    })
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+  })
+
+  it('should check multiple required attestations', async () => {
+    // First call for verified_account
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: {
+          attestations: [
+            {
+              id: '0xabc123',
+              attester: '0xcoinbase',
+              recipient: '0x1234567890123456789012345678901234567890',
+              schemaId: '0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9',
+              revoked: false,
+              time: Math.floor(Date.now() / 1000),
+              expirationTime: 0,
+              data: '0x',
+            },
+          ],
+        },
+      }),
+    })
+    // Second call for verified_country
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: {
+          attestations: [
+            {
+              id: '0xdef456',
+              attester: '0xcoinbase',
+              recipient: '0x1234567890123456789012345678901234567890',
+              schemaId: '0x1801901fabd0e6189356b4fb52bb0ab855276d84f7ec140839fbd1f6801ca065',
+              revoked: false,
+              time: Math.floor(Date.now() / 1000),
+              expirationTime: 0,
+              data: '0x',
+            },
+          ],
+        },
+      }),
+    })
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      { required_attestations: ['verified_account', 'verified_country'] }
+    )
+
+    expect(result.success).toBe(true)
+    expect(result.verification_level).toBe('verified_country')
+  })
+
+  it('should fail when missing required attestation', async () => {
+    // First call for verified_account - found
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: {
+          attestations: [
+            {
+              id: '0xabc123',
+              attester: '0xcoinbase',
+              recipient: '0x1234567890123456789012345678901234567890',
+              schemaId: '0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9',
+              revoked: false,
+              time: Math.floor(Date.now() / 1000),
+              expirationTime: 0,
+              data: '0x',
+            },
+          ],
+        },
+      }),
+    })
+    // Second call for verified_country - not found
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: {
+          attestations: [],
+        },
+      }),
+    })
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      { required_attestations: ['verified_account', 'verified_country'] }
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Missing required attestations')
+    expect(result.error).toContain('verified_country')
+  })
+
+  it('should require address', async () => {
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: '' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toBe('Address is required')
+  })
+
+  it('should reject invalid address format', async () => {
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: 'invalid-address' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toBe('Invalid Ethereum address format')
+  })
+
+  it('should handle GraphQL error response', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        errors: [{ message: 'Invalid query' }],
+      }),
+    })
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('EAS GraphQL error')
+    expect(result.error).toContain('Invalid query')
+  })
+
+  it('should handle HTTP error', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 500,
+      text: async () => 'Internal Server Error',
+    })
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('EAS GraphQL error')
+    expect(result.error).toContain('500')
+  })
+
+  it('should handle network error', async () => {
+    mockFetch.mockRejectedValueOnce(new Error('Network failed'))
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Coinbase Verifications check failed')
+    expect(result.error).toContain('Network failed')
+  })
+
+  it('should handle non-Error thrown', async () => {
+    mockFetch.mockRejectedValueOnce('String error')
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Unknown error')
+  })
+
+  it('should use custom GraphQL URL', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: {
+          attestations: [
+            {
+              id: '0xabc123',
+              attester: '0xcoinbase',
+              recipient: '0x1234567890123456789012345678901234567890',
+              schemaId: '0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9',
+              revoked: false,
+              time: Math.floor(Date.now() / 1000),
+              expirationTime: 0,
+              data: '0x',
+            },
+          ],
+        },
+      }),
+    })
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      { graphql_url: 'https://custom.graphql.io' }
+    )
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      'https://custom.graphql.io',
+      expect.any(Object)
+    )
+  })
+
+  it('should use default GraphQL URL when not specified', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: {
+          attestations: [
+            {
+              id: '0xabc123',
+              attester: '0xcoinbase',
+              recipient: '0x1234567890123456789012345678901234567890',
+              schemaId: '0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9',
+              revoked: false,
+              time: Math.floor(Date.now() / 1000),
+              expirationTime: 0,
+              data: '0x',
+            },
+          ],
+        },
+      }),
+    })
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      'https://base.easscan.org/graphql',
+      expect.any(Object)
+    )
+  })
+
+  it('toHumanProof should create valid proof', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: {
+          attestations: [
+            {
+              id: '0xabc123',
+              attester: '0xcoinbase',
+              recipient: '0x1234567890123456789012345678901234567890',
+              schemaId: '0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9',
+              revoked: false,
+              time: Math.floor(Date.now() / 1000),
+              expirationTime: 0,
+              data: '0x',
+            },
+          ],
+        },
+      }),
+    })
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    const humanProof = verifier.toHumanProof(result, 'test_signal')
+
+    expect(humanProof.method).toBe(POP_PROVIDERS.COINBASE_VERIFICATIONS)
+    expect(humanProof.signal).toBe('test_signal')
+    expect(humanProof.nullifier_hash).toBeTruthy()
+    expect(humanProof.verification_level).toBe('verified_account')
   })
 })

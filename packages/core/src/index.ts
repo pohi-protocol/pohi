@@ -68,6 +68,10 @@ export type {
   IdenaIdentityState,
   IdenaProofData,
   IdenaConfig,
+  // Coinbase Verifications
+  CoinbaseVerificationType,
+  CoinbaseVerificationsProofData,
+  CoinbaseVerificationsConfig,
   // Provider utilities
   ProviderFeatures,
 } from './providers'
@@ -75,6 +79,7 @@ export type {
 export {
   GITCOIN_PASSPORT_THRESHOLDS,
   IDENA_STATE_LEVELS,
+  COINBASE_SCHEMA_IDS,
   getProviderName,
   getProviderDocsUrl,
   isKnownProvider,
@@ -131,4 +136,5 @@ export {
   ProofOfHumanityVerifier,
   HolonymVerifier,
   IdenaVerifier,
+  CoinbaseVerificationsVerifier,
 } from './verification'

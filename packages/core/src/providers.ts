@@ -296,6 +296,50 @@ export const IDENA_STATE_LEVELS: Record<IdenaIdentityState, number> = {
   Human: 5, // Highest level
 } as const
 
+// ============ Coinbase Verifications ============
+
+/**
+ * Coinbase Verifications attestation types
+ */
+export type CoinbaseVerificationType =
+  | 'verified_account'
+  | 'verified_country'
+  | 'coinbase_one'
+
+/**
+ * Coinbase Verifications schema IDs on Base
+ */
+export const COINBASE_SCHEMA_IDS = {
+  /** Coinbase Verified Account schema */
+  VERIFIED_ACCOUNT: '0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9',
+  /** Coinbase Verified Country schema */
+  VERIFIED_COUNTRY: '0x1801901fabd0e6189356b4fb52bb0ab855276d84f7ec140839fbd1f6801ca065',
+  /** Coinbase One membership schema */
+  COINBASE_ONE: '0x12e65a5df2488073e45d1d29d96a8a6f0c42b4d66c0bc5e1e4e3a4e0e5e7e9f1',
+} as const
+
+/**
+ * Coinbase Verifications proof structure
+ */
+export interface CoinbaseVerificationsProofData {
+  /** Ethereum address to verify */
+  address: string
+  /** Attestation type to check */
+  attestation_type?: CoinbaseVerificationType
+}
+
+/**
+ * Coinbase Verifications provider configuration
+ */
+export interface CoinbaseVerificationsConfig {
+  /** GraphQL endpoint (default: https://base.easscan.org/graphql) */
+  graphql_url?: string
+  /** Required attestation types */
+  required_attestations?: CoinbaseVerificationType[]
+  /** Allow revoked attestations (default: false) */
+  allow_revoked?: boolean
+}
+
 // ============ Provider Utilities ============
 
 /**
@@ -310,6 +354,7 @@ export function getProviderName(provider: string): string {
     [POP_PROVIDERS.BRIGHTID]: 'BrightID',
     [POP_PROVIDERS.HOLONYM]: 'Holonym',
     [POP_PROVIDERS.IDENA]: 'Idena',
+    [POP_PROVIDERS.COINBASE_VERIFICATIONS]: 'Coinbase Verifications',
   }
   return names[provider] || provider
 }
@@ -326,6 +371,7 @@ export function getProviderDocsUrl(provider: string): string {
     [POP_PROVIDERS.BRIGHTID]: 'https://brightid.gitbook.io',
     [POP_PROVIDERS.HOLONYM]: 'https://docs.holonym.id',
     [POP_PROVIDERS.IDENA]: 'https://docs.idena.io',
+    [POP_PROVIDERS.COINBASE_VERIFICATIONS]: 'https://github.com/coinbase/verifications',
   }
   return urls[provider] || ''
 }
@@ -406,6 +452,13 @@ export function getProviderFeatures(provider: string): ProviderFeatures {
       requires_hardware: false,
       global_availability: true,
       onchain_verification: true,
+    },
+    [POP_PROVIDERS.COINBASE_VERIFICATIONS]: {
+      zk_proofs: false,
+      sybil_resistance: 4, // KYC-based via Coinbase
+      requires_hardware: false,
+      global_availability: true, // Via Coinbase account
+      onchain_verification: true, // EAS on Base
     },
   }
   return features[provider] || {
