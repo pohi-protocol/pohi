@@ -197,6 +197,54 @@ export interface ProofOfHumanityConfig {
   subgraph_url?: string
 }
 
+// ============ Holonym ============
+
+/**
+ * Holonym credential types for verification
+ */
+export type HolonymCredentialType = 'gov-id' | 'epassport' | 'phone'
+
+/**
+ * Holonym supported chains
+ */
+export type HolonymChain =
+  | 'ethereum'
+  | 'optimism'
+  | 'base'
+  | 'arbitrum'
+  | 'polygon'
+  | 'celo'
+  | 'avalanche'
+  | 'linea'
+  | 'scroll'
+  | 'world-chain'
+
+/**
+ * Holonym proof structure
+ */
+export interface HolonymProofData {
+  /** Ethereum address to verify */
+  address: string
+  /** Type of credential used for verification */
+  credential_type: HolonymCredentialType
+  /** Chain where the proof exists */
+  chain?: HolonymChain
+  /** Action ID for custom sybil resistance (default: 123456789) */
+  action_id?: string
+}
+
+/**
+ * Holonym provider configuration
+ */
+export interface HolonymConfig {
+  /** Chain to verify on (default: optimism) */
+  chain?: HolonymChain
+  /** Required credential type(s) */
+  required_credentials?: HolonymCredentialType[]
+  /** Custom action ID for sybil resistance (default: 123456789) */
+  action_id?: string
+}
+
 // ============ Provider Utilities ============
 
 /**
@@ -209,6 +257,7 @@ export function getProviderName(provider: string): string {
     [POP_PROVIDERS.PROOF_OF_HUMANITY]: 'Proof of Humanity',
     [POP_PROVIDERS.CIVIC]: 'Civic',
     [POP_PROVIDERS.BRIGHTID]: 'BrightID',
+    [POP_PROVIDERS.HOLONYM]: 'Holonym',
   }
   return names[provider] || provider
 }
@@ -223,6 +272,7 @@ export function getProviderDocsUrl(provider: string): string {
     [POP_PROVIDERS.PROOF_OF_HUMANITY]: 'https://proofofhumanity.id',
     [POP_PROVIDERS.CIVIC]: 'https://docs.civic.com',
     [POP_PROVIDERS.BRIGHTID]: 'https://brightid.gitbook.io',
+    [POP_PROVIDERS.HOLONYM]: 'https://docs.holonym.id',
   }
   return urls[provider] || ''
 }
@@ -286,6 +336,13 @@ export function getProviderFeatures(provider: string): ProviderFeatures {
     [POP_PROVIDERS.BRIGHTID]: {
       zk_proofs: false,
       sybil_resistance: 3,
+      requires_hardware: false,
+      global_availability: true,
+      onchain_verification: true,
+    },
+    [POP_PROVIDERS.HOLONYM]: {
+      zk_proofs: true,
+      sybil_resistance: 4, // Government ID / ePassport based
       requires_hardware: false,
       global_availability: true,
       onchain_verification: true,

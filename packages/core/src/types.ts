@@ -15,6 +15,7 @@ export const POP_PROVIDERS = {
   PROOF_OF_HUMANITY: 'proof_of_humanity',
   CIVIC: 'civic',
   BRIGHTID: 'brightid',
+  HOLONYM: 'holonym',
 } as const
 
 export type KnownPoPProvider = typeof POP_PROVIDERS[keyof typeof POP_PROVIDERS]

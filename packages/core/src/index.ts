@@ -59,6 +59,11 @@ export type {
   PoHStatus,
   ProofOfHumanityProofData,
   ProofOfHumanityConfig,
+  // Holonym
+  HolonymCredentialType,
+  HolonymChain,
+  HolonymProofData,
+  HolonymConfig,
   // Provider utilities
   ProviderFeatures,
 } from './providers'
@@ -119,4 +124,5 @@ export {
   BrightIDVerifier,
   CivicVerifier,
   ProofOfHumanityVerifier,
+  HolonymVerifier,
 } from './verification'

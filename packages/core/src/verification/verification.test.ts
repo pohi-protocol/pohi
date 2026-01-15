@@ -11,6 +11,7 @@ import { GitcoinPassportVerifier } from './gitcoin-passport'
 import { BrightIDVerifier } from './brightid'
 import { CivicVerifier } from './civic'
 import { ProofOfHumanityVerifier } from './proof-of-humanity'
+import { HolonymVerifier } from './holonym'
 
 // Mock fetch globally
 const mockFetch = vi.fn()
@@ -112,6 +113,7 @@ describe('hasVerifier', () => {
     expect(hasVerifier(POP_PROVIDERS.BRIGHTID)).toBe(true)
     expect(hasVerifier(POP_PROVIDERS.CIVIC)).toBe(true)
     expect(hasVerifier(POP_PROVIDERS.PROOF_OF_HUMANITY)).toBe(true)
+    expect(hasVerifier(POP_PROVIDERS.HOLONYM)).toBe(true)
   })
 
   it('should return true for any provider in mock mode', () => {
@@ -139,6 +141,7 @@ describe('getAvailableProviders', () => {
     expect(providers).toContain(POP_PROVIDERS.BRIGHTID)
     expect(providers).toContain(POP_PROVIDERS.CIVIC)
     expect(providers).toContain(POP_PROVIDERS.PROOF_OF_HUMANITY)
+    expect(providers).toContain(POP_PROVIDERS.HOLONYM)
   })
 })
 
@@ -805,6 +808,270 @@ describe('ProofOfHumanityVerifier', () => {
     expect(mockFetch).toHaveBeenCalledWith(
       'https://custom.subgraph.com/poh',
       expect.any(Object)
+    )
+  })
+})
+
+describe('HolonymVerifier', () => {
+  beforeEach(() => {
+    mockFetch.mockReset()
+  })
+
+  it('should verify unique user with government ID', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ result: true }),
+    })
+
+    const verifier = new HolonymVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890', credential_type: 'gov-id' },
+      {}
+    )
+
+    expect(result.success).toBe(true)
+    expect(result.verification_level).toBe('government_id')
+    expect(result.raw_data?.is_unique).toBe(true)
+  })
+
+  it('should verify unique user with ePassport', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ result: true }),
+    })
+
+    const verifier = new HolonymVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890', credential_type: 'epassport' },
+      {}
+    )
+
+    expect(result.success).toBe(true)
+    expect(result.verification_level).toBe('epassport')
+  })
+
+  it('should verify unique user with phone', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ result: true }),
+    })
+
+    const verifier = new HolonymVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890', credential_type: 'phone' },
+      {}
+    )
+
+    expect(result.success).toBe(true)
+    expect(result.verification_level).toBe('phone')
+  })
+
+  it('should reject non-unique user', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ result: false }),
+    })
+
+    const verifier = new HolonymVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890', credential_type: 'gov-id' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('not completed Holonym verification')
+  })
+
+  it('should handle API error response', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ result: false, error: 'Invalid action ID' }),
+    })
+
+    const verifier = new HolonymVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890', credential_type: 'gov-id' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Invalid action ID')
+  })
+
+  it('should handle HTTP error', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 500,
+      text: async () => 'Internal Server Error',
+    })
+
+    const verifier = new HolonymVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890', credential_type: 'gov-id' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Holonym API error')
+    expect(result.error).toContain('500')
+  })
+
+  it('should require address', async () => {
+    const verifier = new HolonymVerifier()
+    const result = await verifier.verify(
+      { address: '', credential_type: 'gov-id' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toBe('Address is required')
+  })
+
+  it('should require credential_type', async () => {
+    const verifier = new HolonymVerifier()
+    const result = await verifier.verify(
+      { address: '0x123', credential_type: '' as any },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Credential type is required')
+  })
+
+  it('should reject invalid credential type', async () => {
+    const verifier = new HolonymVerifier()
+    const result = await verifier.verify(
+      { address: '0x123', credential_type: 'invalid' as any },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Invalid credential type')
+  })
+
+  it('should check required credentials from config', async () => {
+    const verifier = new HolonymVerifier()
+    const result = await verifier.verify(
+      { address: '0x123', credential_type: 'phone' },
+      { required_credentials: ['gov-id', 'epassport'] }
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('not in required credentials')
+  })
+
+  it('should use custom chain from proof', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ result: true }),
+    })
+
+    const verifier = new HolonymVerifier()
+    await verifier.verify(
+      { address: '0x123', credential_type: 'gov-id', chain: 'base' },
+      {}
+    )
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      expect.stringContaining('/base?')
+    )
+  })
+
+  it('should use custom action ID', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ result: true }),
+    })
+
+    const verifier = new HolonymVerifier()
+    await verifier.verify(
+      { address: '0x123', credential_type: 'gov-id', action_id: '999' },
+      {}
+    )
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      expect.stringContaining('action-id=999')
+    )
+  })
+
+  it('should handle network error', async () => {
+    mockFetch.mockRejectedValueOnce(new Error('Network failed'))
+
+    const verifier = new HolonymVerifier()
+    const result = await verifier.verify(
+      { address: '0x123', credential_type: 'gov-id' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Holonym verification failed')
+    expect(result.error).toContain('Network failed')
+  })
+
+  it('should handle non-Error thrown', async () => {
+    mockFetch.mockRejectedValueOnce('String error')
+
+    const verifier = new HolonymVerifier()
+    const result = await verifier.verify(
+      { address: '0x123', credential_type: 'gov-id' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Unknown error')
+  })
+
+  it('toHumanProof should create valid proof', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ result: true }),
+    })
+
+    const verifier = new HolonymVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890', credential_type: 'gov-id' },
+      {}
+    )
+
+    const humanProof = verifier.toHumanProof(result, 'test_signal')
+
+    expect(humanProof.method).toBe(POP_PROVIDERS.HOLONYM)
+    expect(humanProof.signal).toBe('test_signal')
+    expect(humanProof.nullifier_hash).toBeTruthy()
+    expect(humanProof.verification_level).toBe('government_id')
+  })
+
+  it('should use default chain (optimism) when not specified', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ result: true }),
+    })
+
+    const verifier = new HolonymVerifier()
+    await verifier.verify(
+      { address: '0x123', credential_type: 'gov-id' },
+      {}
+    )
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      expect.stringContaining('/optimism?')
+    )
+  })
+
+  it('should use default action ID when not specified', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ result: true }),
+    })
+
+    const verifier = new HolonymVerifier()
+    await verifier.verify(
+      { address: '0x123', credential_type: 'gov-id' },
+      {}
+    )
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      expect.stringContaining('action-id=123456789')
     )
   })
 })
