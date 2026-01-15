@@ -12,6 +12,7 @@ import { BrightIDVerifier } from './brightid'
 import { CivicVerifier } from './civic'
 import { ProofOfHumanityVerifier } from './proof-of-humanity'
 import { HolonymVerifier } from './holonym'
+import { IdenaVerifier } from './idena'
 
 // Mock fetch globally
 const mockFetch = vi.fn()
@@ -114,6 +115,7 @@ describe('hasVerifier', () => {
     expect(hasVerifier(POP_PROVIDERS.CIVIC)).toBe(true)
     expect(hasVerifier(POP_PROVIDERS.PROOF_OF_HUMANITY)).toBe(true)
     expect(hasVerifier(POP_PROVIDERS.HOLONYM)).toBe(true)
+    expect(hasVerifier(POP_PROVIDERS.IDENA)).toBe(true)
   })
 
   it('should return true for any provider in mock mode', () => {
@@ -142,6 +144,7 @@ describe('getAvailableProviders', () => {
     expect(providers).toContain(POP_PROVIDERS.CIVIC)
     expect(providers).toContain(POP_PROVIDERS.PROOF_OF_HUMANITY)
     expect(providers).toContain(POP_PROVIDERS.HOLONYM)
+    expect(providers).toContain(POP_PROVIDERS.IDENA)
   })
 })
 
@@ -1072,6 +1075,418 @@ describe('HolonymVerifier', () => {
 
     expect(mockFetch).toHaveBeenCalledWith(
       expect.stringContaining('action-id=123456789')
+    )
+  })
+})
+
+describe('IdenaVerifier', () => {
+  beforeEach(() => {
+    mockFetch.mockReset()
+  })
+
+  it('should verify Human identity', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        id: 1,
+        result: {
+          address: '0x1234567890123456789012345678901234567890',
+          state: 'Human',
+          age: 10,
+          online: true,
+        },
+      }),
+    })
+
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(true)
+    expect(result.verification_level).toBe('human')
+    expect(result.raw_data?.state).toBe('Human')
+  })
+
+  it('should verify Verified identity', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        id: 1,
+        result: {
+          address: '0x1234567890123456789012345678901234567890',
+          state: 'Verified',
+          age: 5,
+        },
+      }),
+    })
+
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(true)
+    expect(result.verification_level).toBe('verified')
+  })
+
+  it('should verify Newbie identity', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        id: 1,
+        result: {
+          address: '0x1234567890123456789012345678901234567890',
+          state: 'Newbie',
+          age: 1,
+        },
+      }),
+    })
+
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(true)
+    expect(result.verification_level).toBe('newbie')
+  })
+
+  it('should reject Candidate identity when min_state is Newbie', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        id: 1,
+        result: {
+          address: '0x1234567890123456789012345678901234567890',
+          state: 'Candidate',
+          age: 0,
+        },
+      }),
+    })
+
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      { min_state: 'Newbie' }
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain("does not meet minimum required state")
+    expect(result.error).toContain("Candidate")
+    expect(result.error).toContain("Newbie")
+  })
+
+  it('should accept Verified when min_state is Newbie', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        id: 1,
+        result: {
+          address: '0x1234567890123456789012345678901234567890',
+          state: 'Verified',
+          age: 5,
+        },
+      }),
+    })
+
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      { min_state: 'Newbie' }
+    )
+
+    expect(result.success).toBe(true)
+  })
+
+  it('should reject when min_state is Human but identity is Verified', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        id: 1,
+        result: {
+          address: '0x1234567890123456789012345678901234567890',
+          state: 'Verified',
+          age: 5,
+        },
+      }),
+    })
+
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      { min_state: 'Human' }
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain("does not meet minimum required state")
+  })
+
+  it('should require address', async () => {
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toBe('Address is required')
+  })
+
+  it('should reject invalid address format', async () => {
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: 'invalid-address' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toBe('Invalid Idena address format')
+  })
+
+  it('should reject short address', async () => {
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toBe('Invalid Idena address format')
+  })
+
+  it('should handle identity not found', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        id: 1,
+        result: null,
+      }),
+    })
+
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('not found')
+  })
+
+  it('should handle RPC error response', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        id: 1,
+        error: {
+          code: -32000,
+          message: 'Identity not available',
+        },
+      }),
+    })
+
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Identity not available')
+  })
+
+  it('should handle HTTP error', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 500,
+      text: async () => 'Internal Server Error',
+    })
+
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Idena RPC error')
+    expect(result.error).toContain('500')
+  })
+
+  it('should handle network error', async () => {
+    mockFetch.mockRejectedValueOnce(new Error('Network failed'))
+
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Idena verification failed')
+    expect(result.error).toContain('Network failed')
+  })
+
+  it('should handle non-Error thrown', async () => {
+    mockFetch.mockRejectedValueOnce('String error')
+
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Unknown error')
+  })
+
+  it('should use custom RPC URL', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        id: 1,
+        result: {
+          address: '0x1234567890123456789012345678901234567890',
+          state: 'Human',
+        },
+      }),
+    })
+
+    const verifier = new IdenaVerifier()
+    await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      { rpc_url: 'https://custom.rpc.io' }
+    )
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      'https://custom.rpc.io',
+      expect.any(Object)
+    )
+  })
+
+  it('should use default RPC URL when not specified', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        id: 1,
+        result: {
+          address: '0x1234567890123456789012345678901234567890',
+          state: 'Human',
+        },
+      }),
+    })
+
+    const verifier = new IdenaVerifier()
+    await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      'https://rpc.idena.dev',
+      expect.any(Object)
+    )
+  })
+
+  it('toHumanProof should create valid proof', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        id: 1,
+        result: {
+          address: '0x1234567890123456789012345678901234567890',
+          state: 'Human',
+          age: 10,
+        },
+      }),
+    })
+
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    const humanProof = verifier.toHumanProof(result, 'test_signal')
+
+    expect(humanProof.method).toBe(POP_PROVIDERS.IDENA)
+    expect(humanProof.signal).toBe('test_signal')
+    expect(humanProof.nullifier_hash).toBeTruthy()
+    expect(humanProof.verification_level).toBe('human')
+  })
+
+  it('should handle Killed identity state', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        id: 1,
+        result: {
+          address: '0x1234567890123456789012345678901234567890',
+          state: 'Killed',
+        },
+      }),
+    })
+
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain("does not meet minimum required state")
+  })
+
+  it('should handle Suspended identity state', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        id: 1,
+        result: {
+          address: '0x1234567890123456789012345678901234567890',
+          state: 'Suspended',
+        },
+      }),
+    })
+
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      { min_state: 'Newbie' }
+    )
+
+    // Suspended has same level as Newbie
+    expect(result.success).toBe(true)
+    expect(result.verification_level).toBe('suspended')
+  })
+
+  it('should lowercase address in request', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        id: 1,
+        result: {
+          address: '0x1234567890123456789012345678901234567890',
+          state: 'Human',
+        },
+      }),
+    })
+
+    const verifier = new IdenaVerifier()
+    await verifier.verify(
+      { address: '0xABCDEF1234567890123456789012345678901234' },
+      {}
+    )
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        body: expect.stringContaining('0xabcdef1234567890123456789012345678901234'),
+      })
     )
   })
 })

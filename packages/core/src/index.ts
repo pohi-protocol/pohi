@@ -64,12 +64,17 @@ export type {
   HolonymChain,
   HolonymProofData,
   HolonymConfig,
+  // Idena
+  IdenaIdentityState,
+  IdenaProofData,
+  IdenaConfig,
   // Provider utilities
   ProviderFeatures,
 } from './providers'
 
 export {
   GITCOIN_PASSPORT_THRESHOLDS,
+  IDENA_STATE_LEVELS,
   getProviderName,
   getProviderDocsUrl,
   isKnownProvider,
@@ -125,4 +130,5 @@ export {
   CivicVerifier,
   ProofOfHumanityVerifier,
   HolonymVerifier,
+  IdenaVerifier,
 } from './verification'

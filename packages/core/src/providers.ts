@@ -245,6 +245,57 @@ export interface HolonymConfig {
   action_id?: string
 }
 
+// ============ Idena ============
+
+/**
+ * Idena identity states
+ * Based on validation ceremony participation and scores
+ */
+export type IdenaIdentityState =
+  | 'Undefined'
+  | 'Invite'
+  | 'Candidate'
+  | 'Newbie'
+  | 'Verified'
+  | 'Suspended'
+  | 'Zombie'
+  | 'Killed'
+  | 'Human'
+
+/**
+ * Idena proof structure
+ */
+export interface IdenaProofData {
+  /** Idena address to verify */
+  address: string
+}
+
+/**
+ * Idena provider configuration
+ */
+export interface IdenaConfig {
+  /** RPC endpoint URL (default: https://rpc.idena.dev) */
+  rpc_url?: string
+  /** Minimum required identity state */
+  min_state?: IdenaIdentityState
+}
+
+/**
+ * Idena identity state hierarchy for comparison
+ * Higher number = more verified
+ */
+export const IDENA_STATE_LEVELS: Record<IdenaIdentityState, number> = {
+  Undefined: 0,
+  Invite: 1,
+  Candidate: 2,
+  Newbie: 3,
+  Verified: 4,
+  Suspended: 3, // Same as Newbie (can still participate)
+  Zombie: 1,
+  Killed: 0,
+  Human: 5, // Highest level
+} as const
+
 // ============ Provider Utilities ============
 
 /**
@@ -258,6 +309,7 @@ export function getProviderName(provider: string): string {
     [POP_PROVIDERS.CIVIC]: 'Civic',
     [POP_PROVIDERS.BRIGHTID]: 'BrightID',
     [POP_PROVIDERS.HOLONYM]: 'Holonym',
+    [POP_PROVIDERS.IDENA]: 'Idena',
   }
   return names[provider] || provider
 }
@@ -273,6 +325,7 @@ export function getProviderDocsUrl(provider: string): string {
     [POP_PROVIDERS.CIVIC]: 'https://docs.civic.com',
     [POP_PROVIDERS.BRIGHTID]: 'https://brightid.gitbook.io',
     [POP_PROVIDERS.HOLONYM]: 'https://docs.holonym.id',
+    [POP_PROVIDERS.IDENA]: 'https://docs.idena.io',
   }
   return urls[provider] || ''
 }
@@ -343,6 +396,13 @@ export function getProviderFeatures(provider: string): ProviderFeatures {
     [POP_PROVIDERS.HOLONYM]: {
       zk_proofs: true,
       sybil_resistance: 4, // Government ID / ePassport based
+      requires_hardware: false,
+      global_availability: true,
+      onchain_verification: true,
+    },
+    [POP_PROVIDERS.IDENA]: {
+      zk_proofs: false,
+      sybil_resistance: 5, // Regular validation ceremonies
       requires_hardware: false,
       global_availability: true,
       onchain_verification: true,

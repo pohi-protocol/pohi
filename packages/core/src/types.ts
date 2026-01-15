@@ -16,6 +16,7 @@ export const POP_PROVIDERS = {
   CIVIC: 'civic',
   BRIGHTID: 'brightid',
   HOLONYM: 'holonym',
+  IDENA: 'idena',
 } as const
 
 export type KnownPoPProvider = typeof POP_PROVIDERS[keyof typeof POP_PROVIDERS]
