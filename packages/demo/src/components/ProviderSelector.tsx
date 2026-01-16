@@ -53,15 +53,10 @@ interface ProviderSelectorProps {
   onSelect: (provider: string) => void
 }
 
-export function ProviderSelector({
-  selectedProvider,
-  onSelect,
-}: ProviderSelectorProps) {
+export function ProviderSelector({ selectedProvider, onSelect }: ProviderSelectorProps) {
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-semibold mb-4">
-        🔐 Select Verification Method
-      </h2>
+      <h2 className="text-xl font-semibold mb-4">🔐 Select Verification Method</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {PROVIDERS.map((provider) => (
           <button
@@ -88,9 +83,7 @@ export function ProviderSelector({
                 </div>
               </div>
             </div>
-            {!provider.available && (
-              <div className="mt-2 text-xs text-gray-500">Coming soon</div>
-            )}
+            {!provider.available && <div className="mt-2 text-xs text-gray-500">Coming soon</div>}
           </button>
         ))}
       </div>

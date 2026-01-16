@@ -7,14 +7,23 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'PoHI - Proof of Human Intent',
-  description: 'Cryptographic proof that a human approved your code. AI executes. Humans authorize. Machines verify.',
-  keywords: ['proof of human', 'world id', 'zero knowledge', 'git signing', 'ai safety', 'human approval'],
+  description:
+    'Cryptographic proof that a human approved your code. AI executes. Humans authorize. Machines verify.',
+  keywords: [
+    'proof of human',
+    'world id',
+    'zero knowledge',
+    'git signing',
+    'ai safety',
+    'human approval',
+  ],
   authors: [{ name: 'Ikko Eltociear Ashimine', url: 'https://github.com/eltociear' }],
   creator: 'PoHI Protocol',
   metadataBase: new URL('https://pohi-demo.vercel.app'),
   openGraph: {
     title: 'PoHI - Proof of Human Intent',
-    description: 'Cryptographic proof that a human approved your code. AI executes. Humans authorize. Machines verify.',
+    description:
+      'Cryptographic proof that a human approved your code. AI executes. Humans authorize. Machines verify.',
     url: 'https://pohi-demo.vercel.app',
     siteName: 'PoHI',
     locale: 'en_US',
@@ -32,11 +41,7 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>

@@ -79,11 +79,11 @@ describe('Civic Integration Tests', () => {
         user_id: '0x1234567890abcdef',
         gateway_token: 'token_123',
         verifications: ['uniqueness', 'liveness'],
-        expiration: new Date(Date.now() + 86400000).toISOString() // 24 hours from now
+        expiration: new Date(Date.now() + 86400000).toISOString(), // 24 hours from now
       },
       {
         gatekeeper_network: 'ignREusXmGrscGNUesoU9mxfds9AiYTezUKex2PsZV6',
-        required_verifications: ['uniqueness']
+        required_verifications: ['uniqueness'],
       }
     )
 
@@ -99,10 +99,10 @@ describe('Civic Integration Tests', () => {
         user_id: '0x1234567890abcdef',
         gateway_token: 'token_123',
         verifications: ['uniqueness'],
-        expiration: new Date(Date.now() - 86400000).toISOString() // 24 hours ago
+        expiration: new Date(Date.now() - 86400000).toISOString(), // 24 hours ago
       },
       {
-        gatekeeper_network: 'ignREusXmGrscGNUesoU9mxfds9AiYTezUKex2PsZV6'
+        gatekeeper_network: 'ignREusXmGrscGNUesoU9mxfds9AiYTezUKex2PsZV6',
       }
     )
 
@@ -116,11 +116,11 @@ describe('Civic Integration Tests', () => {
         user_id: '0x1234567890abcdef',
         gateway_token: 'token_123',
         verifications: ['captcha'],
-        expiration: new Date(Date.now() + 86400000).toISOString()
+        expiration: new Date(Date.now() + 86400000).toISOString(),
       },
       {
         gatekeeper_network: 'ignREusXmGrscGNUesoU9mxfds9AiYTezUKex2PsZV6',
-        required_verifications: ['liveness']
+        required_verifications: ['liveness'],
       }
     )
 
@@ -134,7 +134,7 @@ describe('Civic Integration Tests', () => {
       {
         user_id: '0xtest',
         verifications: ['captcha', 'id_verification'],
-        expiration: new Date(Date.now() + 86400000).toISOString()
+        expiration: new Date(Date.now() + 86400000).toISOString(),
       },
       { gatekeeper_network: 'test' }
     )
@@ -145,7 +145,7 @@ describe('Civic Integration Tests', () => {
       {
         user_id: '0xtest',
         verifications: ['uniqueness'],
-        expiration: new Date(Date.now() + 86400000).toISOString()
+        expiration: new Date(Date.now() + 86400000).toISOString(),
       },
       { gatekeeper_network: 'test' }
     )
@@ -157,7 +157,7 @@ describe('Civic Integration Tests', () => {
       {
         user_id: '0xtest_user',
         verifications: ['liveness'],
-        expiration: new Date(Date.now() + 86400000).toISOString()
+        expiration: new Date(Date.now() + 86400000).toISOString(),
       },
       { gatekeeper_network: 'test' }
     )
@@ -214,8 +214,8 @@ describe('Proof of Humanity Integration Tests', () => {
       raw_data: {
         address: '0x1234567890abcdef',
         status: 'registered',
-        submissionTime: '1234567890'
-      }
+        submissionTime: '1234567890',
+      },
     }
 
     const humanProof = verifier.toHumanProof(mockResult, 'test_signal')

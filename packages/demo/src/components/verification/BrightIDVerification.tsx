@@ -9,13 +9,9 @@ interface BrightIDVerificationProps {
 
 const BRIGHTID_CONTEXT = process.env.NEXT_PUBLIC_BRIGHTID_CONTEXT || 'pohi'
 const BRIGHTID_NODE_URL =
-  process.env.NEXT_PUBLIC_BRIGHTID_NODE_URL ||
-  'https://app.brightid.org/node/v5'
+  process.env.NEXT_PUBLIC_BRIGHTID_NODE_URL || 'https://app.brightid.org/node/v5'
 
-export function BrightIDVerification({
-  onVerify,
-  disabled = false,
-}: BrightIDVerificationProps) {
+export function BrightIDVerification({ onVerify, disabled = false }: BrightIDVerificationProps) {
   const [contextId, setContextId] = useState<string>('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -131,7 +127,8 @@ export function BrightIDVerification({
       </div>
 
       <p className="text-sm text-gray-500 text-center">
-        Your Context ID: <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded">{contextId}</code>
+        Your Context ID:{' '}
+        <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded">{contextId}</code>
       </p>
     </div>
   )

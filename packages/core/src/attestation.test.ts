@@ -154,10 +154,7 @@ describe('validateAttestation', () => {
   })
 
   it('should reject missing repository', () => {
-    const attestation = createAttestation(
-      { ...validSubject, repository: '' },
-      validProof
-    )
+    const attestation = createAttestation({ ...validSubject, repository: '' }, validProof)
     const result = validateAttestation(attestation)
 
     expect(result.valid).toBe(false)
@@ -165,10 +162,7 @@ describe('validateAttestation', () => {
   })
 
   it('should reject missing commit_sha', () => {
-    const attestation = createAttestation(
-      { ...validSubject, commit_sha: '' },
-      validProof
-    )
+    const attestation = createAttestation({ ...validSubject, commit_sha: '' }, validProof)
     const result = validateAttestation(attestation)
 
     expect(result.valid).toBe(false)
@@ -176,10 +170,7 @@ describe('validateAttestation', () => {
   })
 
   it('should reject missing action', () => {
-    const attestation = createAttestation(
-      { ...validSubject, action: '' },
-      validProof
-    )
+    const attestation = createAttestation({ ...validSubject, action: '' }, validProof)
     const result = validateAttestation(attestation)
 
     expect(result.valid).toBe(false)
@@ -236,10 +227,7 @@ describe('validateAttestation', () => {
   })
 
   it('should allow unknown action types for extensibility', () => {
-    const attestation = createAttestation(
-      { ...validSubject, action: 'CUSTOM_ACTION' },
-      validProof
-    )
+    const attestation = createAttestation({ ...validSubject, action: 'CUSTOM_ACTION' }, validProof)
     const result = validateAttestation(attestation)
 
     expect(result.valid).toBe(true)

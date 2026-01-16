@@ -41,9 +41,7 @@ const DEFAULT_NODE_URL = 'https://app.brightid.org/node/v5'
 /**
  * BrightID verifier implementation
  */
-export class BrightIDVerifier
-  implements ProviderVerifier<BrightIDProofData, BrightIDConfig>
-{
+export class BrightIDVerifier implements ProviderVerifier<BrightIDProofData, BrightIDConfig> {
   readonly provider = POP_PROVIDERS.BRIGHTID
 
   /**
@@ -52,10 +50,7 @@ export class BrightIDVerifier
    * @param proof - Proof data containing context_id
    * @param config - Configuration with context name
    */
-  async verify(
-    proof: BrightIDProofData,
-    config: BrightIDConfig
-  ): Promise<VerificationResult> {
+  async verify(proof: BrightIDProofData, config: BrightIDConfig): Promise<VerificationResult> {
     const { context_id } = proof
     const { context, node_url = DEFAULT_NODE_URL } = config
 
@@ -79,14 +74,11 @@ export class BrightIDVerifier
 
     try {
       // Query BrightID node for verification status
-      const response = await fetch(
-        `${node_url}/verifications/${context}/${context_id}`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      )
+      const response = await fetch(`${node_url}/verifications/${context}/${context_id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
 
       const data = (await response.json()) as BrightIDVerificationResponse
 

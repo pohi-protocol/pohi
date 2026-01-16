@@ -7,10 +7,7 @@
 
 import { POP_PROVIDERS } from '../types'
 import type { HumanProof } from '../types'
-import type {
-  GitcoinPassportProofData,
-  GitcoinPassportConfig,
-} from '../providers'
+import type { GitcoinPassportProofData, GitcoinPassportConfig } from '../providers'
 import { GITCOIN_PASSPORT_THRESHOLDS } from '../providers'
 import type { ProviderVerifier, VerificationResult } from './types'
 import { sha256 } from '../attestation'
@@ -52,9 +49,10 @@ function getVerificationLevel(score: number): string {
 /**
  * Gitcoin Passport verifier implementation
  */
-export class GitcoinPassportVerifier
-  implements ProviderVerifier<GitcoinPassportProofData, GitcoinPassportConfig>
-{
+export class GitcoinPassportVerifier implements ProviderVerifier<
+  GitcoinPassportProofData,
+  GitcoinPassportConfig
+> {
   readonly provider = POP_PROVIDERS.GITCOIN_PASSPORT
 
   /**

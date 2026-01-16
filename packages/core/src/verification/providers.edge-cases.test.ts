@@ -14,7 +14,6 @@ import {
   getVerifier,
   hasVerifier,
   getAvailableProviders,
-  registerVerifier,
   getRegisteredProviders,
   MockVerifier,
 } from './mock'

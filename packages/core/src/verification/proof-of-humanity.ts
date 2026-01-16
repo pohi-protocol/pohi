@@ -7,11 +7,7 @@
 
 import { POP_PROVIDERS } from '../types'
 import type { HumanProof } from '../types'
-import type {
-  ProofOfHumanityProofData,
-  ProofOfHumanityConfig,
-  PoHStatus,
-} from '../providers'
+import type { ProofOfHumanityProofData, ProofOfHumanityConfig, PoHStatus } from '../providers'
 import type { ProviderVerifier, VerificationResult } from './types'
 import { sha256 } from '../attestation'
 import { registerVerifier } from './mock'
@@ -76,10 +72,10 @@ function mapStatus(status: string, registered: boolean): PoHStatus {
 /**
  * Proof of Humanity verifier implementation
  */
-export class ProofOfHumanityVerifier
-  implements
-    ProviderVerifier<ProofOfHumanityProofData, ProofOfHumanityConfig>
-{
+export class ProofOfHumanityVerifier implements ProviderVerifier<
+  ProofOfHumanityProofData,
+  ProofOfHumanityConfig
+> {
   readonly provider = POP_PROVIDERS.PROOF_OF_HUMANITY
 
   /**

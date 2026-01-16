@@ -1,12 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { POP_PROVIDERS } from '../types'
-import {
-  MockVerifier,
-  isMockMode,
-  getVerifier,
-  hasVerifier,
-  getAvailableProviders,
-} from './mock'
+import { MockVerifier, isMockMode, getVerifier, hasVerifier, getAvailableProviders } from './mock'
 import { GitcoinPassportVerifier } from './gitcoin-passport'
 import { BrightIDVerifier } from './brightid'
 import { CivicVerifier } from './civic'
@@ -725,10 +719,7 @@ describe('ProofOfHumanityVerifier', () => {
 
   it('should require address', async () => {
     const verifier = new ProofOfHumanityVerifier()
-    const result = await verifier.verify(
-      { address: '', status: 'registered' },
-      {}
-    )
+    const result = await verifier.verify({ address: '', status: 'registered' }, {})
 
     expect(result.success).toBe(false)
     expect(result.error).toBe('Address is required')
@@ -811,10 +802,7 @@ describe('ProofOfHumanityVerifier', () => {
       { subgraph_url: 'https://custom.subgraph.com/poh' }
     )
 
-    expect(mockFetch).toHaveBeenCalledWith(
-      'https://custom.subgraph.com/poh',
-      expect.any(Object)
-    )
+    expect(mockFetch).toHaveBeenCalledWith('https://custom.subgraph.com/poh', expect.any(Object))
   })
 })
 
@@ -924,10 +912,7 @@ describe('HolonymVerifier', () => {
 
   it('should require address', async () => {
     const verifier = new HolonymVerifier()
-    const result = await verifier.verify(
-      { address: '', credential_type: 'gov-id' },
-      {}
-    )
+    const result = await verifier.verify({ address: '', credential_type: 'gov-id' }, {})
 
     expect(result.success).toBe(false)
     expect(result.error).toBe('Address is required')
@@ -935,10 +920,7 @@ describe('HolonymVerifier', () => {
 
   it('should require credential_type', async () => {
     const verifier = new HolonymVerifier()
-    const result = await verifier.verify(
-      { address: '0x123', credential_type: '' as any },
-      {}
-    )
+    const result = await verifier.verify({ address: '0x123', credential_type: '' as any }, {})
 
     expect(result.success).toBe(false)
     expect(result.error).toContain('Credential type is required')
@@ -973,14 +955,9 @@ describe('HolonymVerifier', () => {
     })
 
     const verifier = new HolonymVerifier()
-    await verifier.verify(
-      { address: '0x123', credential_type: 'gov-id', chain: 'base' },
-      {}
-    )
+    await verifier.verify({ address: '0x123', credential_type: 'gov-id', chain: 'base' }, {})
 
-    expect(mockFetch).toHaveBeenCalledWith(
-      expect.stringContaining('/base?')
-    )
+    expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/base?'))
   })
 
   it('should use custom action ID', async () => {
@@ -990,24 +967,16 @@ describe('HolonymVerifier', () => {
     })
 
     const verifier = new HolonymVerifier()
-    await verifier.verify(
-      { address: '0x123', credential_type: 'gov-id', action_id: '999' },
-      {}
-    )
+    await verifier.verify({ address: '0x123', credential_type: 'gov-id', action_id: '999' }, {})
 
-    expect(mockFetch).toHaveBeenCalledWith(
-      expect.stringContaining('action-id=999')
-    )
+    expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('action-id=999'))
   })
 
   it('should handle network error', async () => {
     mockFetch.mockRejectedValueOnce(new Error('Network failed'))
 
     const verifier = new HolonymVerifier()
-    const result = await verifier.verify(
-      { address: '0x123', credential_type: 'gov-id' },
-      {}
-    )
+    const result = await verifier.verify({ address: '0x123', credential_type: 'gov-id' }, {})
 
     expect(result.success).toBe(false)
     expect(result.error).toContain('Holonym verification failed')
@@ -1018,10 +987,7 @@ describe('HolonymVerifier', () => {
     mockFetch.mockRejectedValueOnce('String error')
 
     const verifier = new HolonymVerifier()
-    const result = await verifier.verify(
-      { address: '0x123', credential_type: 'gov-id' },
-      {}
-    )
+    const result = await verifier.verify({ address: '0x123', credential_type: 'gov-id' }, {})
 
     expect(result.success).toBe(false)
     expect(result.error).toContain('Unknown error')
@@ -1054,14 +1020,9 @@ describe('HolonymVerifier', () => {
     })
 
     const verifier = new HolonymVerifier()
-    await verifier.verify(
-      { address: '0x123', credential_type: 'gov-id' },
-      {}
-    )
+    await verifier.verify({ address: '0x123', credential_type: 'gov-id' }, {})
 
-    expect(mockFetch).toHaveBeenCalledWith(
-      expect.stringContaining('/optimism?')
-    )
+    expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('/optimism?'))
   })
 
   it('should use default action ID when not specified', async () => {
@@ -1071,14 +1032,9 @@ describe('HolonymVerifier', () => {
     })
 
     const verifier = new HolonymVerifier()
-    await verifier.verify(
-      { address: '0x123', credential_type: 'gov-id' },
-      {}
-    )
+    await verifier.verify({ address: '0x123', credential_type: 'gov-id' }, {})
 
-    expect(mockFetch).toHaveBeenCalledWith(
-      expect.stringContaining('action-id=123456789')
-    )
+    expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining('action-id=123456789'))
   })
 })
 
@@ -1178,9 +1134,9 @@ describe('IdenaVerifier', () => {
     )
 
     expect(result.success).toBe(false)
-    expect(result.error).toContain("does not meet minimum required state")
-    expect(result.error).toContain("Candidate")
-    expect(result.error).toContain("Newbie")
+    expect(result.error).toContain('does not meet minimum required state')
+    expect(result.error).toContain('Candidate')
+    expect(result.error).toContain('Newbie')
   })
 
   it('should accept Verified when min_state is Newbie', async () => {
@@ -1225,15 +1181,12 @@ describe('IdenaVerifier', () => {
     )
 
     expect(result.success).toBe(false)
-    expect(result.error).toContain("does not meet minimum required state")
+    expect(result.error).toContain('does not meet minimum required state')
   })
 
   it('should require address', async () => {
     const verifier = new IdenaVerifier()
-    const result = await verifier.verify(
-      { address: '' },
-      {}
-    )
+    const result = await verifier.verify({ address: '' }, {})
 
     expect(result.success).toBe(false)
     expect(result.error).toBe('Address is required')
@@ -1241,10 +1194,7 @@ describe('IdenaVerifier', () => {
 
   it('should reject invalid address format', async () => {
     const verifier = new IdenaVerifier()
-    const result = await verifier.verify(
-      { address: 'invalid-address' },
-      {}
-    )
+    const result = await verifier.verify({ address: 'invalid-address' }, {})
 
     expect(result.success).toBe(false)
     expect(result.error).toBe('Invalid Idena address format')
@@ -1252,10 +1202,7 @@ describe('IdenaVerifier', () => {
 
   it('should reject short address', async () => {
     const verifier = new IdenaVerifier()
-    const result = await verifier.verify(
-      { address: '0x1234' },
-      {}
-    )
+    const result = await verifier.verify({ address: '0x1234' }, {})
 
     expect(result.success).toBe(false)
     expect(result.error).toBe('Invalid Idena address format')
@@ -1365,10 +1312,7 @@ describe('IdenaVerifier', () => {
       { rpc_url: 'https://custom.rpc.io' }
     )
 
-    expect(mockFetch).toHaveBeenCalledWith(
-      'https://custom.rpc.io',
-      expect.any(Object)
-    )
+    expect(mockFetch).toHaveBeenCalledWith('https://custom.rpc.io', expect.any(Object))
   })
 
   it('should use default RPC URL when not specified', async () => {
@@ -1384,15 +1328,9 @@ describe('IdenaVerifier', () => {
     })
 
     const verifier = new IdenaVerifier()
-    await verifier.verify(
-      { address: '0x1234567890123456789012345678901234567890' },
-      {}
-    )
+    await verifier.verify({ address: '0x1234567890123456789012345678901234567890' }, {})
 
-    expect(mockFetch).toHaveBeenCalledWith(
-      'https://rpc.idena.dev',
-      expect.any(Object)
-    )
+    expect(mockFetch).toHaveBeenCalledWith('https://rpc.idena.dev', expect.any(Object))
   })
 
   it('toHumanProof should create valid proof', async () => {
@@ -1441,7 +1379,7 @@ describe('IdenaVerifier', () => {
     )
 
     expect(result.success).toBe(false)
-    expect(result.error).toContain("does not meet minimum required state")
+    expect(result.error).toContain('does not meet minimum required state')
   })
 
   it('should handle Suspended identity state', async () => {
@@ -1480,10 +1418,7 @@ describe('IdenaVerifier', () => {
     })
 
     const verifier = new IdenaVerifier()
-    await verifier.verify(
-      { address: '0xABCDEF1234567890123456789012345678901234' },
-      {}
-    )
+    await verifier.verify({ address: '0xABCDEF1234567890123456789012345678901234' }, {})
 
     expect(mockFetch).toHaveBeenCalledWith(
       expect.any(String),
@@ -1553,7 +1488,10 @@ describe('CoinbaseVerificationsVerifier', () => {
 
     const verifier = new CoinbaseVerificationsVerifier()
     const result = await verifier.verify(
-      { address: '0x1234567890123456789012345678901234567890', attestation_type: 'verified_country' },
+      {
+        address: '0x1234567890123456789012345678901234567890',
+        attestation_type: 'verified_country',
+      },
       {}
     )
 
@@ -1767,10 +1705,7 @@ describe('CoinbaseVerificationsVerifier', () => {
 
   it('should require address', async () => {
     const verifier = new CoinbaseVerificationsVerifier()
-    const result = await verifier.verify(
-      { address: '' },
-      {}
-    )
+    const result = await verifier.verify({ address: '' }, {})
 
     expect(result.success).toBe(false)
     expect(result.error).toBe('Address is required')
@@ -1778,10 +1713,7 @@ describe('CoinbaseVerificationsVerifier', () => {
 
   it('should reject invalid address format', async () => {
     const verifier = new CoinbaseVerificationsVerifier()
-    const result = await verifier.verify(
-      { address: 'invalid-address' },
-      {}
-    )
+    const result = await verifier.verify({ address: 'invalid-address' }, {})
 
     expect(result.success).toBe(false)
     expect(result.error).toBe('Invalid Ethereum address format')
@@ -1878,10 +1810,7 @@ describe('CoinbaseVerificationsVerifier', () => {
       { graphql_url: 'https://custom.graphql.io' }
     )
 
-    expect(mockFetch).toHaveBeenCalledWith(
-      'https://custom.graphql.io',
-      expect.any(Object)
-    )
+    expect(mockFetch).toHaveBeenCalledWith('https://custom.graphql.io', expect.any(Object))
   })
 
   it('should use default GraphQL URL when not specified', async () => {
@@ -1906,15 +1835,9 @@ describe('CoinbaseVerificationsVerifier', () => {
     })
 
     const verifier = new CoinbaseVerificationsVerifier()
-    await verifier.verify(
-      { address: '0x1234567890123456789012345678901234567890' },
-      {}
-    )
+    await verifier.verify({ address: '0x1234567890123456789012345678901234567890' }, {})
 
-    expect(mockFetch).toHaveBeenCalledWith(
-      'https://base.easscan.org/graphql',
-      expect.any(Object)
-    )
+    expect(mockFetch).toHaveBeenCalledWith('https://base.easscan.org/graphql', expect.any(Object))
   })
 
   it('toHumanProof should create valid proof', async () => {

@@ -5,7 +5,7 @@
  * Use this package for on-chain attestation recording and verification
  */
 
-import { keccak256, encodePacked, toHex, toBytes } from 'viem'
+import { keccak256, encodePacked } from 'viem'
 import type { HumanApprovalAttestation } from 'pohi-core'
 import { verificationLevelToNumber } from 'pohi-core'
 
@@ -41,12 +41,7 @@ export function computeEvmAttestationHash(attestation: HumanApprovalAttestation)
  * Use this for World ID verification when recording on-chain
  */
 export function computeEvmSignal(repository: string, commitSha: string): `0x${string}` {
-  return keccak256(
-    encodePacked(
-      ['string', 'string'],
-      [repository, commitSha]
-    )
-  )
+  return keccak256(encodePacked(['string', 'string'], [repository, commitSha]))
 }
 
 // ============ Conversion Utilities ============

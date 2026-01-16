@@ -8,8 +8,7 @@ import {
 } from '../utils/config.js'
 import { success, error, info, log, header } from '../utils/output.js'
 
-export const configCommand = new Command('config')
-  .description('Manage PoHI CLI configuration')
+export const configCommand = new Command('config').description('Manage PoHI CLI configuration')
 
 configCommand
   .command('get [key]')

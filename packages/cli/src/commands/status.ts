@@ -24,7 +24,9 @@ export const statusCommand = new Command('status')
       process.exit(1)
     }
 
-    const network = (options.network || getConfigWithEnv('network', 'POHI_NETWORK') || 'sepolia') as 'mainnet' | 'sepolia'
+    const network = (options.network ||
+      getConfigWithEnv('network', 'POHI_NETWORK') ||
+      'sepolia') as 'mainnet' | 'sepolia'
 
     if (!isJsonOutput()) {
       header('On-Chain Status')
@@ -46,7 +48,10 @@ export const statusCommand = new Command('status')
     }
   })
 
-async function checkHashStatus(client: InstanceType<typeof import('pohi-sdk').PoHIClient>, hash: string) {
+async function checkHashStatus(
+  client: InstanceType<typeof import('pohi-sdk').PoHIClient>,
+  hash: string
+) {
   const attestationHash = hash.startsWith('0x') ? hash : `0x${hash}`
 
   if (!isJsonOutput()) {

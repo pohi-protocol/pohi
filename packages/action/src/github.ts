@@ -104,7 +104,7 @@ async function findPRByCommit(
     })
 
     // Return the first open PR, or the first PR if none are open
-    const openPR = prs.find(pr => pr.state === 'open')
+    const openPR = prs.find((pr) => pr.state === 'open')
     return openPR?.number ?? prs[0]?.number ?? null
   } catch (error) {
     core.warning(`Failed to find PR by commit: ${error}`)
@@ -131,9 +131,10 @@ async function findExistingPohiComment(
 
     // Find comment with PoHI markers
     const pohiComment = comments.find(
-      c => c.body?.includes('Human Approval Required') ||
-           c.body?.includes('Human Approval Verified') ||
-           c.body?.includes('Approve with World ID')
+      (c) =>
+        c.body?.includes('Human Approval Required') ||
+        c.body?.includes('Human Approval Verified') ||
+        c.body?.includes('Approve with World ID')
     )
 
     return pohiComment?.id ?? null

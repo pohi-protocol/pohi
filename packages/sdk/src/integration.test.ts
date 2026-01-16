@@ -175,20 +175,17 @@ describe('Integration: Core → EVM → SDK Flow', () => {
   })
 
   describe('SDK Integration', () => {
-    let client: PoHIClient
+    let _client: PoHIClient
 
     beforeEach(() => {
-      client = new PoHIClient({
+      _client = new PoHIClient({
         network: 'sepolia',
-        contractAddress: '0x' + '1'.repeat(40) as `0x${string}`,
+        contractAddress: ('0x' + '1'.repeat(40)) as `0x${string}`,
       })
     })
 
     it('should prepare attestation for recording', async () => {
-      const attestation = createAttestation(
-        createTestSubject(),
-        createTestProof()
-      )
+      const attestation = createAttestation(createTestSubject(), createTestProof())
 
       // Validate before sending to chain
       const validation = validateAttestation(attestation)
@@ -283,10 +280,7 @@ describe('Integration: Core → EVM → SDK Flow', () => {
     })
 
     it('should compute deterministic EVM hashes', () => {
-      const attestation1 = createAttestation(
-        createTestSubject(),
-        createTestProof()
-      )
+      const attestation1 = createAttestation(createTestSubject(), createTestProof())
 
       // Create another attestation with same data but different timestamp
       const attestation2: HumanApprovalAttestation = {
@@ -330,10 +324,7 @@ describe('Integration: Core → EVM → SDK Flow', () => {
 
     actions.forEach((action) => {
       it(`should create valid attestation for ${action} action`, () => {
-        const attestation = createAttestation(
-          createTestSubject({ action }),
-          createTestProof()
-        )
+        const attestation = createAttestation(createTestSubject({ action }), createTestProof())
 
         expect(attestation.subject.action).toBe(action)
 
@@ -346,10 +337,7 @@ describe('Integration: Core → EVM → SDK Flow', () => {
 
 describe('Integration: Hash Consistency', () => {
   it('should compute attestation hash that matches across serialization', () => {
-    const attestation = createAttestation(
-      createTestSubject(),
-      createTestProof()
-    )
+    const attestation = createAttestation(createTestSubject(), createTestProof())
 
     const hash1 = computeAttestationHash(attestation)
     const hash2 = computeAttestationHash(attestation)
@@ -359,10 +347,7 @@ describe('Integration: Hash Consistency', () => {
   })
 
   it('should detect tampering through hash mismatch', () => {
-    const attestation = createAttestation(
-      createTestSubject(),
-      createTestProof()
-    )
+    const attestation = createAttestation(createTestSubject(), createTestProof())
 
     // Tamper with the attestation
     const tampered: HumanApprovalAttestation = {

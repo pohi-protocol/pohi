@@ -7,10 +7,7 @@ interface CivicVerificationProps {
   disabled?: boolean
 }
 
-export function CivicVerification({
-  onVerify,
-  disabled = false,
-}: CivicVerificationProps) {
+export function CivicVerification({ onVerify, disabled = false }: CivicVerificationProps) {
   const [userId, setUserId] = useState<string>('')
   const [gatewayToken, setGatewayToken] = useState<string>('')
   const [loading, setLoading] = useState(false)

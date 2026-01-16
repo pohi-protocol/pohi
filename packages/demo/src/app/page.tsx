@@ -23,8 +23,7 @@ function HomeContent() {
   const [verificationStatus, setVerificationStatus] = useState<
     'idle' | 'verifying' | 'success' | 'error' | 'already_approved' | 'checking'
   >('idle')
-  const [attestation, setAttestation] =
-    useState<HumanApprovalAttestation | null>(null)
+  const [attestation, setAttestation] = useState<HumanApprovalAttestation | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [approvedAt, setApprovedAt] = useState<string | null>(null)
 
@@ -53,9 +52,10 @@ function HomeContent() {
       if (repo || commit) {
         setSubject({
           action: 'GENERIC',
-          description: repo && commit
-            ? `Approve commit ${commit.slice(0, 7)} in ${repo}`
-            : 'Demo approval request',
+          description:
+            repo && commit
+              ? `Approve commit ${commit.slice(0, 7)} in ${repo}`
+              : 'Demo approval request',
           repository: repo || 'pohi-protocol/pohi',
           commit_sha: commit || 'abc123def456',
         })
@@ -137,34 +137,16 @@ function HomeContent() {
     switch (selectedProvider) {
       case 'world_id':
         return (
-          <WorldIDVerification
-            signal={signal}
-            onVerify={handleVerify}
-            disabled={isVerifying}
-          />
+          <WorldIDVerification signal={signal} onVerify={handleVerify} disabled={isVerifying} />
         )
       case 'gitcoin_passport':
-        return (
-          <GitcoinPassportVerification
-            onVerify={handleVerify}
-            disabled={isVerifying}
-          />
-        )
+        return <GitcoinPassportVerification onVerify={handleVerify} disabled={isVerifying} />
       case 'brightid':
-        return (
-          <BrightIDVerification onVerify={handleVerify} disabled={isVerifying} />
-        )
+        return <BrightIDVerification onVerify={handleVerify} disabled={isVerifying} />
       case 'civic':
-        return (
-          <CivicVerification onVerify={handleVerify} disabled={isVerifying} />
-        )
+        return <CivicVerification onVerify={handleVerify} disabled={isVerifying} />
       case 'proof_of_humanity':
-        return (
-          <ProofOfHumanityVerification
-            onVerify={handleVerify}
-            disabled={isVerifying}
-          />
-        )
+        return <ProofOfHumanityVerification onVerify={handleVerify} disabled={isVerifying} />
       default:
         return null
     }
@@ -185,9 +167,7 @@ function HomeContent() {
       </div>
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold mb-4">{t('title')}</h1>
-        <p className="text-xl text-gray-600 dark:text-gray-400">
-          {t('tagline')}
-        </p>
+        <p className="text-xl text-gray-600 dark:text-gray-400">{t('tagline')}</p>
         {isGitHubActionRequest && (
           <div className="mt-4 inline-block bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200 px-4 py-2 rounded-lg">
             {t('githubActionRequest')}
@@ -201,14 +181,14 @@ function HomeContent() {
 
         <div className="space-y-4">
           <div>
-            <label htmlFor="repository" className="block text-sm font-medium mb-1">{t('repository')}</label>
+            <label htmlFor="repository" className="block text-sm font-medium mb-1">
+              {t('repository')}
+            </label>
             <input
               id="repository"
               type="text"
               value={subject.repository || ''}
-              onChange={(e) =>
-                setSubject({ ...subject, repository: e.target.value })
-              }
+              onChange={(e) => setSubject({ ...subject, repository: e.target.value })}
               readOnly={!!isGitHubActionRequest}
               className={`w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 ${isGitHubActionRequest ? 'bg-gray-200 dark:bg-gray-600 cursor-not-allowed' : ''}`}
               placeholder="owner/repo"
@@ -216,14 +196,14 @@ function HomeContent() {
           </div>
 
           <div>
-            <label htmlFor="commit-sha" className="block text-sm font-medium mb-1">{t('commitSha')}</label>
+            <label htmlFor="commit-sha" className="block text-sm font-medium mb-1">
+              {t('commitSha')}
+            </label>
             <input
               id="commit-sha"
               type="text"
               value={subject.commit_sha || ''}
-              onChange={(e) =>
-                setSubject({ ...subject, commit_sha: e.target.value })
-              }
+              onChange={(e) => setSubject({ ...subject, commit_sha: e.target.value })}
               readOnly={!!isGitHubActionRequest}
               className={`w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 ${isGitHubActionRequest ? 'bg-gray-200 dark:bg-gray-600 cursor-not-allowed' : ''}`}
               placeholder="abc123..."
@@ -231,14 +211,14 @@ function HomeContent() {
           </div>
 
           <div>
-            <label htmlFor="description" className="block text-sm font-medium mb-1">{t('description')}</label>
+            <label htmlFor="description" className="block text-sm font-medium mb-1">
+              {t('description')}
+            </label>
             <input
               id="description"
               type="text"
               value={subject.description || ''}
-              onChange={(e) =>
-                setSubject({ ...subject, description: e.target.value })
-              }
+              onChange={(e) => setSubject({ ...subject, description: e.target.value })}
               className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600"
               placeholder={t('descriptionPlaceholder')}
             />
@@ -249,10 +229,7 @@ function HomeContent() {
       {/* Provider Selection and Verification */}
       <div className="mb-8">
         {!selectedProvider && verificationStatus === 'idle' && (
-          <ProviderSelector
-            selectedProvider={selectedProvider}
-            onSelect={setSelectedProvider}
-          />
+          <ProviderSelector selectedProvider={selectedProvider} onSelect={setSelectedProvider} />
         )}
 
         {selectedProvider && verificationStatus === 'idle' && (
@@ -284,12 +261,8 @@ function HomeContent() {
 
         {verificationStatus === 'already_approved' && (
           <div className="text-center py-8 space-y-4">
-            <div className="text-xl text-blue-600 dark:text-blue-400">
-              {t('alreadyApproved')}
-            </div>
-            <p className="text-gray-600 dark:text-gray-400">
-              {t('alreadyApprovedDesc')}
-            </p>
+            <div className="text-xl text-blue-600 dark:text-blue-400">{t('alreadyApproved')}</div>
+            <p className="text-gray-600 dark:text-gray-400">{t('alreadyApprovedDesc')}</p>
             {approvedAt && (
               <p className="text-sm text-gray-500">
                 {t('approvedAt')}: {new Date(approvedAt).toLocaleString()}
@@ -300,13 +273,8 @@ function HomeContent() {
 
         {verificationStatus === 'success' && (
           <div className="text-center py-8 space-y-4">
-            <div className="text-xl text-green-600 dark:text-green-400">
-              {t('humanVerified')}
-            </div>
-            <button
-              onClick={handleReset}
-              className="text-blue-600 dark:text-blue-400 underline"
-            >
+            <div className="text-xl text-green-600 dark:text-green-400">{t('humanVerified')}</div>
+            <button onClick={handleReset} className="text-blue-600 dark:text-blue-400 underline">
               {t('startNewVerification')}
             </button>
           </div>
@@ -314,14 +282,9 @@ function HomeContent() {
 
         {verificationStatus === 'error' && (
           <div className="text-center py-8 space-y-4">
-            <div className="text-xl text-red-600 dark:text-red-400">
-              {t('verificationFailed')}
-            </div>
+            <div className="text-xl text-red-600 dark:text-red-400">{t('verificationFailed')}</div>
             <p className="text-gray-600 dark:text-gray-400">{error}</p>
-            <button
-              onClick={handleReset}
-              className="text-blue-600 dark:text-blue-400 underline"
-            >
+            <button onClick={handleReset} className="text-blue-600 dark:text-blue-400 underline">
               {t('tryAgain')}
             </button>
           </div>
@@ -330,27 +293,31 @@ function HomeContent() {
 
       {/* Attestation Result */}
       {attestation && (
-        <div className={`${verificationStatus === 'already_approved' ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800' : 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'} border rounded-lg p-6 mb-8`}>
+        <div
+          className={`${verificationStatus === 'already_approved' ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800' : 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'} border rounded-lg p-6 mb-8`}
+        >
           <div className="flex items-center justify-between mb-4">
-            <h2 className={`text-xl font-semibold ${verificationStatus === 'already_approved' ? 'text-blue-800 dark:text-blue-200' : 'text-green-800 dark:text-green-200'}`}>
-              {verificationStatus === 'already_approved' ? t('alreadyApproved') : t('attestationCreated')}
+            <h2
+              className={`text-xl font-semibold ${verificationStatus === 'already_approved' ? 'text-blue-800 dark:text-blue-200' : 'text-green-800 dark:text-green-200'}`}
+            >
+              {verificationStatus === 'already_approved'
+                ? t('alreadyApproved')
+                : t('attestationCreated')}
             </h2>
             <div className="flex gap-2">
-              <CopyButton
-                text={JSON.stringify(attestation, null, 2)}
-                label={t('copyJson')}
-              />
+              <CopyButton text={JSON.stringify(attestation, null, 2)} label={t('copyJson')} />
               {attestation.attestation_hash && (
-                <CopyButton
-                  text={attestation.attestation_hash}
-                  label={t('copyHash')}
-                />
+                <CopyButton text={attestation.attestation_hash} label={t('copyHash')} />
               )}
             </div>
           </div>
           {attestation.attestation_hash && (
-            <div className={`mb-4 p-3 bg-white dark:bg-gray-900 rounded border ${verificationStatus === 'already_approved' ? 'border-blue-200 dark:border-blue-700' : 'border-green-200 dark:border-green-700'}`}>
-              <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">{t('attestationHash')}</div>
+            <div
+              className={`mb-4 p-3 bg-white dark:bg-gray-900 rounded border ${verificationStatus === 'already_approved' ? 'border-blue-200 dark:border-blue-700' : 'border-green-200 dark:border-green-700'}`}
+            >
+              <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                {t('attestationHash')}
+              </div>
               <code className="text-sm font-mono break-all">{attestation.attestation_hash}</code>
             </div>
           )}
@@ -372,23 +339,17 @@ function HomeContent() {
           <div className="text-center">
             <div className="text-4xl mb-2">1.</div>
             <h3 className="font-semibold">{t('step1Title')}</h3>
-            <p className="text-gray-600 dark:text-gray-400 text-sm">
-              {t('step1Desc')}
-            </p>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">{t('step1Desc')}</p>
           </div>
           <div className="text-center">
             <div className="text-4xl mb-2">2.</div>
             <h3 className="font-semibold">{t('step2Title')}</h3>
-            <p className="text-gray-600 dark:text-gray-400 text-sm">
-              {t('step2Desc')}
-            </p>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">{t('step2Desc')}</p>
           </div>
           <div className="text-center">
             <div className="text-4xl mb-2">3.</div>
             <h3 className="font-semibold">{t('step3Title')}</h3>
-            <p className="text-gray-600 dark:text-gray-400 text-sm">
-              {t('step3Desc')}
-            </p>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">{t('step3Desc')}</p>
           </div>
         </div>
       </div>

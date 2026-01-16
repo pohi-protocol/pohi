@@ -21,7 +21,7 @@ export const POP_PROVIDERS = {
   HUMANITY_PROTOCOL: 'humanity_protocol',
 } as const
 
-export type KnownPoPProvider = typeof POP_PROVIDERS[keyof typeof POP_PROVIDERS]
+export type KnownPoPProvider = (typeof POP_PROVIDERS)[keyof typeof POP_PROVIDERS]
 
 /**
  * World ID verification levels (when using World ID provider)
@@ -51,7 +51,7 @@ export const APPROVAL_ACTIONS = {
   GENERIC: 'GENERIC',
 } as const
 
-export type KnownApprovalAction = typeof APPROVAL_ACTIONS[keyof typeof APPROVAL_ACTIONS]
+export type KnownApprovalAction = (typeof APPROVAL_ACTIONS)[keyof typeof APPROVAL_ACTIONS]
 
 /**
  * Approval subject - what is being approved

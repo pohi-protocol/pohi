@@ -3,7 +3,15 @@ import ora from 'ora'
 import qrcode from 'qrcode-terminal'
 import { POP_PROVIDERS, isKnownProvider, getProviderName } from 'pohi-core'
 import { getConfigWithEnv } from '../utils/config.js'
-import { success, error, info, log, header, outputAttestation, isJsonOutput } from '../utils/output.js'
+import {
+  success,
+  error,
+  info,
+  log,
+  header,
+  outputAttestation,
+  isJsonOutput,
+} from '../utils/output.js'
 
 interface AttestOptions {
   repo: string
@@ -29,7 +37,11 @@ export const attestCommand = new Command('attest')
   .description('Request human approval attestation for a commit')
   .requiredOption('-r, --repo <repository>', 'Repository (e.g., owner/repo)')
   .requiredOption('-c, --commit <sha>', 'Commit SHA')
-  .option('-P, --provider <provider>', `PoP provider (${AVAILABLE_PROVIDERS})`, POP_PROVIDERS.WORLD_ID)
+  .option(
+    '-P, --provider <provider>',
+    `PoP provider (${AVAILABLE_PROVIDERS})`,
+    POP_PROVIDERS.WORLD_ID
+  )
   .option('-u, --approval-url <url>', 'Approval server URL')
   .option('-a, --app-id <id>', 'World ID App ID')
   .option('-A, --action <name>', 'World ID Action name')
@@ -38,7 +50,10 @@ export const attestCommand = new Command('attest')
   .option('-t, --timeout <minutes>', 'Timeout in minutes', '30')
   .option('-p, --poll-interval <seconds>', 'Poll interval in seconds', '5')
   .action(async (options: AttestOptions) => {
-    const provider = options.provider || getConfigWithEnv('defaultProvider', 'POHI_PROVIDER') || POP_PROVIDERS.WORLD_ID
+    const provider =
+      options.provider ||
+      getConfigWithEnv('defaultProvider', 'POHI_PROVIDER') ||
+      POP_PROVIDERS.WORLD_ID
     const approvalUrl = options.approvalUrl || getConfigWithEnv('approvalUrl', 'POHI_APPROVAL_URL')
     const appId = options.appId || getConfigWithEnv('worldIdAppId', 'POHI_APP_ID')
     const action = options.action || getConfigWithEnv('worldIdAction', 'POHI_ACTION')
@@ -131,7 +146,7 @@ export const attestCommand = new Command('attest')
         // Ignore polling errors
       }
 
-      await new Promise(resolve => setTimeout(resolve, pollIntervalSeconds * 1000))
+      await new Promise((resolve) => setTimeout(resolve, pollIntervalSeconds * 1000))
     }
 
     if (!approved || !attestation) {
