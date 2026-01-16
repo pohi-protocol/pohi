@@ -197,6 +197,149 @@ export interface ProofOfHumanityConfig {
   subgraph_url?: string
 }
 
+// ============ Holonym ============
+
+/**
+ * Holonym credential types for verification
+ */
+export type HolonymCredentialType = 'gov-id' | 'epassport' | 'phone'
+
+/**
+ * Holonym supported chains
+ */
+export type HolonymChain =
+  | 'ethereum'
+  | 'optimism'
+  | 'base'
+  | 'arbitrum'
+  | 'polygon'
+  | 'celo'
+  | 'avalanche'
+  | 'linea'
+  | 'scroll'
+  | 'world-chain'
+
+/**
+ * Holonym proof structure
+ */
+export interface HolonymProofData {
+  /** Ethereum address to verify */
+  address: string
+  /** Type of credential used for verification */
+  credential_type: HolonymCredentialType
+  /** Chain where the proof exists */
+  chain?: HolonymChain
+  /** Action ID for custom sybil resistance (default: 123456789) */
+  action_id?: string
+}
+
+/**
+ * Holonym provider configuration
+ */
+export interface HolonymConfig {
+  /** Chain to verify on (default: optimism) */
+  chain?: HolonymChain
+  /** Required credential type(s) */
+  required_credentials?: HolonymCredentialType[]
+  /** Custom action ID for sybil resistance (default: 123456789) */
+  action_id?: string
+}
+
+// ============ Idena ============
+
+/**
+ * Idena identity states
+ * Based on validation ceremony participation and scores
+ */
+export type IdenaIdentityState =
+  | 'Undefined'
+  | 'Invite'
+  | 'Candidate'
+  | 'Newbie'
+  | 'Verified'
+  | 'Suspended'
+  | 'Zombie'
+  | 'Killed'
+  | 'Human'
+
+/**
+ * Idena proof structure
+ */
+export interface IdenaProofData {
+  /** Idena address to verify */
+  address: string
+}
+
+/**
+ * Idena provider configuration
+ */
+export interface IdenaConfig {
+  /** RPC endpoint URL (default: https://rpc.idena.dev) */
+  rpc_url?: string
+  /** Minimum required identity state */
+  min_state?: IdenaIdentityState
+}
+
+/**
+ * Idena identity state hierarchy for comparison
+ * Higher number = more verified
+ */
+export const IDENA_STATE_LEVELS: Record<IdenaIdentityState, number> = {
+  Undefined: 0,
+  Invite: 1,
+  Candidate: 2,
+  Newbie: 3,
+  Verified: 4,
+  Suspended: 3, // Same as Newbie (can still participate)
+  Zombie: 1,
+  Killed: 0,
+  Human: 5, // Highest level
+} as const
+
+// ============ Coinbase Verifications ============
+
+/**
+ * Coinbase Verifications attestation types
+ */
+export type CoinbaseVerificationType =
+  | 'verified_account'
+  | 'verified_country'
+  | 'coinbase_one'
+
+/**
+ * Coinbase Verifications schema IDs on Base
+ */
+export const COINBASE_SCHEMA_IDS = {
+  /** Coinbase Verified Account schema */
+  VERIFIED_ACCOUNT: '0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9',
+  /** Coinbase Verified Country schema */
+  VERIFIED_COUNTRY: '0x1801901fabd0e6189356b4fb52bb0ab855276d84f7ec140839fbd1f6801ca065',
+  /** Coinbase One membership schema */
+  COINBASE_ONE: '0x12e65a5df2488073e45d1d29d96a8a6f0c42b4d66c0bc5e1e4e3a4e0e5e7e9f1',
+} as const
+
+/**
+ * Coinbase Verifications proof structure
+ */
+export interface CoinbaseVerificationsProofData {
+  /** Ethereum address to verify */
+  address: string
+  /** Attestation type to check */
+  attestation_type?: CoinbaseVerificationType
+}
+
+/**
+ * Coinbase Verifications provider configuration
+ */
+export interface CoinbaseVerificationsConfig {
+  /** GraphQL endpoint (default: https://base.easscan.org/graphql) */
+  graphql_url?: string
+  /** Required attestation types */
+  required_attestations?: CoinbaseVerificationType[]
+  /** Allow revoked attestations (default: false) */
+  allow_revoked?: boolean
+}
+
 // ============ Provider Utilities ============
 
 /**
@@ -209,6 +352,9 @@ export function getProviderName(provider: string): string {
     [POP_PROVIDERS.PROOF_OF_HUMANITY]: 'Proof of Humanity',
     [POP_PROVIDERS.CIVIC]: 'Civic',
     [POP_PROVIDERS.BRIGHTID]: 'BrightID',
+    [POP_PROVIDERS.HOLONYM]: 'Holonym',
+    [POP_PROVIDERS.IDENA]: 'Idena',
+    [POP_PROVIDERS.COINBASE_VERIFICATIONS]: 'Coinbase Verifications',
   }
   return names[provider] || provider
 }
@@ -223,6 +369,9 @@ export function getProviderDocsUrl(provider: string): string {
     [POP_PROVIDERS.PROOF_OF_HUMANITY]: 'https://proofofhumanity.id',
     [POP_PROVIDERS.CIVIC]: 'https://docs.civic.com',
     [POP_PROVIDERS.BRIGHTID]: 'https://brightid.gitbook.io',
+    [POP_PROVIDERS.HOLONYM]: 'https://docs.holonym.id',
+    [POP_PROVIDERS.IDENA]: 'https://docs.idena.io',
+    [POP_PROVIDERS.COINBASE_VERIFICATIONS]: 'https://github.com/coinbase/verifications',
   }
   return urls[provider] || ''
 }
@@ -289,6 +438,27 @@ export function getProviderFeatures(provider: string): ProviderFeatures {
       requires_hardware: false,
       global_availability: true,
       onchain_verification: true,
+    },
+    [POP_PROVIDERS.HOLONYM]: {
+      zk_proofs: true,
+      sybil_resistance: 4, // Government ID / ePassport based
+      requires_hardware: false,
+      global_availability: true,
+      onchain_verification: true,
+    },
+    [POP_PROVIDERS.IDENA]: {
+      zk_proofs: false,
+      sybil_resistance: 5, // Regular validation ceremonies
+      requires_hardware: false,
+      global_availability: true,
+      onchain_verification: true,
+    },
+    [POP_PROVIDERS.COINBASE_VERIFICATIONS]: {
+      zk_proofs: false,
+      sybil_resistance: 4, // KYC-based via Coinbase
+      requires_hardware: false,
+      global_availability: true, // Via Coinbase account
+      onchain_verification: true, // EAS on Base
     },
   }
   return features[provider] || {

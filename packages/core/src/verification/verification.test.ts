@@ -11,6 +11,9 @@ import { GitcoinPassportVerifier } from './gitcoin-passport'
 import { BrightIDVerifier } from './brightid'
 import { CivicVerifier } from './civic'
 import { ProofOfHumanityVerifier } from './proof-of-humanity'
+import { HolonymVerifier } from './holonym'
+import { IdenaVerifier } from './idena'
+import { CoinbaseVerificationsVerifier } from './coinbase-verifications'
 
 // Mock fetch globally
 const mockFetch = vi.fn()
@@ -112,6 +115,9 @@ describe('hasVerifier', () => {
     expect(hasVerifier(POP_PROVIDERS.BRIGHTID)).toBe(true)
     expect(hasVerifier(POP_PROVIDERS.CIVIC)).toBe(true)
     expect(hasVerifier(POP_PROVIDERS.PROOF_OF_HUMANITY)).toBe(true)
+    expect(hasVerifier(POP_PROVIDERS.HOLONYM)).toBe(true)
+    expect(hasVerifier(POP_PROVIDERS.IDENA)).toBe(true)
+    expect(hasVerifier(POP_PROVIDERS.COINBASE_VERIFICATIONS)).toBe(true)
   })
 
   it('should return true for any provider in mock mode', () => {
@@ -139,6 +145,9 @@ describe('getAvailableProviders', () => {
     expect(providers).toContain(POP_PROVIDERS.BRIGHTID)
     expect(providers).toContain(POP_PROVIDERS.CIVIC)
     expect(providers).toContain(POP_PROVIDERS.PROOF_OF_HUMANITY)
+    expect(providers).toContain(POP_PROVIDERS.HOLONYM)
+    expect(providers).toContain(POP_PROVIDERS.IDENA)
+    expect(providers).toContain(POP_PROVIDERS.COINBASE_VERIFICATIONS)
   })
 })
 
@@ -806,5 +815,1140 @@ describe('ProofOfHumanityVerifier', () => {
       'https://custom.subgraph.com/poh',
       expect.any(Object)
     )
+  })
+})
+
+describe('HolonymVerifier', () => {
+  beforeEach(() => {
+    mockFetch.mockReset()
+  })
+
+  it('should verify unique user with government ID', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ result: true }),
+    })
+
+    const verifier = new HolonymVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890', credential_type: 'gov-id' },
+      {}
+    )
+
+    expect(result.success).toBe(true)
+    expect(result.verification_level).toBe('government_id')
+    expect(result.raw_data?.is_unique).toBe(true)
+  })
+
+  it('should verify unique user with ePassport', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ result: true }),
+    })
+
+    const verifier = new HolonymVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890', credential_type: 'epassport' },
+      {}
+    )
+
+    expect(result.success).toBe(true)
+    expect(result.verification_level).toBe('epassport')
+  })
+
+  it('should verify unique user with phone', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ result: true }),
+    })
+
+    const verifier = new HolonymVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890', credential_type: 'phone' },
+      {}
+    )
+
+    expect(result.success).toBe(true)
+    expect(result.verification_level).toBe('phone')
+  })
+
+  it('should reject non-unique user', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ result: false }),
+    })
+
+    const verifier = new HolonymVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890', credential_type: 'gov-id' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('not completed Holonym verification')
+  })
+
+  it('should handle API error response', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ result: false, error: 'Invalid action ID' }),
+    })
+
+    const verifier = new HolonymVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890', credential_type: 'gov-id' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Invalid action ID')
+  })
+
+  it('should handle HTTP error', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 500,
+      text: async () => 'Internal Server Error',
+    })
+
+    const verifier = new HolonymVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890', credential_type: 'gov-id' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Holonym API error')
+    expect(result.error).toContain('500')
+  })
+
+  it('should require address', async () => {
+    const verifier = new HolonymVerifier()
+    const result = await verifier.verify(
+      { address: '', credential_type: 'gov-id' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toBe('Address is required')
+  })
+
+  it('should require credential_type', async () => {
+    const verifier = new HolonymVerifier()
+    const result = await verifier.verify(
+      { address: '0x123', credential_type: '' as any },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Credential type is required')
+  })
+
+  it('should reject invalid credential type', async () => {
+    const verifier = new HolonymVerifier()
+    const result = await verifier.verify(
+      { address: '0x123', credential_type: 'invalid' as any },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Invalid credential type')
+  })
+
+  it('should check required credentials from config', async () => {
+    const verifier = new HolonymVerifier()
+    const result = await verifier.verify(
+      { address: '0x123', credential_type: 'phone' },
+      { required_credentials: ['gov-id', 'epassport'] }
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('not in required credentials')
+  })
+
+  it('should use custom chain from proof', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ result: true }),
+    })
+
+    const verifier = new HolonymVerifier()
+    await verifier.verify(
+      { address: '0x123', credential_type: 'gov-id', chain: 'base' },
+      {}
+    )
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      expect.stringContaining('/base?')
+    )
+  })
+
+  it('should use custom action ID', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ result: true }),
+    })
+
+    const verifier = new HolonymVerifier()
+    await verifier.verify(
+      { address: '0x123', credential_type: 'gov-id', action_id: '999' },
+      {}
+    )
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      expect.stringContaining('action-id=999')
+    )
+  })
+
+  it('should handle network error', async () => {
+    mockFetch.mockRejectedValueOnce(new Error('Network failed'))
+
+    const verifier = new HolonymVerifier()
+    const result = await verifier.verify(
+      { address: '0x123', credential_type: 'gov-id' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Holonym verification failed')
+    expect(result.error).toContain('Network failed')
+  })
+
+  it('should handle non-Error thrown', async () => {
+    mockFetch.mockRejectedValueOnce('String error')
+
+    const verifier = new HolonymVerifier()
+    const result = await verifier.verify(
+      { address: '0x123', credential_type: 'gov-id' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Unknown error')
+  })
+
+  it('toHumanProof should create valid proof', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ result: true }),
+    })
+
+    const verifier = new HolonymVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890', credential_type: 'gov-id' },
+      {}
+    )
+
+    const humanProof = verifier.toHumanProof(result, 'test_signal')
+
+    expect(humanProof.method).toBe(POP_PROVIDERS.HOLONYM)
+    expect(humanProof.signal).toBe('test_signal')
+    expect(humanProof.nullifier_hash).toBeTruthy()
+    expect(humanProof.verification_level).toBe('government_id')
+  })
+
+  it('should use default chain (optimism) when not specified', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ result: true }),
+    })
+
+    const verifier = new HolonymVerifier()
+    await verifier.verify(
+      { address: '0x123', credential_type: 'gov-id' },
+      {}
+    )
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      expect.stringContaining('/optimism?')
+    )
+  })
+
+  it('should use default action ID when not specified', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ result: true }),
+    })
+
+    const verifier = new HolonymVerifier()
+    await verifier.verify(
+      { address: '0x123', credential_type: 'gov-id' },
+      {}
+    )
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      expect.stringContaining('action-id=123456789')
+    )
+  })
+})
+
+describe('IdenaVerifier', () => {
+  beforeEach(() => {
+    mockFetch.mockReset()
+  })
+
+  it('should verify Human identity', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        id: 1,
+        result: {
+          address: '0x1234567890123456789012345678901234567890',
+          state: 'Human',
+          age: 10,
+          online: true,
+        },
+      }),
+    })
+
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(true)
+    expect(result.verification_level).toBe('human')
+    expect(result.raw_data?.state).toBe('Human')
+  })
+
+  it('should verify Verified identity', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        id: 1,
+        result: {
+          address: '0x1234567890123456789012345678901234567890',
+          state: 'Verified',
+          age: 5,
+        },
+      }),
+    })
+
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(true)
+    expect(result.verification_level).toBe('verified')
+  })
+
+  it('should verify Newbie identity', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        id: 1,
+        result: {
+          address: '0x1234567890123456789012345678901234567890',
+          state: 'Newbie',
+          age: 1,
+        },
+      }),
+    })
+
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(true)
+    expect(result.verification_level).toBe('newbie')
+  })
+
+  it('should reject Candidate identity when min_state is Newbie', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        id: 1,
+        result: {
+          address: '0x1234567890123456789012345678901234567890',
+          state: 'Candidate',
+          age: 0,
+        },
+      }),
+    })
+
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      { min_state: 'Newbie' }
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain("does not meet minimum required state")
+    expect(result.error).toContain("Candidate")
+    expect(result.error).toContain("Newbie")
+  })
+
+  it('should accept Verified when min_state is Newbie', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        id: 1,
+        result: {
+          address: '0x1234567890123456789012345678901234567890',
+          state: 'Verified',
+          age: 5,
+        },
+      }),
+    })
+
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      { min_state: 'Newbie' }
+    )
+
+    expect(result.success).toBe(true)
+  })
+
+  it('should reject when min_state is Human but identity is Verified', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        id: 1,
+        result: {
+          address: '0x1234567890123456789012345678901234567890',
+          state: 'Verified',
+          age: 5,
+        },
+      }),
+    })
+
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      { min_state: 'Human' }
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain("does not meet minimum required state")
+  })
+
+  it('should require address', async () => {
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toBe('Address is required')
+  })
+
+  it('should reject invalid address format', async () => {
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: 'invalid-address' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toBe('Invalid Idena address format')
+  })
+
+  it('should reject short address', async () => {
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toBe('Invalid Idena address format')
+  })
+
+  it('should handle identity not found', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        id: 1,
+        result: null,
+      }),
+    })
+
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('not found')
+  })
+
+  it('should handle RPC error response', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        id: 1,
+        error: {
+          code: -32000,
+          message: 'Identity not available',
+        },
+      }),
+    })
+
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Identity not available')
+  })
+
+  it('should handle HTTP error', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 500,
+      text: async () => 'Internal Server Error',
+    })
+
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Idena RPC error')
+    expect(result.error).toContain('500')
+  })
+
+  it('should handle network error', async () => {
+    mockFetch.mockRejectedValueOnce(new Error('Network failed'))
+
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Idena verification failed')
+    expect(result.error).toContain('Network failed')
+  })
+
+  it('should handle non-Error thrown', async () => {
+    mockFetch.mockRejectedValueOnce('String error')
+
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Unknown error')
+  })
+
+  it('should use custom RPC URL', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        id: 1,
+        result: {
+          address: '0x1234567890123456789012345678901234567890',
+          state: 'Human',
+        },
+      }),
+    })
+
+    const verifier = new IdenaVerifier()
+    await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      { rpc_url: 'https://custom.rpc.io' }
+    )
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      'https://custom.rpc.io',
+      expect.any(Object)
+    )
+  })
+
+  it('should use default RPC URL when not specified', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        id: 1,
+        result: {
+          address: '0x1234567890123456789012345678901234567890',
+          state: 'Human',
+        },
+      }),
+    })
+
+    const verifier = new IdenaVerifier()
+    await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      'https://rpc.idena.dev',
+      expect.any(Object)
+    )
+  })
+
+  it('toHumanProof should create valid proof', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        id: 1,
+        result: {
+          address: '0x1234567890123456789012345678901234567890',
+          state: 'Human',
+          age: 10,
+        },
+      }),
+    })
+
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    const humanProof = verifier.toHumanProof(result, 'test_signal')
+
+    expect(humanProof.method).toBe(POP_PROVIDERS.IDENA)
+    expect(humanProof.signal).toBe('test_signal')
+    expect(humanProof.nullifier_hash).toBeTruthy()
+    expect(humanProof.verification_level).toBe('human')
+  })
+
+  it('should handle Killed identity state', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        id: 1,
+        result: {
+          address: '0x1234567890123456789012345678901234567890',
+          state: 'Killed',
+        },
+      }),
+    })
+
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain("does not meet minimum required state")
+  })
+
+  it('should handle Suspended identity state', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        id: 1,
+        result: {
+          address: '0x1234567890123456789012345678901234567890',
+          state: 'Suspended',
+        },
+      }),
+    })
+
+    const verifier = new IdenaVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      { min_state: 'Newbie' }
+    )
+
+    // Suspended has same level as Newbie
+    expect(result.success).toBe(true)
+    expect(result.verification_level).toBe('suspended')
+  })
+
+  it('should lowercase address in request', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        id: 1,
+        result: {
+          address: '0x1234567890123456789012345678901234567890',
+          state: 'Human',
+        },
+      }),
+    })
+
+    const verifier = new IdenaVerifier()
+    await verifier.verify(
+      { address: '0xABCDEF1234567890123456789012345678901234' },
+      {}
+    )
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        body: expect.stringContaining('0xabcdef1234567890123456789012345678901234'),
+      })
+    )
+  })
+})
+
+describe('CoinbaseVerificationsVerifier', () => {
+  beforeEach(() => {
+    mockFetch.mockReset()
+  })
+
+  it('should verify user with verified_account attestation', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: {
+          attestations: [
+            {
+              id: '0xabc123',
+              attester: '0xcoinbase',
+              recipient: '0x1234567890123456789012345678901234567890',
+              schemaId: '0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9',
+              revoked: false,
+              time: Math.floor(Date.now() / 1000) - 3600,
+              expirationTime: 0,
+              data: '0x',
+            },
+          ],
+        },
+      }),
+    })
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(true)
+    expect(result.verification_level).toBe('verified_account')
+  })
+
+  it('should verify user with verified_country attestation', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: {
+          attestations: [
+            {
+              id: '0xdef456',
+              attester: '0xcoinbase',
+              recipient: '0x1234567890123456789012345678901234567890',
+              schemaId: '0x1801901fabd0e6189356b4fb52bb0ab855276d84f7ec140839fbd1f6801ca065',
+              revoked: false,
+              time: Math.floor(Date.now() / 1000) - 3600,
+              expirationTime: 0,
+              data: '0x',
+            },
+          ],
+        },
+      }),
+    })
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890', attestation_type: 'verified_country' },
+      {}
+    )
+
+    expect(result.success).toBe(true)
+    expect(result.verification_level).toBe('verified_country')
+  })
+
+  it('should reject when no attestation found', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: {
+          attestations: [],
+        },
+      }),
+    })
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('No valid Coinbase')
+  })
+
+  it('should reject revoked attestation by default', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: {
+          attestations: [
+            {
+              id: '0xabc123',
+              attester: '0xcoinbase',
+              recipient: '0x1234567890123456789012345678901234567890',
+              schemaId: '0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9',
+              revoked: true,
+              time: Math.floor(Date.now() / 1000) - 3600,
+              expirationTime: 0,
+              data: '0x',
+            },
+          ],
+        },
+      }),
+    })
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+  })
+
+  it('should accept revoked attestation when allow_revoked is true', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: {
+          attestations: [
+            {
+              id: '0xabc123',
+              attester: '0xcoinbase',
+              recipient: '0x1234567890123456789012345678901234567890',
+              schemaId: '0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9',
+              revoked: true,
+              time: Math.floor(Date.now() / 1000) - 3600,
+              expirationTime: 0,
+              data: '0x',
+            },
+          ],
+        },
+      }),
+    })
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      { allow_revoked: true }
+    )
+
+    expect(result.success).toBe(true)
+  })
+
+  it('should reject expired attestation', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: {
+          attestations: [
+            {
+              id: '0xabc123',
+              attester: '0xcoinbase',
+              recipient: '0x1234567890123456789012345678901234567890',
+              schemaId: '0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9',
+              revoked: false,
+              time: Math.floor(Date.now() / 1000) - 3600,
+              expirationTime: Math.floor(Date.now() / 1000) - 60, // Expired 60 seconds ago
+              data: '0x',
+            },
+          ],
+        },
+      }),
+    })
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+  })
+
+  it('should check multiple required attestations', async () => {
+    // First call for verified_account
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: {
+          attestations: [
+            {
+              id: '0xabc123',
+              attester: '0xcoinbase',
+              recipient: '0x1234567890123456789012345678901234567890',
+              schemaId: '0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9',
+              revoked: false,
+              time: Math.floor(Date.now() / 1000),
+              expirationTime: 0,
+              data: '0x',
+            },
+          ],
+        },
+      }),
+    })
+    // Second call for verified_country
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: {
+          attestations: [
+            {
+              id: '0xdef456',
+              attester: '0xcoinbase',
+              recipient: '0x1234567890123456789012345678901234567890',
+              schemaId: '0x1801901fabd0e6189356b4fb52bb0ab855276d84f7ec140839fbd1f6801ca065',
+              revoked: false,
+              time: Math.floor(Date.now() / 1000),
+              expirationTime: 0,
+              data: '0x',
+            },
+          ],
+        },
+      }),
+    })
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      { required_attestations: ['verified_account', 'verified_country'] }
+    )
+
+    expect(result.success).toBe(true)
+    expect(result.verification_level).toBe('verified_country')
+  })
+
+  it('should fail when missing required attestation', async () => {
+    // First call for verified_account - found
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: {
+          attestations: [
+            {
+              id: '0xabc123',
+              attester: '0xcoinbase',
+              recipient: '0x1234567890123456789012345678901234567890',
+              schemaId: '0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9',
+              revoked: false,
+              time: Math.floor(Date.now() / 1000),
+              expirationTime: 0,
+              data: '0x',
+            },
+          ],
+        },
+      }),
+    })
+    // Second call for verified_country - not found
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: {
+          attestations: [],
+        },
+      }),
+    })
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      { required_attestations: ['verified_account', 'verified_country'] }
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Missing required attestations')
+    expect(result.error).toContain('verified_country')
+  })
+
+  it('should require address', async () => {
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: '' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toBe('Address is required')
+  })
+
+  it('should reject invalid address format', async () => {
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: 'invalid-address' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toBe('Invalid Ethereum address format')
+  })
+
+  it('should handle GraphQL error response', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        errors: [{ message: 'Invalid query' }],
+      }),
+    })
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('EAS GraphQL error')
+    expect(result.error).toContain('Invalid query')
+  })
+
+  it('should handle HTTP error', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 500,
+      text: async () => 'Internal Server Error',
+    })
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('EAS GraphQL error')
+    expect(result.error).toContain('500')
+  })
+
+  it('should handle network error', async () => {
+    mockFetch.mockRejectedValueOnce(new Error('Network failed'))
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Coinbase Verifications check failed')
+    expect(result.error).toContain('Network failed')
+  })
+
+  it('should handle non-Error thrown', async () => {
+    mockFetch.mockRejectedValueOnce('String error')
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Unknown error')
+  })
+
+  it('should use custom GraphQL URL', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: {
+          attestations: [
+            {
+              id: '0xabc123',
+              attester: '0xcoinbase',
+              recipient: '0x1234567890123456789012345678901234567890',
+              schemaId: '0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9',
+              revoked: false,
+              time: Math.floor(Date.now() / 1000),
+              expirationTime: 0,
+              data: '0x',
+            },
+          ],
+        },
+      }),
+    })
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      { graphql_url: 'https://custom.graphql.io' }
+    )
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      'https://custom.graphql.io',
+      expect.any(Object)
+    )
+  })
+
+  it('should use default GraphQL URL when not specified', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: {
+          attestations: [
+            {
+              id: '0xabc123',
+              attester: '0xcoinbase',
+              recipient: '0x1234567890123456789012345678901234567890',
+              schemaId: '0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9',
+              revoked: false,
+              time: Math.floor(Date.now() / 1000),
+              expirationTime: 0,
+              data: '0x',
+            },
+          ],
+        },
+      }),
+    })
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      'https://base.easscan.org/graphql',
+      expect.any(Object)
+    )
+  })
+
+  it('toHumanProof should create valid proof', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        data: {
+          attestations: [
+            {
+              id: '0xabc123',
+              attester: '0xcoinbase',
+              recipient: '0x1234567890123456789012345678901234567890',
+              schemaId: '0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9',
+              revoked: false,
+              time: Math.floor(Date.now() / 1000),
+              expirationTime: 0,
+              data: '0x',
+            },
+          ],
+        },
+      }),
+    })
+
+    const verifier = new CoinbaseVerificationsVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    const humanProof = verifier.toHumanProof(result, 'test_signal')
+
+    expect(humanProof.method).toBe(POP_PROVIDERS.COINBASE_VERIFICATIONS)
+    expect(humanProof.signal).toBe('test_signal')
+    expect(humanProof.nullifier_hash).toBeTruthy()
+    expect(humanProof.verification_level).toBe('verified_account')
   })
 })

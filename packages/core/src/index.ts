@@ -59,12 +59,27 @@ export type {
   PoHStatus,
   ProofOfHumanityProofData,
   ProofOfHumanityConfig,
+  // Holonym
+  HolonymCredentialType,
+  HolonymChain,
+  HolonymProofData,
+  HolonymConfig,
+  // Idena
+  IdenaIdentityState,
+  IdenaProofData,
+  IdenaConfig,
+  // Coinbase Verifications
+  CoinbaseVerificationType,
+  CoinbaseVerificationsProofData,
+  CoinbaseVerificationsConfig,
   // Provider utilities
   ProviderFeatures,
 } from './providers'
 
 export {
   GITCOIN_PASSPORT_THRESHOLDS,
+  IDENA_STATE_LEVELS,
+  COINBASE_SCHEMA_IDS,
   getProviderName,
   getProviderDocsUrl,
   isKnownProvider,
@@ -119,4 +134,7 @@ export {
   BrightIDVerifier,
   CivicVerifier,
   ProofOfHumanityVerifier,
+  HolonymVerifier,
+  IdenaVerifier,
+  CoinbaseVerificationsVerifier,
 } from './verification'

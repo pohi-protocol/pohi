@@ -19735,10 +19735,10 @@ Support boolean input list: \`true | True | TRUE | false | False | FALSE\``);
       (0, command_1.issueCommand)("error", (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
     }
     exports2.error = error2;
-    function warning2(message, properties = {}) {
+    function warning3(message, properties = {}) {
       (0, command_1.issueCommand)("warning", (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
     }
-    exports2.warning = warning2;
+    exports2.warning = warning3;
     function notice(message, properties = {}) {
       (0, command_1.issueCommand)("notice", (0, utils_1.toCommandProperties)(properties), message instanceof Error ? message.toString() : message);
     }
@@ -23925,7 +23925,69 @@ async function createFailureStatus(octokit, owner, repo, sha, reason) {
   });
   core.info(`Updated status to failure: ${reason}`);
 }
+async function findPRByCommit(octokit, owner, repo, sha) {
+  try {
+    const { data: prs } = await octokit.rest.repos.listPullRequestsAssociatedWithCommit({
+      owner,
+      repo,
+      commit_sha: sha
+    });
+    const openPR = prs.find((pr) => pr.state === "open");
+    return openPR?.number ?? prs[0]?.number ?? null;
+  } catch (error2) {
+    core.warning(`Failed to find PR by commit: ${error2}`);
+    return null;
+  }
+}
+async function findExistingPohiComment(octokit, owner, repo, prNumber) {
+  try {
+    const { data: comments } = await octokit.rest.issues.listComments({
+      owner,
+      repo,
+      issue_number: prNumber,
+      per_page: 100
+    });
+    const pohiComment = comments.find(
+      (c) => c.body?.includes("Human Approval Required") || c.body?.includes("Human Approval Verified") || c.body?.includes("Approve with World ID")
+    );
+    return pohiComment?.id ?? null;
+  } catch (error2) {
+    core.warning(`Failed to find existing PoHI comment: ${error2}`);
+    return null;
+  }
+}
 async function createApprovalComment(octokit, owner, repo, sha, approvalUrl) {
+  const shortSha = sha.slice(0, 7);
+  const prNumber = await findPRByCommit(octokit, owner, repo, sha);
+  if (prNumber) {
+    const existingCommentId = await findExistingPohiComment(octokit, owner, repo, prNumber);
+    if (existingCommentId) {
+      core.info(`Found existing PoHI comment ${existingCommentId} on PR #${prNumber}`);
+      return existingCommentId;
+    }
+    const body2 = `## \u{1F50F} Human Approval Required
+
+This PR requires human verification before it can be merged.
+
+- **Repository:** \`${owner}/${repo}\`
+- **Commit:** \`${shortSha}\`
+- **PR:** #${prNumber}
+
+### \u{1F449} [Approve with World ID](${approvalUrl})
+
+Once approved, the attestation hash will be recorded on-chain.
+
+---
+_Powered by [PoHI Protocol](https://github.com/pohi-protocol/pohi) - Proof of Human Intent_`;
+    const response2 = await octokit.rest.issues.createComment({
+      owner,
+      repo,
+      issue_number: prNumber,
+      body: body2
+    });
+    core.info(`Created approval comment on PR #${prNumber}: ${response2.data.html_url}`);
+    return response2.data.id;
+  }
   const body = `## \u{1F510} Human Approval Required
 
 This commit requires human verification via World ID before proceeding.
@@ -23947,28 +24009,49 @@ This commit requires human verification via World ID before proceeding.
     commit_sha: sha,
     body
   });
-  core.info(`Created approval comment: ${response.data.html_url}`);
-  return response.data.id;
+  core.info(`Created approval comment on commit: ${response.data.html_url}`);
+  return -response.data.id;
 }
 async function updateCommentSuccess(octokit, owner, repo, commentId, attestationHash, nullifierHash) {
   const body = `## \u2705 Human Approval Verified
 
-This commit has been approved by a verified human via World ID.
+This PR has been approved by a verified human.
 
-### Attestation Details
-- **Hash:** \`${attestationHash}\`
-- **Nullifier:** \`${nullifierHash.slice(0, 20)}...\`
-- **Verified at:** ${(/* @__PURE__ */ new Date()).toISOString()}
+- **Provider:** World ID
+- **Approved at:** ${(/* @__PURE__ */ new Date()).toISOString()}
+- **Attestation Hash:** \`${attestationHash.slice(0, 16)}...\`
+
+### Verification Complete
+
+The attestation has been recorded. This commit can now be merged.
+
+<details>
+<summary>Attestation Details</summary>
+
+- **Full Hash:** \`${attestationHash}\`
+- **Nullifier:** \`${nullifierHash}\`
+
+</details>
 
 ---
-*Powered by [PoHI Protocol](https://github.com/pohi-protocol) - Proof of Human Intent*`;
-  await octokit.rest.repos.updateCommitComment({
-    owner,
-    repo,
-    comment_id: commentId,
-    body
-  });
-  core.info("Updated comment with success status");
+_Powered by [PoHI Protocol](https://github.com/pohi-protocol/pohi) - Proof of Human Intent_`;
+  if (commentId > 0) {
+    await octokit.rest.issues.updateComment({
+      owner,
+      repo,
+      comment_id: commentId,
+      body
+    });
+    core.info("Updated PR comment with success status");
+  } else {
+    await octokit.rest.repos.updateCommitComment({
+      owner,
+      repo,
+      comment_id: Math.abs(commentId),
+      body
+    });
+    core.info("Updated commit comment with success status");
+  }
 }
 async function updateCommentTimeout(octokit, owner, repo, commentId, timeoutMinutes) {
   const body = `## \u274C Human Approval Timed Out
@@ -23980,14 +24063,24 @@ No approval was received within ${timeoutMinutes} minutes.
 - Ensure you have access to a World ID verified account
 
 ---
-*Powered by [PoHI Protocol](https://github.com/pohi-protocol) - Proof of Human Intent*`;
-  await octokit.rest.repos.updateCommitComment({
-    owner,
-    repo,
-    comment_id: commentId,
-    body
-  });
-  core.info("Updated comment with timeout status");
+_Powered by [PoHI Protocol](https://github.com/pohi-protocol/pohi) - Proof of Human Intent_`;
+  if (commentId > 0) {
+    await octokit.rest.issues.updateComment({
+      owner,
+      repo,
+      comment_id: commentId,
+      body
+    });
+    core.info("Updated PR comment with timeout status");
+  } else {
+    await octokit.rest.repos.updateCommitComment({
+      owner,
+      repo,
+      comment_id: Math.abs(commentId),
+      body
+    });
+    core.info("Updated commit comment with timeout status");
+  }
 }
 
 // src/index.ts
