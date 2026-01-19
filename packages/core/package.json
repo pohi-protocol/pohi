@@ -1,6 +1,6 @@
 {
   "name": "pohi-core",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Core library for Proof of Human Intent - Chain-neutral types and validation",
   "author": "Ikko Eltociear Ashimine",
   "keywords": [

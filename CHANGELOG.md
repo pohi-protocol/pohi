@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-01-20
+
+### Added
+- **4 new PoP providers** for expanded verification options:
+  - **Holonym**: ZK identity verification with government ID and ePassport support
+  - **Idena**: AI-resistant CAPTCHA through decentralized validation ceremonies
+  - **Coinbase Verifications**: KYC attestation via Ethereum Attestation Service (EAS) on Base
+  - **Humanity Protocol**: Palm-based biometric verification
+- Comprehensive test coverage for all new providers
+- Complete provider documentation in `docs/providers.md`
+- ESLint 9 configuration with flat config format
+
+### Changed
+- Updated README with all 9 supported PoP providers
+- Updated Japanese README (README_ja.md) with new providers
+- Improved code formatting across all packages
+
 ## [0.2.0] - 2026-01-10
 
 ### Added
@@ -102,9 +119,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Version | Date | Description |
 |---------|------|-------------|
+| 0.3.0 | 2026-01-20 | 4 new PoP providers (Holonym, Idena, Coinbase, Humanity Protocol) |
 | 0.2.0 | 2026-01-10 | E2E tests, TypeDoc, Japanese README, ePrint submission |
 | 0.1.0 | 2026-01-06 | Initial release with core functionality |
 
-[Unreleased]: https://github.com/pohi-protocol/pohi/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/pohi-protocol/pohi/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/pohi-protocol/pohi/releases/tag/v0.3.0
 [0.2.0]: https://github.com/pohi-protocol/pohi/releases/tag/v0.2.0
 [0.1.0]: https://github.com/pohi-protocol/pohi/releases/tag/v0.1.0

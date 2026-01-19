@@ -1,6 +1,6 @@
 {
   "name": "pohi-contracts",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Smart contracts for Proof of Human Intent on World Chain",
   "scripts": {
     "build": "forge build",
