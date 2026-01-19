@@ -8,6 +8,7 @@ import { ProofOfHumanityVerifier } from './proof-of-humanity'
 import { HolonymVerifier } from './holonym'
 import { IdenaVerifier } from './idena'
 import { CoinbaseVerificationsVerifier } from './coinbase-verifications'
+import { HumanityProtocolVerifier } from './humanity-protocol'
 
 // Mock fetch globally
 const mockFetch = vi.fn()
@@ -1873,5 +1874,193 @@ describe('CoinbaseVerificationsVerifier', () => {
     expect(humanProof.signal).toBe('test_signal')
     expect(humanProof.nullifier_hash).toBeTruthy()
     expect(humanProof.verification_level).toBe('verified_account')
+  })
+})
+
+describe('HumanityProtocolVerifier', () => {
+  beforeEach(() => {
+    mockFetch.mockClear()
+  })
+
+  it('should verify a human-verified address', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ isHuman: true }),
+    })
+
+    const verifier = new HumanityProtocolVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(true)
+    expect(result.provider).toBe(POP_PROVIDERS.HUMANITY_PROTOCOL)
+    expect(result.verification_level).toBe('palm_verified')
+    expect(result.unique_id).toBe('0x1234567890123456789012345678901234567890')
+  })
+
+  it('should reject non-verified address', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ isHuman: false }),
+    })
+
+    const verifier = new HumanityProtocolVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('not completed Humanity Protocol palm verification')
+  })
+
+  it('should require address', async () => {
+    const verifier = new HumanityProtocolVerifier()
+    const result = await verifier.verify({ address: '' }, {})
+
+    expect(result.success).toBe(false)
+    expect(result.error).toBe('Address is required')
+  })
+
+  it('should reject invalid address format', async () => {
+    const verifier = new HumanityProtocolVerifier()
+    const result = await verifier.verify({ address: 'invalid-address' }, {})
+
+    expect(result.success).toBe(false)
+    expect(result.error).toBe('Invalid Ethereum address format')
+  })
+
+  it('should handle API error response', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ isHuman: false, error: 'User not found' }),
+    })
+
+    const verifier = new HumanityProtocolVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Humanity Protocol verification error')
+    expect(result.error).toContain('User not found')
+  })
+
+  it('should handle HTTP error', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      status: 500,
+      text: async () => 'Internal Server Error',
+    })
+
+    const verifier = new HumanityProtocolVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Humanity Protocol API error')
+    expect(result.error).toContain('500')
+  })
+
+  it('should handle network error', async () => {
+    mockFetch.mockRejectedValueOnce(new Error('Network failed'))
+
+    const verifier = new HumanityProtocolVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Humanity Protocol verification failed')
+    expect(result.error).toContain('Network failed')
+  })
+
+  it('should handle non-Error thrown', async () => {
+    mockFetch.mockRejectedValueOnce('String error')
+
+    const verifier = new HumanityProtocolVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Unknown error')
+  })
+
+  it('should use custom API URL', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ isHuman: true }),
+    })
+
+    const verifier = new HumanityProtocolVerifier()
+    await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      { api_url: 'https://custom.api.io' }
+    )
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      'https://custom.api.io/v1/identity/0x1234567890123456789012345678901234567890'
+    )
+  })
+
+  it('should use default API URL when not specified', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ isHuman: true }),
+    })
+
+    const verifier = new HumanityProtocolVerifier()
+    await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      'https://issuer.humanity.org/v1/identity/0x1234567890123456789012345678901234567890'
+    )
+  })
+
+  it('should normalize address to lowercase', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ isHuman: true }),
+    })
+
+    const verifier = new HumanityProtocolVerifier()
+    const result = await verifier.verify(
+      { address: '0xABCDEF1234567890123456789012345678901234' },
+      {}
+    )
+
+    expect(result.success).toBe(true)
+    expect(result.unique_id).toBe('0xabcdef1234567890123456789012345678901234')
+  })
+
+  it('toHumanProof should create valid proof', async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ isHuman: true }),
+    })
+
+    const verifier = new HumanityProtocolVerifier()
+    const result = await verifier.verify(
+      { address: '0x1234567890123456789012345678901234567890' },
+      {}
+    )
+
+    const humanProof = verifier.toHumanProof(result, 'test_signal')
+
+    expect(humanProof.method).toBe(POP_PROVIDERS.HUMANITY_PROTOCOL)
+    expect(humanProof.signal).toBe('test_signal')
+    expect(humanProof.nullifier_hash).toBeTruthy()
+    expect(humanProof.verification_level).toBe('palm_verified')
   })
 })
