@@ -40,7 +40,9 @@ describe('getProviderDocsUrl', () => {
   })
 
   it('should return docs URL for Gitcoin Passport', () => {
-    expect(getProviderDocsUrl(POP_PROVIDERS.GITCOIN_PASSPORT)).toBe('https://docs.passport.gitcoin.co')
+    expect(getProviderDocsUrl(POP_PROVIDERS.GITCOIN_PASSPORT)).toBe(
+      'https://docs.passport.gitcoin.co'
+    )
   })
 
   it('should return empty string for unknown provider', () => {

@@ -47,7 +47,7 @@ export async function createPendingStatus(
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${config.token}`,
+      Authorization: `Bearer ${config.token}`,
     },
     body: JSON.stringify({
       state: 'INPROGRESS',
@@ -80,7 +80,7 @@ export async function createSuccessStatus(
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${config.token}`,
+      Authorization: `Bearer ${config.token}`,
     },
     body: JSON.stringify({
       state: 'SUCCESSFUL',
@@ -112,7 +112,7 @@ export async function createFailureStatus(
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${config.token}`,
+      Authorization: `Bearer ${config.token}`,
     },
     body: JSON.stringify({
       state: 'FAILED',
@@ -160,7 +160,7 @@ This pull request requires human verification via World ID before proceeding.
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${config.token}`,
+      Authorization: `Bearer ${config.token}`,
     },
     body: JSON.stringify({
       content: { raw: body },
@@ -205,7 +205,7 @@ This pull request has been approved by a verified human via World ID.
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${config.token}`,
+      Authorization: `Bearer ${config.token}`,
     },
     body: JSON.stringify({
       content: { raw: body },
@@ -246,7 +246,7 @@ No approval was received within ${timeoutMinutes} minutes.
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${config.token}`,
+      Authorization: `Bearer ${config.token}`,
     },
     body: JSON.stringify({
       content: { raw: body },

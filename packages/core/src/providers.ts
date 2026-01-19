@@ -301,10 +301,7 @@ export const IDENA_STATE_LEVELS: Record<IdenaIdentityState, number> = {
 /**
  * Coinbase Verifications attestation types
  */
-export type CoinbaseVerificationType =
-  | 'verified_account'
-  | 'verified_country'
-  | 'coinbase_one'
+export type CoinbaseVerificationType = 'verified_account' | 'verified_country' | 'coinbase_one'
 
 /**
  * Coinbase Verifications schema IDs on Base
@@ -488,11 +485,13 @@ export function getProviderFeatures(provider: string): ProviderFeatures {
       onchain_verification: true,
     },
   }
-  return features[provider] || {
-    zk_proofs: false,
-    sybil_resistance: 1,
-    requires_hardware: false,
-    global_availability: true,
-    onchain_verification: false,
-  }
+  return (
+    features[provider] || {
+      zk_proofs: false,
+      sybil_resistance: 1,
+      requires_hardware: false,
+      global_availability: true,
+      onchain_verification: false,
+    }
+  )
 }

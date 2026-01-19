@@ -50,9 +50,7 @@ function getVerificationLevel(credentialType: HolonymCredentialType): string {
 /**
  * Holonym verifier implementation
  */
-export class HolonymVerifier
-  implements ProviderVerifier<HolonymProofData, HolonymConfig>
-{
+export class HolonymVerifier implements ProviderVerifier<HolonymProofData, HolonymConfig> {
   readonly provider = POP_PROVIDERS.HOLONYM
 
   /**
@@ -61,10 +59,7 @@ export class HolonymVerifier
    * @param proof - Proof data containing the Ethereum address and credential type
    * @param config - Configuration with chain and action ID
    */
-  async verify(
-    proof: HolonymProofData,
-    config: HolonymConfig = {}
-  ): Promise<VerificationResult> {
+  async verify(proof: HolonymProofData, config: HolonymConfig = {}): Promise<VerificationResult> {
     const { address, credential_type } = proof
     const chain = proof.chain || config.chain || DEFAULT_CHAIN
     const actionId = proof.action_id || config.action_id || DEFAULT_ACTION_ID
@@ -143,7 +138,8 @@ export class HolonymVerifier
           provider: this.provider,
           unique_id: address.toLowerCase(),
           verification_level: getVerificationLevel(credential_type),
-          error: 'User has not completed Holonym verification or has already submitted a proof for this action',
+          error:
+            'User has not completed Holonym verification or has already submitted a proof for this action',
           raw_data: {
             address: address.toLowerCase(),
             credential_type,

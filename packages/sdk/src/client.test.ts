@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { PoHIClient, type PoHIClientConfig } from './client'
 import { worldChain, worldChainSepolia } from './chains'
 import type { HumanApprovalAttestation } from 'pohi-core'
@@ -126,23 +126,21 @@ describe('PoHIClient', () => {
         timestamp: new Date().toISOString(),
       }
 
-      await expect(client.recordAttestation(attestation)).rejects.toThrow(
-        'Wallet not configured'
-      )
+      await expect(client.recordAttestation(attestation)).rejects.toThrow('Wallet not configured')
     })
 
     it('revokeAttestation should throw when wallet not configured', async () => {
       const client = new PoHIClient({ network: 'sepolia' })
 
       await expect(
-        client.revokeAttestation('0x' + '0'.repeat(64) as `0x${string}`, 'test reason')
+        client.revokeAttestation(('0x' + '0'.repeat(64)) as `0x${string}`, 'test reason')
       ).rejects.toThrow('Wallet not configured')
     })
   })
 
   describe('client with wallet configured', () => {
     let clientWithWallet: PoHIClient
-    const testPrivateKey = '0x' + 'a'.repeat(64) as `0x${string}`
+    const testPrivateKey = ('0x' + 'a'.repeat(64)) as `0x${string}`
 
     beforeEach(() => {
       clientWithWallet = new PoHIClient({
@@ -154,7 +152,9 @@ describe('PoHIClient', () => {
 
     it('should create client with wallet when privateKey is provided', () => {
       expect(clientWithWallet.getChain()).toBe(worldChainSepolia)
-      expect(clientWithWallet.getContractAddress()).toBe('0x1234567890123456789012345678901234567890')
+      expect(clientWithWallet.getContractAddress()).toBe(
+        '0x1234567890123456789012345678901234567890'
+      )
     })
 
     it('recordAttestation should call writeContract', async () => {
@@ -206,16 +206,19 @@ describe('PoHIClient', () => {
         contractAddress: '0x1234567890123456789012345678901234567890',
       })
 
-      const txHash = await client.revokeAttestation('0x' + '0'.repeat(64) as `0x${string}`, 'test reason')
+      const txHash = await client.revokeAttestation(
+        ('0x' + '0'.repeat(64)) as `0x${string}`,
+        'test reason'
+      )
       expect(txHash).toBe('0x' + 'e'.repeat(64))
     })
   })
 
   describe('read operations', () => {
-    let client: PoHIClient
+    let _client: PoHIClient
 
     beforeEach(() => {
-      client = new PoHIClient({
+      _client = new PoHIClient({
         network: 'sepolia',
         contractAddress: '0x1234567890123456789012345678901234567890',
       })
@@ -244,7 +247,7 @@ describe('PoHIClient', () => {
         contractAddress: '0x1234567890123456789012345678901234567890',
       })
 
-      const result = await newClient.getAttestation('0x' + 'a'.repeat(64) as `0x${string}`)
+      const result = await newClient.getAttestation(('0x' + 'a'.repeat(64)) as `0x${string}`)
 
       expect(result.attestationHash).toBe(mockAttestation.attestationHash)
       expect(result.repository).toBe('owner/repo')
@@ -265,16 +268,13 @@ describe('PoHIClient', () => {
         contractAddress: '0x1234567890123456789012345678901234567890',
       })
 
-      const isValid = await newClient.isValidAttestation('0x' + 'a'.repeat(64) as `0x${string}`)
+      const isValid = await newClient.isValidAttestation(('0x' + 'a'.repeat(64)) as `0x${string}`)
       expect(isValid).toBe(true)
     })
 
     it('getAttestationsForCommit should return array of hashes', async () => {
       const { createPublicClient } = await import('viem')
-      const mockHashes = [
-        '0x' + 'a'.repeat(64),
-        '0x' + 'b'.repeat(64),
-      ] as readonly `0x${string}`[]
+      const mockHashes = ['0x' + 'a'.repeat(64), '0x' + 'b'.repeat(64)] as readonly `0x${string}`[]
       const mockReadContract = vi.fn().mockResolvedValue(mockHashes)
       vi.mocked(createPublicClient).mockReturnValue({
         readContract: mockReadContract,
@@ -338,7 +338,9 @@ describe('PoHIClient', () => {
         contractAddress: '0x1234567890123456789012345678901234567890',
       })
 
-      const hashes = await newClient.getAttestationsForNullifier('0x' + 'c'.repeat(64) as `0x${string}`)
+      const hashes = await newClient.getAttestationsForNullifier(
+        ('0x' + 'c'.repeat(64)) as `0x${string}`
+      )
       expect(hashes).toHaveLength(1)
     })
 
@@ -355,7 +357,7 @@ describe('PoHIClient', () => {
         contractAddress: '0x1234567890123456789012345678901234567890',
       })
 
-      await newClient.waitForTransaction('0x' + 'f'.repeat(64) as `0x${string}`)
+      await newClient.waitForTransaction(('0x' + 'f'.repeat(64)) as `0x${string}`)
       expect(mockWaitForReceipt).toHaveBeenCalledWith({ hash: '0x' + 'f'.repeat(64) })
     })
   })

@@ -76,9 +76,10 @@ function getVerificationLevel(types: CoinbaseVerificationType[]): string {
 /**
  * Coinbase Verifications verifier implementation
  */
-export class CoinbaseVerificationsVerifier
-  implements ProviderVerifier<CoinbaseVerificationsProofData, CoinbaseVerificationsConfig>
-{
+export class CoinbaseVerificationsVerifier implements ProviderVerifier<
+  CoinbaseVerificationsProofData,
+  CoinbaseVerificationsConfig
+> {
   readonly provider = POP_PROVIDERS.COINBASE_VERIFICATIONS
 
   /**
@@ -213,7 +214,8 @@ export class CoinbaseVerificationsVerifier
             success: false,
             provider: this.provider,
             unique_id: address.toLowerCase(),
-            verification_level: foundTypes.length > 0 ? getVerificationLevel(foundTypes) : undefined,
+            verification_level:
+              foundTypes.length > 0 ? getVerificationLevel(foundTypes) : undefined,
             error: `Missing required attestations: ${missingTypes.join(', ')}`,
             raw_data: {
               address: address.toLowerCase(),

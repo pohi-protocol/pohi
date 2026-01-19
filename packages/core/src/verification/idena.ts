@@ -78,9 +78,7 @@ function getVerificationLevel(state: IdenaIdentityState): string {
 /**
  * Idena verifier implementation
  */
-export class IdenaVerifier
-  implements ProviderVerifier<IdenaProofData, IdenaConfig>
-{
+export class IdenaVerifier implements ProviderVerifier<IdenaProofData, IdenaConfig> {
   readonly provider = POP_PROVIDERS.IDENA
 
   /**
@@ -89,10 +87,7 @@ export class IdenaVerifier
    * @param proof - Proof data containing the Idena address
    * @param config - Configuration with RPC URL and minimum state
    */
-  async verify(
-    proof: IdenaProofData,
-    config: IdenaConfig = {}
-  ): Promise<VerificationResult> {
+  async verify(proof: IdenaProofData, config: IdenaConfig = {}): Promise<VerificationResult> {
     const { address } = proof
     const rpcUrl = config.rpc_url || DEFAULT_RPC_URL
     const minState = config.min_state || DEFAULT_MIN_STATE

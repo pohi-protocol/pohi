@@ -29,11 +29,17 @@ export function success(message: string, data?: Record<string, unknown>): void {
 
 export function error(message: string, err?: Error | unknown): void {
   if (outputJson) {
-    console.log(JSON.stringify({
-      success: false,
-      error: message,
-      details: err instanceof Error ? err.message : String(err),
-    }, null, 2))
+    console.log(
+      JSON.stringify(
+        {
+          success: false,
+          error: message,
+          details: err instanceof Error ? err.message : String(err),
+        },
+        null,
+        2
+      )
+    )
   } else {
     console.error(chalk.red('✗') + ' ' + message)
     if (err) {
@@ -96,7 +102,9 @@ export function outputAttestation(attestation: Record<string, unknown>): void {
     if (attestation.human_proof && typeof attestation.human_proof === 'object') {
       const proof = attestation.human_proof as Record<string, unknown>
       console.log(chalk.gray('Verification:      ') + proof.verification_level)
-      console.log(chalk.gray('Nullifier:         ') + String(proof.nullifier_hash).slice(0, 20) + '...')
+      console.log(
+        chalk.gray('Nullifier:         ') + String(proof.nullifier_hash).slice(0, 20) + '...'
+      )
     }
     if (attestation.timestamp) {
       console.log(chalk.gray('Timestamp:         ') + attestation.timestamp)

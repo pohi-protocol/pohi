@@ -42,7 +42,7 @@ async function checkStatus(statusUrl: string): Promise<StatusResponse> {
 }
 
 function sleep(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms))
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 async function run(): Promise<void> {
@@ -136,7 +136,13 @@ async function run(): Promise<void> {
       core.error(`Timed out waiting for approval after ${timeoutMinutes} minutes`)
 
       if (octokit) {
-        await createFailureStatus(octokit, owner, repo, sha, `Timed out after ${timeoutMinutes} minutes`)
+        await createFailureStatus(
+          octokit,
+          owner,
+          repo,
+          sha,
+          `Timed out after ${timeoutMinutes} minutes`
+        )
         if (commentId) {
           await updateCommentTimeout(octokit, owner, repo, commentId, timeoutMinutes)
         }
@@ -175,7 +181,6 @@ async function run(): Promise<void> {
     core.info(`Nullifier Hash: ${attestation.human_proof.nullifier_hash}`)
     core.info(`Verified At: ${attestation.timestamp}`)
     core.info('━'.repeat(60))
-
   } catch (error) {
     if (error instanceof Error) {
       core.setFailed(error.message)

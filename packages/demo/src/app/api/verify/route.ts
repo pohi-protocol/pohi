@@ -125,10 +125,7 @@ export async function POST(request: NextRequest) {
 
     // Validate subject
     if (!subject) {
-      return NextResponse.json(
-        { success: false, error: 'Subject is required' },
-        { status: 400 }
-      )
+      return NextResponse.json({ success: false, error: 'Subject is required' }, { status: 400 })
     }
 
     // Check if this commit is already approved (prevent re-verification)
@@ -211,9 +208,6 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     console.error('Verification error:', error)
-    return NextResponse.json(
-      { success: false, error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 })
   }
 }

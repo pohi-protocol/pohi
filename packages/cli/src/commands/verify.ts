@@ -1,8 +1,16 @@
 import { Command } from 'commander'
 import { readFileSync } from 'fs'
-import { validateAttestation, isValidAttestation as checkAttestation, computeAttestationHash } from 'pohi-core'
+import { validateAttestation, computeAttestationHash } from 'pohi-core'
 import { getConfigWithEnv } from '../utils/config.js'
-import { success, error, info, header, outputAttestation, isJsonOutput, log } from '../utils/output.js'
+import {
+  success,
+  error,
+  info,
+  header,
+  outputAttestation,
+  isJsonOutput,
+  log,
+} from '../utils/output.js'
 
 interface VerifyOptions {
   file?: string
@@ -64,7 +72,7 @@ async function verifyFromFile(filePath: string, onchain?: boolean, network?: str
     const validationResult = validateAttestation(attestation)
     if (!validationResult.valid) {
       error('Invalid attestation structure')
-      validationResult.errors.forEach(e => info(`  - ${e}`))
+      validationResult.errors.forEach((e) => info(`  - ${e}`))
       process.exit(1)
     }
 
@@ -82,7 +90,9 @@ async function verifyFromFile(filePath: string, onchain?: boolean, network?: str
 
     // Check on-chain if requested
     if (onchain && attestation.attestation_hash) {
-      const networkToUse = (network || getConfigWithEnv('network', 'POHI_NETWORK') || 'sepolia') as 'mainnet' | 'sepolia'
+      const networkToUse = (network || getConfigWithEnv('network', 'POHI_NETWORK') || 'sepolia') as
+        | 'mainnet'
+        | 'sepolia'
 
       info(`Checking on-chain status on ${networkToUse}...`)
 
@@ -100,7 +110,6 @@ async function verifyFromFile(filePath: string, onchain?: boolean, network?: str
 
     outputAttestation(attestation)
     success('Attestation is valid')
-
   } catch (err) {
     if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
       error(`File not found: ${filePath}`)
@@ -114,7 +123,9 @@ async function verifyFromFile(filePath: string, onchain?: boolean, network?: str
 }
 
 async function verifyFromHash(hash: string, network?: string) {
-  const networkToUse = (network || getConfigWithEnv('network', 'POHI_NETWORK') || 'sepolia') as 'mainnet' | 'sepolia'
+  const networkToUse = (network || getConfigWithEnv('network', 'POHI_NETWORK') || 'sepolia') as
+    | 'mainnet'
+    | 'sepolia'
 
   if (!isJsonOutput()) {
     header('Verifying Attestation On-Chain')
@@ -144,7 +155,6 @@ async function verifyFromHash(hash: string, network?: string) {
       timestamp: new Date(Number(onChainData.timestamp) * 1000).toISOString(),
       recorder: onChainData.recorder,
     })
-
   } catch (err) {
     error('On-chain verification failed', err)
     process.exit(1)
@@ -152,7 +162,9 @@ async function verifyFromHash(hash: string, network?: string) {
 }
 
 async function verifyFromCommit(repo: string, commit: string, network?: string) {
-  const networkToUse = (network || getConfigWithEnv('network', 'POHI_NETWORK') || 'sepolia') as 'mainnet' | 'sepolia'
+  const networkToUse = (network || getConfigWithEnv('network', 'POHI_NETWORK') || 'sepolia') as
+    | 'mainnet'
+    | 'sepolia'
 
   if (!isJsonOutput()) {
     header('Verifying Commit Attestations')
@@ -197,7 +209,6 @@ async function verifyFromCommit(repo: string, commit: string, network?: string) 
         }
       }
     }
-
   } catch (err) {
     error('Verification failed', err)
     process.exit(1)

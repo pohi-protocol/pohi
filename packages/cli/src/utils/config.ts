@@ -65,7 +65,10 @@ export function getConfigPath(): string {
 /**
  * Get a config value with environment variable fallback
  */
-export function getConfigWithEnv<K extends keyof PoHIConfig>(key: K, envVar: string): PoHIConfig[K] | undefined {
+export function getConfigWithEnv<K extends keyof PoHIConfig>(
+  key: K,
+  envVar: string
+): PoHIConfig[K] | undefined {
   const envValue = process.env[envVar]
   if (envValue) {
     return envValue as PoHIConfig[K]

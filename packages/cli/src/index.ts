@@ -28,7 +28,9 @@ program.addCommand(verifyCommand)
 program.addCommand(statusCommand)
 
 // Examples in help
-program.addHelpText('after', `
+program.addHelpText(
+  'after',
+  `
 
 Examples:
   # Configure CLI
@@ -60,6 +62,7 @@ Environment Variables:
   POHI_ACTION         World ID Action name
   POHI_NETWORK        Chain network (mainnet/sepolia)
   POHI_PRIVATE_KEY    Private key for on-chain operations
-`)
+`
+)
 
 program.parse()

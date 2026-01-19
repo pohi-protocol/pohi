@@ -43,9 +43,7 @@ function getHighestLevel(verifications: string[]): string {
 /**
  * Civic verifier implementation
  */
-export class CivicVerifier
-  implements ProviderVerifier<CivicProofData, CivicConfig>
-{
+export class CivicVerifier implements ProviderVerifier<CivicProofData, CivicConfig> {
   readonly provider = POP_PROVIDERS.CIVIC
 
   /**
@@ -54,10 +52,7 @@ export class CivicVerifier
    * @param proof - Proof data containing gateway token info
    * @param config - Configuration with gatekeeper network
    */
-  async verify(
-    proof: CivicProofData,
-    config: CivicConfig
-  ): Promise<VerificationResult> {
+  async verify(proof: CivicProofData, config: CivicConfig): Promise<VerificationResult> {
     const { user_id, gateway_token, verifications, expiration } = proof
     const { gatekeeper_network, required_verifications = [] } = config
 

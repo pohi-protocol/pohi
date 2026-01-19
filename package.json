@@ -10,7 +10,7 @@
     "build": "npm run build --workspaces --if-present",
     "dev": "npm run dev -w pohi-demo",
     "test": "npm run test --workspaces --if-present",
-    "lint": "npm run lint --workspaces --if-present",
+    "lint": "eslint \"packages/*/src/**/*.ts\"",
     "format": "prettier --write \"packages/*/src/**/*.{ts,tsx,js,jsx,json}\"",
     "format:check": "prettier --check \"packages/*/src/**/*.{ts,tsx,js,jsx,json}\"",
     "prepare": "husky"
@@ -22,10 +22,13 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@vitest/coverage-v8": "^4.0.17",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
     "husky": "^9.1.0",
     "lint-staged": "^15.2.0",
     "prettier": "^3.4.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.53.0"
   },
   "lint-staged": {
     "packages/*/src/**/*.{ts,tsx}": [

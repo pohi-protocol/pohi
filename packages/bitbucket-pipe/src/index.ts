@@ -64,7 +64,7 @@ async function checkStatus(statusUrl: string): Promise<StatusResponse> {
 }
 
 function sleep(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms))
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 function getEnv(name: string, required: boolean = false): string {
@@ -225,7 +225,6 @@ async function run(): Promise<void> {
     console.log(`Nullifier Hash: ${attestation.human_proof.nullifier_hash}`)
     console.log(`Verified At: ${attestation.timestamp}`)
     console.log('━'.repeat(60))
-
   } catch (error) {
     console.error('Error:', error instanceof Error ? error.message : error)
     process.exit(1)

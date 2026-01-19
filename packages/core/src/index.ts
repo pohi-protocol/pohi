@@ -32,10 +32,7 @@ export type {
 
 // ============ Constants ============
 
-export {
-  POP_PROVIDERS,
-  APPROVAL_ACTIONS,
-} from './types'
+export { POP_PROVIDERS, APPROVAL_ACTIONS } from './types'
 
 // ============ Provider Types ============
 
