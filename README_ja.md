@@ -69,11 +69,15 @@ PoHIは3つの質問に答えます：
 
 | プロバイダー | 検証タイプ | Sybil耐性 | ステータス |
 |-------------|-----------|-----------|-----------|
-| **World ID** | ZK証明（Orb/Device） | 高 | ✅ テスト済み (2026-01) |
-| **Gitcoin Passport** | Web3アイデンティティスコア | 中 | ✅ テスト済み (2025-12, スコア: 54.33) |
+| **World ID** | ZK証明（Orb/Device） | 高 | ✅ テスト済み |
+| **Gitcoin Passport** | Web3アイデンティティスコア | 中 | ✅ テスト済み |
 | **BrightID** | ソーシャルグラフ検証 | 中 | ✅ 実装済み |
 | **Civic** | Gateway Pass | 中 | ✅ 実装済み |
 | **Proof of Humanity** | Klerosレジストリ | 高 | ✅ 実装済み |
+| **Holonym** | ZKアイデンティティ（政府ID/eパスポート） | 高 | ✅ 実装済み |
+| **Idena** | AI耐性CAPTCHA | 高 | ✅ 実装済み |
+| **Coinbase Verifications** | KYC認証（EAS） | 高 | ✅ 実装済み |
+| **Humanity Protocol** | 手のひら生体認証 | 高 | ✅ 実装済み |
 
 > 📖 **[プロバイダードキュメント](./docs/providers.md)** - 各プロバイダーの設定、使用例、統合ガイド
 

@@ -69,11 +69,15 @@ PoHI answers three questions:
 
 | Provider | Verification Type | Sybil Resistance | Status |
 |----------|------------------|------------------|--------|
-| **World ID** | ZK proof (Orb/Device) | High | ✅ Tested (2026-01) |
-| **Gitcoin Passport** | Web3 identity score | Medium | ✅ Tested (2025-12, Score: 54.33) |
+| **World ID** | ZK proof (Orb/Device) | High | ✅ Tested |
+| **Gitcoin Passport** | Web3 identity score | Medium | ✅ Tested |
 | **BrightID** | Social graph verification | Medium | ✅ Implemented |
 | **Civic** | Gateway Pass | Medium | ✅ Implemented |
 | **Proof of Humanity** | Kleros registry | High | ✅ Implemented |
+| **Holonym** | ZK identity (Gov ID/ePassport) | High | ✅ Implemented |
+| **Idena** | AI-resistant CAPTCHA | High | ✅ Implemented |
+| **Coinbase Verifications** | KYC attestation (EAS) | High | ✅ Implemented |
+| **Humanity Protocol** | Palm biometric | High | ✅ Implemented |
 
 > 📖 **[Provider Documentation](./docs/providers.md)** - Configuration, usage examples, and integration guides for each provider.
 
