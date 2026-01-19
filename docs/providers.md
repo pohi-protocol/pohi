@@ -11,6 +11,7 @@ PoHI Protocol supports multiple Proof of Personhood (PoP) providers for human ve
 | [BrightID](#brightid) | Social graph verification | Medium | Communities with social connections |
 | [Civic](#civic) | Gateway Pass (KYC) | Medium | Regulated environments |
 | [Proof of Humanity](#proof-of-humanity) | Kleros registry | High | Decentralized verification |
+| [Humanity Protocol](#humanity-protocol) | Palm biometric | High | Mobile-based global verification |
 
 ---
 
@@ -247,6 +248,45 @@ const result = await verifier.verify(
 ### Resources
 - [Proof of Humanity](https://proofofhumanity.id/)
 - [PoH Registry](https://app.proofofhumanity.id/)
+
+---
+
+## Humanity Protocol
+
+**Palm-based biometric verification for proof of personhood.**
+
+### Features
+- Palm scan biometric verification via mobile
+- Privacy-preserving design
+- Global availability
+- One-person-one-account guarantee
+
+### Configuration
+
+```env
+HUMANITY_PROTOCOL_API_URL=https://issuer.humanity.org
+```
+
+### Verification Levels
+
+| Level | Description | Trust |
+|-------|-------------|-------|
+| `palm_verified` | Verified via palm scan | High |
+
+### Usage
+
+```typescript
+import { HumanityProtocolVerifier } from 'pohi-core'
+
+const verifier = new HumanityProtocolVerifier()
+const result = await verifier.verify(
+  { address: '0x...' },
+  { api_url: 'https://issuer.humanity.org' }
+)
+```
+
+### Resources
+- [Humanity Protocol](https://humanityprotocol.com/)
 
 ---
 

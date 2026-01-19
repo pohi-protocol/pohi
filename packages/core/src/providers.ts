@@ -340,6 +340,24 @@ export interface CoinbaseVerificationsConfig {
   allow_revoked?: boolean
 }
 
+// ============ Humanity Protocol ============
+
+/**
+ * Humanity Protocol proof structure
+ */
+export interface HumanityProtocolProofData {
+  /** Ethereum address to verify */
+  address: string
+}
+
+/**
+ * Humanity Protocol provider configuration
+ */
+export interface HumanityProtocolConfig {
+  /** API endpoint URL (default: https://issuer.humanity.org) */
+  api_url?: string
+}
+
 // ============ Provider Utilities ============
 
 /**
@@ -355,6 +373,7 @@ export function getProviderName(provider: string): string {
     [POP_PROVIDERS.HOLONYM]: 'Holonym',
     [POP_PROVIDERS.IDENA]: 'Idena',
     [POP_PROVIDERS.COINBASE_VERIFICATIONS]: 'Coinbase Verifications',
+    [POP_PROVIDERS.HUMANITY_PROTOCOL]: 'Humanity Protocol',
   }
   return names[provider] || provider
 }
@@ -372,6 +391,7 @@ export function getProviderDocsUrl(provider: string): string {
     [POP_PROVIDERS.HOLONYM]: 'https://docs.holonym.id',
     [POP_PROVIDERS.IDENA]: 'https://docs.idena.io',
     [POP_PROVIDERS.COINBASE_VERIFICATIONS]: 'https://github.com/coinbase/verifications',
+    [POP_PROVIDERS.HUMANITY_PROTOCOL]: 'https://humanityprotocol.com',
   }
   return urls[provider] || ''
 }
@@ -459,6 +479,13 @@ export function getProviderFeatures(provider: string): ProviderFeatures {
       requires_hardware: false,
       global_availability: true, // Via Coinbase account
       onchain_verification: true, // EAS on Base
+    },
+    [POP_PROVIDERS.HUMANITY_PROTOCOL]: {
+      zk_proofs: false,
+      sybil_resistance: 4, // Palm biometric-based
+      requires_hardware: false, // Mobile device only
+      global_availability: true,
+      onchain_verification: true,
     },
   }
   return features[provider] || {

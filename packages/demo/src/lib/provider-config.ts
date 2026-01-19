@@ -10,6 +10,7 @@ import type {
   BrightIDConfig,
   CivicConfig,
   ProofOfHumanityConfig,
+  HumanityProtocolConfig,
 } from 'pohi-core'
 
 /**
@@ -57,6 +58,16 @@ export function getProofOfHumanityConfig(): ProofOfHumanityConfig {
 }
 
 /**
+ * Get configuration for Humanity Protocol
+ */
+export function getHumanityProtocolConfig(): HumanityProtocolConfig {
+  return {
+    api_url:
+      process.env.HUMANITY_PROTOCOL_API_URL || 'https://issuer.humanity.org',
+  }
+}
+
+/**
  * Get provider configuration by provider ID
  */
 export function getProviderConfig(provider: string): unknown {
@@ -69,6 +80,8 @@ export function getProviderConfig(provider: string): unknown {
       return getCivicConfig()
     case POP_PROVIDERS.PROOF_OF_HUMANITY:
       return getProofOfHumanityConfig()
+    case POP_PROVIDERS.HUMANITY_PROTOCOL:
+      return getHumanityProtocolConfig()
     default:
       return {}
   }

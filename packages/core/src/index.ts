@@ -72,6 +72,9 @@ export type {
   CoinbaseVerificationType,
   CoinbaseVerificationsProofData,
   CoinbaseVerificationsConfig,
+  // Humanity Protocol
+  HumanityProtocolProofData,
+  HumanityProtocolConfig,
   // Provider utilities
   ProviderFeatures,
 } from './providers'
@@ -137,4 +140,5 @@ export {
   HolonymVerifier,
   IdenaVerifier,
   CoinbaseVerificationsVerifier,
+  HumanityProtocolVerifier,
 } from './verification'

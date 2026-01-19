@@ -18,6 +18,7 @@ export const POP_PROVIDERS = {
   HOLONYM: 'holonym',
   IDENA: 'idena',
   COINBASE_VERIFICATIONS: 'coinbase_verifications',
+  HUMANITY_PROTOCOL: 'humanity_protocol',
 } as const
 
 export type KnownPoPProvider = typeof POP_PROVIDERS[keyof typeof POP_PROVIDERS]
