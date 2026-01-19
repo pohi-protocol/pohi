@@ -11,6 +11,9 @@ PoHI Protocol supports multiple Proof of Personhood (PoP) providers for human ve
 | [BrightID](#brightid) | Social graph verification | Medium | Communities with social connections |
 | [Civic](#civic) | Gateway Pass (KYC) | Medium | Regulated environments |
 | [Proof of Humanity](#proof-of-humanity) | Kleros registry | High | Decentralized verification |
+| [Holonym](#holonym) | ZK identity (Gov ID/ePassport) | High | Privacy-preserving government ID verification |
+| [Idena](#idena) | AI-resistant CAPTCHA | High | Decentralized validation ceremonies |
+| [Coinbase Verifications](#coinbase-verifications) | KYC attestation (EAS) | High | Coinbase users with verified accounts |
 | [Humanity Protocol](#humanity-protocol) | Palm biometric | High | Mobile-based global verification |
 
 ---
@@ -248,6 +251,133 @@ const result = await verifier.verify(
 ### Resources
 - [Proof of Humanity](https://proofofhumanity.id/)
 - [PoH Registry](https://app.proofofhumanity.id/)
+
+---
+
+## Holonym
+
+**Privacy-preserving identity verification using zero-knowledge proofs with government IDs or ePassports.**
+
+### Features
+- ZK proofs - no personal data exposed
+- Supports government ID and ePassport verification
+- Multi-chain support (Optimism, Base, Arbitrum, etc.)
+- Sybil resistance per action ID
+
+### Configuration
+
+```env
+# No API key required - uses public API
+```
+
+### Verification Levels
+
+| Level | Description | Trust |
+|-------|-------------|-------|
+| `government_id` | Verified via government ID | High |
+| `epassport` | Verified via ePassport NFC | Highest |
+| `phone` | Verified via phone number | Medium |
+
+### Usage
+
+```typescript
+import { HolonymVerifier } from 'pohi-core'
+
+const verifier = new HolonymVerifier()
+const result = await verifier.verify(
+  { address: '0x...', credential_type: 'gov-id' },
+  { chain: 'optimism', action_id: '123456789' }
+)
+```
+
+### Resources
+- [Holonym](https://holonym.id/)
+- [Holonym Docs](https://docs.holonym.id/)
+
+---
+
+## Idena
+
+**Decentralized proof-of-person protocol using AI-resistant CAPTCHA validation ceremonies.**
+
+### Features
+- Regular validation ceremonies (every ~21 days)
+- AI-resistant flip puzzles
+- No personal data required
+- Fully decentralized
+
+### Configuration
+
+```env
+IDENA_RPC_URL=https://rpc.idena.dev
+```
+
+### Verification Levels
+
+| State | Description | Trust |
+|-------|-------------|-------|
+| `Human` | Highest verified state | Highest |
+| `Verified` | Passed multiple validations | High |
+| `Newbie` | Passed first validation | Medium |
+| `Candidate` | Awaiting first validation | Low |
+
+### Usage
+
+```typescript
+import { IdenaVerifier } from 'pohi-core'
+
+const verifier = new IdenaVerifier()
+const result = await verifier.verify(
+  { address: '0x...' },
+  { rpc_url: 'https://rpc.idena.dev', min_state: 'Verified' }
+)
+```
+
+### Resources
+- [Idena](https://idena.io/)
+- [Idena Docs](https://docs.idena.io/)
+
+---
+
+## Coinbase Verifications
+
+**KYC-based verification using Ethereum Attestation Service (EAS) on Base.**
+
+### Features
+- Leverages Coinbase KYC verification
+- On-chain attestations via EAS
+- Multiple attestation types available
+- Base chain native
+
+### Configuration
+
+```env
+# No API key required - uses public EAS GraphQL endpoint
+```
+
+### Verification Levels
+
+| Type | Description | Trust |
+|------|-------------|-------|
+| `verified_account` | Coinbase verified account | High |
+| `verified_country` | Country verification | High |
+| `coinbase_one` | Coinbase One membership | Medium |
+
+### Usage
+
+```typescript
+import { CoinbaseVerificationsVerifier } from 'pohi-core'
+
+const verifier = new CoinbaseVerificationsVerifier()
+const result = await verifier.verify(
+  { address: '0x...' },
+  { required_attestations: ['verified_account'] }
+)
+```
+
+### Resources
+- [Coinbase Verifications](https://github.com/coinbase/verifications)
+- [EAS on Base](https://base.easscan.org/)
 
 ---
 
