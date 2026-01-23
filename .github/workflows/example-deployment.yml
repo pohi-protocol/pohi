@@ -65,7 +65,7 @@ jobs:
           echo "Attestation saved for audit trail"
 
       - name: Upload Attestation Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: pohi-attestation
           path: attestation.json
