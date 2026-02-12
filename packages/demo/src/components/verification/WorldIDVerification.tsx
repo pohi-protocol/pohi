@@ -25,9 +25,15 @@ export function WorldIDVerification({
     return (
       <button
         disabled
-        className="bg-gray-300 text-gray-500 px-8 py-4 rounded-lg text-xl font-semibold cursor-not-allowed"
+        className="w-full sm:w-auto bg-gray-200 dark:bg-gray-800 text-gray-400 dark:text-gray-600 px-8 py-4 rounded-xl text-lg font-semibold cursor-not-allowed"
       >
-        👁️ Verify with World ID
+        <span className="flex items-center justify-center gap-3">
+          <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" />
+            <circle cx="12" cy="12" r="4" fill="currentColor" />
+          </svg>
+          Verify with World ID
+        </span>
       </button>
     )
   }
@@ -44,9 +50,15 @@ export function WorldIDVerification({
       {({ open }) => (
         <button
           onClick={open}
-          className="bg-black text-white dark:bg-white dark:text-black px-8 py-4 rounded-lg text-xl font-semibold hover:opacity-80 transition-opacity"
+          className="w-full sm:w-auto bg-black text-white dark:bg-white dark:text-black px-8 py-4 rounded-xl text-lg font-semibold hover:opacity-90 transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5"
         >
-          👁️ Verify with World ID
+          <span className="flex items-center justify-center gap-3">
+            <svg viewBox="0 0 24 24" className="w-6 h-6" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" />
+              <circle cx="12" cy="12" r="4" fill="currentColor" />
+            </svg>
+            Verify with World ID
+          </span>
         </button>
       )}
     </IDKitWidget>

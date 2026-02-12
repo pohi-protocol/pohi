@@ -3,32 +3,180 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
+  --foreground-rgb: 15, 23, 42;
   --background-rgb: 255, 255, 255;
+  --accent-1: 20, 184, 160;
+  --accent-2: 59, 130, 246;
 }
 
-/* System preference (default) */
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-rgb: 10, 10, 10;
+    --foreground-rgb: 241, 245, 249;
+    --background-rgb: 2, 6, 23;
+    --accent-1: 45, 212, 184;
+    --accent-2: 96, 165, 250;
   }
 }
 
-/* Manual light mode */
 html.light {
-  --foreground-rgb: 0, 0, 0;
+  --foreground-rgb: 15, 23, 42;
   --background-rgb: 255, 255, 255;
+  --accent-1: 20, 184, 160;
+  --accent-2: 59, 130, 246;
 }
 
-/* Manual dark mode */
 html.dark {
-  --foreground-rgb: 255, 255, 255;
-  --background-rgb: 10, 10, 10;
+  --foreground-rgb: 241, 245, 249;
+  --background-rgb: 2, 6, 23;
+  --accent-1: 45, 212, 184;
+  --accent-2: 96, 165, 250;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
   background: rgb(var(--background-rgb));
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Noise texture for depth */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.015;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@layer components {
+  .glass {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .glass-light {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .dark .glass-light {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, rgb(var(--accent-1)), rgb(var(--accent-2)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-border {
+    position: relative;
+    border-radius: 1rem;
+  }
+
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgb(var(--accent-1)), rgb(var(--accent-2)));
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  .glow {
+    box-shadow:
+      0 0 20px rgba(var(--accent-1), 0.15),
+      0 0 60px rgba(var(--accent-1), 0.05);
+  }
+
+  .hero-gradient {
+    background: linear-gradient(
+      135deg,
+      rgba(var(--accent-1), 0.08) 0%,
+      rgba(var(--accent-2), 0.04) 50%,
+      rgba(var(--accent-1), 0.08) 100%
+    );
+    background-size: 200% 200%;
+    animation: heroGradient 8s ease infinite;
+  }
+
+  @keyframes heroGradient {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .card-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 10px 25px -5px rgba(0, 0, 0, 0.1),
+      0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  }
+
+  .dark .card-hover:hover {
+    box-shadow:
+      0 10px 25px -5px rgba(0, 0, 0, 0.3),
+      0 0 20px rgba(var(--accent-1), 0.05);
+  }
+
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(var(--accent-1), 0.3),
+      rgba(var(--accent-2), 0.3),
+      transparent
+    );
+  }
+
+  .stagger-1 { animation-delay: 0.1s; }
+  .stagger-2 { animation-delay: 0.2s; }
+  .stagger-3 { animation-delay: 0.3s; }
+  .stagger-4 { animation-delay: 0.4s; }
+  .stagger-5 { animation-delay: 0.5s; }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(var(--accent-1), 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--accent-1), 0.5);
+}
+
+::selection {
+  background: rgba(var(--accent-1), 0.2);
 }

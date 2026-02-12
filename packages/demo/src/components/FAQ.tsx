@@ -29,14 +29,14 @@ function FAQItemComponent({
   const t = useTranslation()
 
   return (
-    <div className="border-b border-gray-200 dark:border-gray-700">
+    <div className="border border-gray-200/60 dark:border-gray-800/60 rounded-xl overflow-hidden transition-all duration-200">
       <button
-        className="w-full py-4 flex justify-between items-center text-left hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+        className="w-full px-6 py-5 flex justify-between items-center text-left hover:bg-gray-50 dark:hover:bg-white/[0.02] transition-colors"
         onClick={onClick}
       >
         <span className="font-medium pr-4">{t(questionKey)}</span>
         <svg
-          className={`w-5 h-5 flex-shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-5 h-5 flex-shrink-0 text-gray-400 dark:text-gray-600 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -44,7 +44,15 @@ function FAQItemComponent({
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
       </button>
-      {isOpen && <div className="pb-4 text-gray-600 dark:text-gray-400">{t(answerKey)}</div>}
+      <div
+        className={`overflow-hidden transition-all duration-200 ${
+          isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className="px-6 pb-5 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+          {t(answerKey)}
+        </div>
+      </div>
     </div>
   )
 }
@@ -54,9 +62,9 @@ export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   return (
-    <div className="mt-12 border-t pt-8">
-      <h2 className="text-2xl font-semibold mb-6">{t('faqTitle')}</h2>
-      <div className="space-y-0">
+    <div>
+      <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-center">{t('faqTitle')}</h2>
+      <div className="space-y-3">
         {FAQ_ITEMS.map((item, index) => (
           <FAQItemComponent
             key={index}
