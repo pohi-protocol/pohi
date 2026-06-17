@@ -1,9 +1,12 @@
 # Posting PoHI to ResearchHub
 
+> ✅ **Published:** <https://www.researchhub.com/post/32358/proof-of-human-intent-cryptographically-verifiable-human-approval-for-ai-driven-software-development>
+> (status: Pending Review — ResearchHub's open peer-review queue; the preprint is publicly visible meanwhile.)
+
 Canonical DOI: **10.5281/zenodo.20729026** — <https://doi.org/10.5281/zenodo.20729026>
 
 ResearchHub requires an authenticated account, so the steps below are manual.
-Everything you need to paste is in this file.
+Everything you need to paste is in this file. Kept for re-posting / reference.
 
 ## 1. Account
 

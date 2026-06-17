@@ -7,6 +7,8 @@
 [![CI](https://github.com/pohi-protocol/pohi/actions/workflows/ci.yml/badge.svg)](https://github.com/pohi-protocol/pohi/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/pohi-protocol/pohi/branch/main/graph/badge.svg)](https://codecov.io/gh/pohi-protocol/pohi)
 [![ePrint](https://img.shields.io/badge/ePrint-submitted-yellow.svg)](https://eprint.iacr.org/)
+[![DOI](https://zenodo.org/badge/1116760932.svg)](https://doi.org/10.5281/zenodo.20729026)
+[![ResearchHub](https://img.shields.io/badge/ResearchHub-Preprint-3971FF.svg)](https://www.researchhub.com/post/32358/proof-of-human-intent-cryptographically-verifiable-human-approval-for-ai-driven-software-development)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![GitHub](https://img.shields.io/github/stars/pohi-protocol/pohi?style=social)](https://github.com/pohi-protocol/pohi)
 
@@ -230,8 +232,10 @@ jobs:
 
 **「Proof of Human Intent: AI駆動ソフトウェア開発における暗号学的に検証可能な人間の承認」**
 
+- 📝 Zenodo (DOI): [`10.5281/zenodo.20729026`](https://doi.org/10.5281/zenodo.20729026) — 引用可能な正典プレプリント＋リファレンス実装
+- 🧪 ResearchHub: [オープンプレプリント・ディスカッション](https://www.researchhub.com/post/32358/proof-of-human-intent-cryptographically-verifiable-human-approval-for-ai-driven-software-development)
 - 📝 IACR ePrint: 投稿済み（審査中）
-- 📝 arXiv: ePrint公開後に予定
+- 📝 arXiv: エンドースメント待ち（`cs.CR` / `cs.SE`）
 - 📁 ソース: [`paper/`](./paper/)
 
 ### 引用
@@ -241,7 +245,9 @@ jobs:
   title={Proof of Human Intent: Cryptographically Verifiable Human Approval for AI-Driven Software Development},
   author={Ikko Eltociear Ashimine},
   year={2026},
-  howpublished={IACR Cryptology ePrint Archive}
+  doi={10.5281/zenodo.20729026},
+  howpublished={Zenodo},
+  url={https://doi.org/10.5281/zenodo.20729026}
 }
 ```
 

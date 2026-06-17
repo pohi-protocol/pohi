@@ -8,6 +8,7 @@
 [![codecov](https://codecov.io/gh/pohi-protocol/pohi/branch/main/graph/badge.svg)](https://codecov.io/gh/pohi-protocol/pohi)
 [![ePrint](https://img.shields.io/badge/ePrint-submitted-yellow.svg)](https://eprint.iacr.org/)
 [![DOI](https://zenodo.org/badge/1116760932.svg)](https://doi.org/10.5281/zenodo.20729026)
+[![ResearchHub](https://img.shields.io/badge/ResearchHub-Preprint-3971FF.svg)](https://www.researchhub.com/post/32358/proof-of-human-intent-cryptographically-verifiable-human-approval-for-ai-driven-software-development)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![GitHub](https://img.shields.io/github/stars/pohi-protocol/pohi?style=social)](https://github.com/pohi-protocol/pohi)
 
@@ -232,6 +233,7 @@ jobs:
 **"Proof of Human Intent: Cryptographically Verifiable Human Approval for AI-Driven Software Development"**
 
 - 📝 Zenodo (DOI): [`10.5281/zenodo.20729026`](https://doi.org/10.5281/zenodo.20729026) — canonical, citable preprint + reference implementation
+- 🧪 ResearchHub: [Open preprint & discussion](https://www.researchhub.com/post/32358/proof-of-human-intent-cryptographically-verifiable-human-approval-for-ai-driven-software-development)
 - 📝 IACR ePrint: Submitted (pending review)
 - 📝 arXiv: Pending endorsement (`cs.CR` / `cs.SE`)
 - 📁 Source: [`paper/`](./paper/)
