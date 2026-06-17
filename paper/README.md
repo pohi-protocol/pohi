@@ -2,7 +2,7 @@
 
 ## Status
 
-- 📦 **Zenodo (DOI)**: `10.5281/zenodo.ZENODO_RECORD_ID` — canonical, citable archive (no endorsement gate)
+- 📦 **Zenodo (DOI)**: [`10.5281/zenodo.20729026`](https://doi.org/10.5281/zenodo.20729026) — canonical, citable archive (no endorsement gate)
 - 📤 **IACR ePrint**: Submitted — pending review (January 2026)
 - ⏳ **arXiv**: Pending endorsement (`cs.CR` / `cs.SE`)
 

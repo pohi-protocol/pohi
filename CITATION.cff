@@ -17,8 +17,7 @@ repository-code: "https://github.com/pohi-protocol/pohi"
 url: "https://github.com/pohi-protocol/pohi"
 license: Apache-2.0
 version: 0.3.0
-# After the first Zenodo release, replace ZENODO_RECORD_ID with the concept DOI.
-doi: 10.5281/zenodo.ZENODO_RECORD_ID
+doi: 10.5281/zenodo.20729026
 keywords:
   - proof of personhood
   - proof of human intent
