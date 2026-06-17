@@ -2,7 +2,9 @@
 
 ## Status
 
-📤 **Submitted to IACR ePrint** - Pending review (January 2026)
+- 📦 **Zenodo (DOI)**: `10.5281/zenodo.ZENODO_RECORD_ID` — canonical, citable archive (no endorsement gate)
+- 📤 **IACR ePrint**: Submitted — pending review (January 2026)
+- ⏳ **arXiv**: Pending endorsement (`cs.CR` / `cs.SE`)
 
 ## Title
 
@@ -10,6 +12,7 @@
 
 ## Target
 
+- **Canonical DOI**: Zenodo (no endorsement gate; see [`../docs/zenodo.md`](../docs/zenodo.md))
 - **Primary**: IACR ePrint (Cryptology ePrint Archive)
 - **Secondary**: arXiv (cs.CR), Academic conferences (IEEE S&P, USENIX Security)
 
@@ -56,7 +59,7 @@ pdflatex main.tex
 
 ## Future
 
-- [ ] arXiv cross-posting (after ePrint publication)
+- [ ] arXiv cross-posting (pending `cs.CR` / `cs.SE` endorsement)
 - [ ] Conference submission (IEEE S&P, USENIX Security)
 
 ## Author

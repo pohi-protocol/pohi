@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use this software or refer to this work, please cite it as below."
+title: "Proof of Human Intent: Cryptographically Verifiable Human Approval for AI-Driven Software Development"
+abstract: >-
+  Proof of Human Intent (PoHI) is a protocol that creates cryptographically
+  verifiable proof that a real human approved critical software actions. It
+  combines proof-of-personhood (e.g. World ID zero-knowledge proofs), Git/DID
+  signing, and an append-only transparency log (IETF SCITT) to answer who
+  approved an action, what was approved, and when.
+type: software
+authors:
+  - family-names: Ashimine
+    given-names: Ikko Eltociear
+    orcid: "https://orcid.org/0000-0002-3576-6677"
+    affiliation: "Independent Researcher"
+repository-code: "https://github.com/pohi-protocol/pohi"
+url: "https://github.com/pohi-protocol/pohi"
+license: Apache-2.0
+version: 0.3.0
+# After the first Zenodo release, replace ZENODO_RECORD_ID with the concept DOI.
+doi: 10.5281/zenodo.ZENODO_RECORD_ID
+keywords:
+  - proof of personhood
+  - proof of human intent
+  - zero-knowledge proof
+  - World ID
+  - AI agents
+  - code signing
+  - SCITT
+  - supply chain security
+  - decentralized identifiers
+  - verifiable credentials

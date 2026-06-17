@@ -1,0 +1,39 @@
+{
+  "title": "Proof of Human Intent: Cryptographically Verifiable Human Approval for AI-Driven Software Development",
+  "description": "Proof of Human Intent (PoHI) is a protocol that creates cryptographically verifiable proof that a real human approved critical software actions. It combines proof-of-personhood (e.g. World ID zero-knowledge proofs), Git/DID signing, and an append-only transparency log (IETF SCITT) to answer who approved an action, what was approved, and when. This record archives the reference implementation, supporting packages, and the academic paper.",
+  "upload_type": "software",
+  "license": "Apache-2.0",
+  "access_right": "open",
+  "creators": [
+    {
+      "name": "Ashimine, Ikko Eltociear",
+      "orcid": "0000-0002-3576-6677",
+      "affiliation": "Independent Researcher"
+    }
+  ],
+  "keywords": [
+    "proof of personhood",
+    "proof of human intent",
+    "zero-knowledge proof",
+    "World ID",
+    "AI agents",
+    "code signing",
+    "SCITT",
+    "supply chain security",
+    "decentralized identifiers",
+    "verifiable credentials",
+    "transparency log"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/pohi-protocol/pohi",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://pohi-demo.vercel.app/",
+      "relation": "isSupplementedBy",
+      "scheme": "url"
+    }
+  ]
+}
