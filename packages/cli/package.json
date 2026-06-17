@@ -27,8 +27,8 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "pohi-core": "^0.2.0",
-    "pohi-sdk": "^0.2.0",
+    "pohi-core": "^0.3.0",
+    "pohi-sdk": "^0.3.0",
     "chalk": "^5.3.0",
     "commander": "^12.0.0",
     "conf": "^12.0.0",
