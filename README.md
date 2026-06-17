@@ -7,8 +7,7 @@
 [![CI](https://github.com/pohi-protocol/pohi/actions/workflows/ci.yml/badge.svg)](https://github.com/pohi-protocol/pohi/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/pohi-protocol/pohi/branch/main/graph/badge.svg)](https://codecov.io/gh/pohi-protocol/pohi)
 [![ePrint](https://img.shields.io/badge/ePrint-submitted-yellow.svg)](https://eprint.iacr.org/)
-<!-- After your first Zenodo release, replace ZENODO_RECORD_ID below with the concept DOI (the "Cite all versions" DOI). See docs/zenodo.md -->
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.ZENODO_RECORD_ID.svg)](https://doi.org/10.5281/zenodo.ZENODO_RECORD_ID)
+[![DOI](https://zenodo.org/badge/1116760932.svg)](https://doi.org/10.5281/zenodo.20729026)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![GitHub](https://img.shields.io/github/stars/pohi-protocol/pohi?style=social)](https://github.com/pohi-protocol/pohi)
 
@@ -232,7 +231,7 @@ jobs:
 
 **"Proof of Human Intent: Cryptographically Verifiable Human Approval for AI-Driven Software Development"**
 
-- 📝 Zenodo (DOI): `10.5281/zenodo.ZENODO_RECORD_ID` — canonical, citable preprint + reference implementation
+- 📝 Zenodo (DOI): [`10.5281/zenodo.20729026`](https://doi.org/10.5281/zenodo.20729026) — canonical, citable preprint + reference implementation
 - 📝 IACR ePrint: Submitted (pending review)
 - 📝 arXiv: Pending endorsement (`cs.CR` / `cs.SE`)
 - 📁 Source: [`paper/`](./paper/)
@@ -244,9 +243,9 @@ jobs:
   title={Proof of Human Intent: Cryptographically Verifiable Human Approval for AI-Driven Software Development},
   author={Ikko Eltociear Ashimine},
   year={2026},
-  doi={10.5281/zenodo.ZENODO_RECORD_ID},
+  doi={10.5281/zenodo.20729026},
   howpublished={Zenodo},
-  url={https://doi.org/10.5281/zenodo.ZENODO_RECORD_ID}
+  url={https://doi.org/10.5281/zenodo.20729026}
 }
 ```
 
