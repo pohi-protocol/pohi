@@ -3,6 +3,7 @@
 ## Status
 
 - 📦 **Zenodo (DOI)**: [`10.5281/zenodo.20729026`](https://doi.org/10.5281/zenodo.20729026) — canonical, citable archive (no endorsement gate)
+- 🧪 **ResearchHub**: [Open preprint & discussion](https://www.researchhub.com/post/32358/proof-of-human-intent-cryptographically-verifiable-human-approval-for-ai-driven-software-development) (Pending Review)
 - 📤 **IACR ePrint**: Submitted — pending review (January 2026)
 - ⏳ **arXiv**: Pending endorsement (`cs.CR` / `cs.SE`)
 
