@@ -70,5 +70,51 @@ Open reference implementation, live demo, and the paper are linked above. Feedba
 
 ## 6. After posting
 
-- Add the ResearchHub link to the repo README (next to the DOI badge).
-- Consider a small RSC bounty for a thorough review or an arXiv endorsement.
+- Add the ResearchHub link to the repo README (next to the DOI badge). ✅ done
+- Open an RSC bounty for a thorough review (see §7).
+
+## 7. RSC bounty — soliciting review (and asking for an arXiv endorsement)
+
+> ⚠️ **Do not make payment contingent on an arXiv endorsement.** arXiv endorsement
+> must reflect the endorser's independent judgment that the author is a legitimate
+> researcher; paying for a signature violates arXiv's endorsement policy. Fund the
+> bounty for **substantive peer review** only, and *separately ask* qualified
+> readers for an endorsement as an unpaid favor.
+
+### How to open the bounty
+
+1. You need an **RSC balance**. Acquire RSC (deposit/buy, or earn on-platform) and
+   make sure it covers the bounty plus the platform fee.
+2. Open the post: <https://www.researchhub.com/post/32358/proof-of-human-intent-cryptographically-verifiable-human-approval-for-ai-driven-software-development>
+3. Use the comment box → **Add Bounty** (the RSC/coin icon). Set the **amount** and
+   an **expiration** (30 days is a reasonable default). Paste the text below.
+
+### Bounty text (copy-paste)
+
+```
+Bounty: critical peer review of Proof of Human Intent (PoHI)
+
+I'm seeking a rigorous, critical review of this preprint. Most useful feedback:
+- Threat model completeness, and the deliberate "presence vs. understanding" boundary
+- Soundness of the formal security claims (unforgeability, replay, Sybil, binding)
+- Proof-of-personhood provider trade-offs and the provider-agnostic requirements
+- Practicality of the GitHub Actions integration and the latency / gas evaluation
+- Related-work coverage (SLSA, Sigstore, SCITT, authenticated delegation)
+
+What earns the bounty: a substantive written review (~400+ words) with concrete
+strengths, weaknesses, and actionable suggestions — not a summary. Strong reviews
+may split the award.
+
+Code & reproducibility: https://github.com/pohi-protocol/pohi
+Live demo: https://pohi-demo.vercel.app
+DOI (version of record): https://doi.org/10.5281/zenodo.20729026
+
+Separately (not a condition of this bounty): if you hold arXiv endorsement standing
+in cs.CR or cs.SE and judge the work legitimate, an endorsement would be greatly
+appreciated — please comment here or reach out.
+```
+
+### After awarding
+
+- Fold accepted feedback into the paper, cut a new Zenodo release (DOI auto-updates
+  via the concept DOI), and thank reviewers in the Acknowledgments.
