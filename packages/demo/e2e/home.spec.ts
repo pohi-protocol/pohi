@@ -25,17 +25,16 @@ test.describe('Home Page', () => {
     await expect(page.getByRole('button', { name: /Civic/i })).toBeVisible()
   })
 
-  test('displays How it works section', async ({ page }) => {
-    await expect(page.getByRole('heading', { name: 'How it works' })).toBeVisible()
-    await expect(page.getByText('Choose Provider')).toBeVisible()
-    await expect(page.getByText('Verify Human')).toBeVisible()
-    await expect(page.getByText('Create Attestation')).toBeVisible()
+  test('displays How the Protocol Works section', async ({ page }) => {
+    await expect(page.getByRole('heading', { name: 'How the Protocol Works' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Verify Human' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Bind to Action' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Record Attestation' })).toBeVisible()
   })
 
-  test('displays Supported Providers section', async ({ page }) => {
-    await expect(page.getByRole('heading', { name: 'Supported Providers' })).toBeVisible()
-    await expect(page.getByText('ZK Proofs')).toBeVisible()
-    await expect(page.getByText('Web3 Score')).toBeVisible()
+  test('displays demo section with provider selection', async ({ page }) => {
+    await expect(page.getByRole('heading', { name: 'Try the Demo' })).toBeVisible()
+    await expect(page.getByRole('button', { name: /World ID/i })).toBeVisible()
   })
 
   test('displays FAQ section', async ({ page }) => {
@@ -43,8 +42,11 @@ test.describe('Home Page', () => {
   })
 
   test('displays footer with links', async ({ page }) => {
-    await expect(page.getByRole('link', { name: 'GitHub' })).toBeVisible()
-    await expect(page.getByRole('link', { name: 'Apache 2.0' })).toBeVisible()
+    // The header also links to GitHub, so scope to the footer to avoid a
+    // strict-mode match on multiple "GitHub" links.
+    const footer = page.locator('footer')
+    await expect(footer.getByRole('link', { name: 'GitHub' })).toBeVisible()
+    await expect(footer.getByRole('link', { name: 'Apache 2.0' })).toBeVisible()
   })
 })
 

@@ -32,11 +32,14 @@ test.describe('Accessibility', () => {
   test('links have accessible text', async ({ page }) => {
     await page.goto('/')
 
-    const githubLink = page.getByRole('link', { name: 'GitHub' })
+    // The header also links to GitHub, so scope to the footer to avoid a
+    // strict-mode match on multiple "GitHub" links.
+    const footer = page.locator('footer')
+    const githubLink = footer.getByRole('link', { name: 'GitHub' })
     await expect(githubLink).toBeVisible()
     await expect(githubLink).toHaveAttribute('href', /github\.com/)
 
-    const licenseLink = page.getByRole('link', { name: 'Apache 2.0' })
+    const licenseLink = footer.getByRole('link', { name: 'Apache 2.0' })
     await expect(licenseLink).toBeVisible()
   })
 
@@ -91,7 +94,7 @@ test.describe('Responsive Design', () => {
     await page.goto('/')
 
     await expect(page.getByRole('heading', { name: 'Proof of Human Intent' })).toBeVisible()
-    await expect(page.getByRole('heading', { name: 'How it works' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'How the Protocol Works' })).toBeVisible()
   })
 
   test('desktop viewport shows full layout', async ({ page }) => {
@@ -99,7 +102,7 @@ test.describe('Responsive Design', () => {
     await page.goto('/')
 
     await expect(page.getByRole('heading', { name: 'Proof of Human Intent' })).toBeVisible()
-    await expect(page.getByRole('heading', { name: 'Supported Providers' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Use Cases' })).toBeVisible()
   })
 
   test('content does not overflow on mobile', async ({ page }) => {
