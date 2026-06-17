@@ -35,8 +35,9 @@ World ID (ZK Proof) × Git Signing × Transparency Log
 
 ```
 2024: GitHub Copilot writes code
-2025: AI Agents create PRs autonomously  
-2026: AI Agents deploy to production     ← We're heading here
+2025: AI Agents create PRs autonomously
+2026: AI Agents deploy to production      ← We are here
+2027: AI Agents operate autonomously      ← Next
 
 Question: Can you PROVE a human approved it?
 ```
