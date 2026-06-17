@@ -87,7 +87,7 @@ test.describe('Verification Flow - Mock API', () => {
     await verifyButton.click()
 
     // Should show success state after verification completes
-    await expect(page.getByText('Human Verified!')).toBeVisible({ timeout: 10000 })
+    await expect(page.getByText('Human Verified')).toBeVisible({ timeout: 10000 })
   })
 
   test('shows success state after successful verification', async ({ page }) => {
@@ -133,7 +133,7 @@ test.describe('Verification Flow - Mock API', () => {
     await verifyButton.click()
 
     // Should show success
-    await expect(page.getByText('Human Verified!')).toBeVisible({ timeout: 10000 })
+    await expect(page.getByText('Human Verified')).toBeVisible({ timeout: 10000 })
     await expect(page.getByText('Attestation Created')).toBeVisible()
     await expect(page.getByText('Start new verification')).toBeVisible()
   })
@@ -201,7 +201,7 @@ test.describe('Verification Flow - Mock API', () => {
     await verifyButton.click()
 
     // Wait for success
-    await expect(page.getByText('Human Verified!')).toBeVisible({ timeout: 10000 })
+    await expect(page.getByText('Human Verified')).toBeVisible({ timeout: 10000 })
 
     // Click reset
     await page.getByText('Start new verification').click()
