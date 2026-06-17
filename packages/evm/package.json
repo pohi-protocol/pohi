@@ -32,7 +32,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "pohi-core": "^0.2.0",
+    "pohi-core": "^0.3.0",
     "viem": "^2.44.1"
   },
   "devDependencies": {
