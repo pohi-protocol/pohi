@@ -16,8 +16,8 @@
     "@actions/github": "^6.0.0"
   },
   "devDependencies": {
-    "@types/node": "^20.19.28",
-    "esbuild": "^0.27.2",
+    "@types/node": "^20.19.43",
+    "esbuild": "^0.28.2",
     "typescript": "^5.9.3"
   },
   "keywords": [
