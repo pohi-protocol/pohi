@@ -14,19 +14,19 @@
     "test:e2e:debug": "playwright test --debug"
   },
   "dependencies": {
-    "@eslint/eslintrc": "^3.3.3",
+    "@eslint/eslintrc": "^3.3.6",
     "@vercel/kv": "^3.0.0",
     "@worldcoin/idkit": "^2.4.2",
-    "next": "^16.1.1",
+    "next": "^16.3.1",
     "pohi-core": "^0.3.0",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3"
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
   },
   "devDependencies": {
     "@playwright/test": "^1.49.0",
     "@types/node": "^20.19.28",
-    "@types/react": "^18.3.0",
-    "@types/react-dom": "^18.3.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
     "autoprefixer": "^10.4.0",
     "eslint": "^9.39.2",
     "eslint-config-next": "^16.1.1",
