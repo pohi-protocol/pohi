@@ -26,7 +26,7 @@
     "directory": "packages/bitbucket-pipe"
   },
   "devDependencies": {
-    "esbuild": "^0.27.2",
+    "esbuild": "^0.28.2",
     "typescript": "^5.9.3",
     "vitest": "^4.0.16"
   }
