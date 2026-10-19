@@ -35,7 +35,7 @@
     "docs:watch": "typedoc --watch"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "^4.1.11",
+    "@vitest/coverage-v8": "^4.1.12",
     "tsup": "^8.0.0",
     "typedoc": "^0.28.20",
     "typescript": "^5.9.3",
