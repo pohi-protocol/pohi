@@ -21,7 +21,7 @@ pipelines:
     - step:
         name: Human Approval
         script:
-          - pipe: docker://pohi-protocol/pohi-approval:latest
+          - pipe: docker://ghcr.io/pohi-protocol/pohi-approval:0.3.0
             variables:
               POHI_APPROVAL_URL: 'https://your-approval-server.com'
               POHI_WORLD_ID_APP_ID: 'app_xxx'
@@ -118,7 +118,7 @@ pipelines:
       - step:
           name: Human Approval
           script:
-            - pipe: docker://pohi-protocol/pohi-approval:latest
+            - pipe: docker://ghcr.io/pohi-protocol/pohi-approval:0.3.0
               variables:
                 POHI_APPROVAL_URL: $POHI_SERVER_URL
                 POHI_WORLD_ID_APP_ID: $WORLD_ID_APP_ID
@@ -152,7 +152,7 @@ pipelines:
       - step:
           name: Human Approval
           script:
-            - pipe: docker://pohi-protocol/pohi-approval:latest
+            - pipe: docker://ghcr.io/pohi-protocol/pohi-approval:0.3.0
               variables:
                 POHI_APPROVAL_URL: 'https://pohi.example.com'
                 POHI_WORLD_ID_APP_ID: 'app_staging_xxx'
@@ -172,7 +172,7 @@ pipelines:
       - step:
           name: Human Approval
           script:
-            - pipe: docker://pohi-protocol/pohi-approval:latest
+            - pipe: docker://ghcr.io/pohi-protocol/pohi-approval:0.3.0
               variables:
                 POHI_APPROVAL_URL: $POHI_SERVER_URL
                 POHI_WORLD_ID_APP_ID: $WORLD_ID_APP_ID

@@ -1,5 +1,5 @@
 name: PoHI Human Approval
-image: pohi-protocol/pohi-approval:latest
+image: ghcr.io/pohi-protocol/pohi-approval:0.3.0
 description: Request human approval via World ID verification before proceeding with the pipeline.
 repository: https://github.com/pohi-protocol/pohi
 maintainer: Ikko Ashimine <eltociear@gmail.com>

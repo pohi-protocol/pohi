@@ -5,7 +5,7 @@
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "pohi-gitlab-ci": "./dist/index.js"
+    "pohi-gitlab-ci": "dist/index.js"
   },
   "files": [
     "dist",
@@ -27,7 +27,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/pohi-protocol/pohi.git",
+    "url": "git+https://github.com/pohi-protocol/pohi.git",
     "directory": "packages/gitlab-ci"
   },
   "devDependencies": {
