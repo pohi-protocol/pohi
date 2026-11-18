@@ -1,0 +1,45 @@
+name: Publish Bitbucket pipe image
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    name: Build & push ghcr.io/pohi-protocol/pohi-approval
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build pipe bundle
+        run: npm run build -w pohi-bitbucket-pipe
+
+      - name: Read package version
+        id: version
+        run: echo "version=$(node -p "require('./packages/bitbucket-pipe/package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Log in to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      - name: Build and push
+        working-directory: packages/bitbucket-pipe
+        run: |
+          IMAGE=ghcr.io/pohi-protocol/pohi-approval
+          docker build -t "$IMAGE:${{ steps.version.outputs.version }}" -f pipe/Dockerfile .
+          docker push "$IMAGE:${{ steps.version.outputs.version }}"

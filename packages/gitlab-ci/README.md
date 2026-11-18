@@ -32,7 +32,7 @@ human-approval:
   stage: approval
   image: node:20-alpine
   before_script:
-    - npm install -g pohi-gitlab-ci@latest
+    - npm install -g --ignore-scripts pohi-gitlab-ci@0.3.0
   script:
     - pohi-gitlab-ci
   variables:
@@ -137,7 +137,7 @@ human-approval:
   stage: approval
   image: node:20-alpine
   before_script:
-    - npm install -g pohi-gitlab-ci@latest
+    - npm install -g --ignore-scripts pohi-gitlab-ci@0.3.0
   script:
     - pohi-gitlab-ci
   variables:
@@ -168,7 +168,7 @@ human-approval:
   stage: approval
   image: node:20-alpine
   before_script:
-    - npm install -g pohi-gitlab-ci@latest
+    - npm install -g --ignore-scripts pohi-gitlab-ci@0.3.0
   script:
     - pohi-gitlab-ci
   variables:

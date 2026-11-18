@@ -8,8 +8,8 @@
     "build": "esbuild src/index.ts --bundle --platform=node --target=node20 --outfile=dist/index.js --format=esm",
     "test": "vitest run --passWithNoTests",
     "typecheck": "tsc --noEmit",
-    "docker:build": "docker build -t pohi-protocol/pohi-approval -f pipe/Dockerfile .",
-    "docker:push": "docker push pohi-protocol/pohi-approval"
+    "docker:build": "docker build -t ghcr.io/pohi-protocol/pohi-approval:$npm_package_version -f pipe/Dockerfile .",
+    "docker:push": "docker push ghcr.io/pohi-protocol/pohi-approval:$npm_package_version"
   },
   "keywords": [
     "pohi",

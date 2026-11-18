@@ -64,7 +64,7 @@ spec:
     POHI_TIMEOUT_MINUTES: $[[ inputs.timeout_minutes ]]
     POHI_POLL_INTERVAL_SECONDS: $[[ inputs.poll_interval_seconds ]]
   before_script:
-    - npm install -g pohi-gitlab-ci@latest
+    - npm install -g --ignore-scripts pohi-gitlab-ci@0.3.0
   script:
     - pohi-gitlab-ci
   artifacts:
