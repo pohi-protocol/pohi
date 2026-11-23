@@ -17,16 +17,16 @@
     "@eslint/eslintrc": "^3.3.7",
     "@vercel/kv": "^3.0.0",
     "@worldcoin/idkit": "^2.4.2",
-    "next": "^16.3.4",
+    "next": "^16.4.6",
     "pohi-core": "^0.3.0",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.65.1",
     "@types/node": "^20.19.43",
-    "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.7",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
     "autoprefixer": "^10.6.2",
     "eslint": "^9.39.2",
     "eslint-config-next": "^16.4.6",
